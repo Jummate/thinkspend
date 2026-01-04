@@ -1,36 +1,146 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ThinkSpend
 
-## Getting Started
+**Smart spending, powered by AI**
 
-First, run the development server:
+ThinkSpend is an AI-powered expense tracker that uses natural language processing to make tracking expenses effortless. Just type "Coffee at Starbucks $5" and let the AI handle the rest.
 
+![ThinkSpend Screenshot](./docs/screenshot.png)
+
+## ✨ Features
+
+- **AI-Powered Entry**: Add expenses using natural language
+- **Smart Categorization**: Automatic category detection
+- **Visual Analytics**: See spending patterns with charts
+- **Offline Support**: Works without internet connection
+- **PWA**: Install on mobile and desktop
+
+## 🚀 Tech Stack
+
+- **Frontend**: Next.js 14, React, Tailwind CSS
+- **Backend**: Next.js API Routes
+- **Database**: Supabase (PostgreSQL)
+- **AI**: Mistral API
+- **Deployment**: Vercel
+
+## 📦 Installation
+
+### Prerequisites
+- Node.js 18+ 
+- npm or yarn
+- Supabase account
+- Anthropic API key
+
+### Setup
+
+1. **Clone the repository**
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+   git clone https://github.com/yourusername/thinkspend.git
+   cd thinkspend
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. **Install dependencies**
+```bash
+   npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. **Set up environment variables**
+   
+   Create `.env.local` file:
+```env
+   NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+   ANTHROPIC_API_KEY=your_anthropic_api_key
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. **Set up Supabase database**
+   
+   Run this SQL in your Supabase SQL editor:
+```sql
+   CREATE TABLE expenses (
+     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+     user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
+     amount DECIMAL(10, 2) NOT NULL,
+     category TEXT NOT NULL,
+     description TEXT,
+     date DATE NOT NULL DEFAULT CURRENT_DATE,
+     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+   );
 
-## Learn More
+   -- Enable Row Level Security
+   ALTER TABLE expenses ENABLE ROW LEVEL SECURITY;
 
-To learn more about Next.js, take a look at the following resources:
+   -- Policies
+   CREATE POLICY "Users can view own expenses" 
+   ON expenses FOR SELECT 
+   USING (auth.uid() = user_id);
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+   CREATE POLICY "Users can insert own expenses" 
+   ON expenses FOR INSERT 
+   WITH CHECK (auth.uid() = user_id);
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+   CREATE POLICY "Users can delete own expenses" 
+   ON expenses FOR DELETE 
+   USING (auth.uid() = user_id);
+```
 
-## Deploy on Vercel
+5. **Run development server**
+```bash
+   npm run dev
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+   Open [http://localhost:3000](http://localhost:3000)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🎯 Usage
+
+1. **Sign up** with your email
+2. **Add an expense** by typing naturally:
+   - "Lunch $15"
+   - "Coffee at Starbucks 5 dollars"
+   - "Uber to airport $25"
+3. **View your dashboard** to see spending breakdown
+4. **Track expenses** in the list view
+5. **Works offline** - changes sync when back online
+
+## 🏗️ Project Structure
+```
+thinkspend/
+├── src/
+│   ├── app/              # Next.js app directory
+│   ├── components/       # React components
+│   ├── lib/             # Utilities and helpers
+│   └── styles/          # Global styles
+├── public/              # Static assets
+├── docs/                # Documentation
+└── supabase/            # Database migrations
+```
+
+## 🧪 Testing
+```bash
+npm run test
+```
+
+## 🚢 Deployment
+
+Deployed automatically via Vercel when pushing to `main` branch.
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/yourusername/thinkspend)
+
+## 🤝 Contributing
+
+This is a personal learning project, but suggestions are welcome! Feel free to open an issue.
+
+## 📝 License
+
+MIT License - feel free to use this project for learning.
+
+## 👨‍💻 Author
+
+**Your Name**
+- GitHub: [@yourusername](https://github.com/Jummate)
+- LinkedIn: [Your Name](https://linkedin.com/in/yourprofile)
+- Portfolio: [yourwebsite.com](https://omololujumat.netlify.app)
+
+## 🙏 Acknowledgments
+
+- Built as a learning project to explore PWAs and AI integration
+- Inspired by modern expense tracking needs
