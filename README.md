@@ -28,13 +28,13 @@ ThinkSpend is an AI-powered expense tracker that uses natural language processin
 - Node.js 18+ 
 - npm or yarn
 - Supabase account
-- Anthropic API key
+- Mistral API key
 
 ### Setup
 
 1. **Clone the repository**
 ```bash
-   git clone https://github.com/yourusername/thinkspend.git
+   git clone https://github.com/Jummate/thinkspend.git
    cd thinkspend
 ```
 
@@ -49,7 +49,7 @@ ThinkSpend is an AI-powered expense tracker that uses natural language processin
 ```env
    NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
    NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
-   ANTHROPIC_API_KEY=your_anthropic_api_key
+   MISTRAL_API_KEY=your_mistral_api_key
 ```
 
 4. **Set up Supabase database**
@@ -123,7 +123,7 @@ npm run test
 
 Deployed automatically via Vercel when pushing to `main` branch.
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/yourusername/thinkspend)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/Jummate/thinkspend)
 
 ## 🤝 Contributing
 
@@ -135,10 +135,10 @@ MIT License - feel free to use this project for learning.
 
 ## 👨‍💻 Author
 
-**Your Name**
-- GitHub: [@yourusername](https://github.com/Jummate)
-- LinkedIn: [Your Name](https://linkedin.com/in/yourprofile)
-- Portfolio: [yourwebsite.com](https://omololujumat.netlify.app)
+**Omololu Jumat**
+- GitHub: [@Jummate](https://github.com/Jummate)
+- LinkedIn: [Omololu Jumat](https://linkedin.com/in/omololu-jumat-1405)
+- Portfolio: [omololujumat.netlify.app](https://omololujumat.netlify.app)
 
 ## 🙏 Acknowledgments
 
