@@ -29,7 +29,10 @@ const LoginForm = () => {
       onSubmit={handleSubmit(onSubmit)}
     >
       <div className="flex flex-1 flex-col gap-2 w-full">
-        <label htmlFor="email">
+        <label
+          htmlFor="email"
+          className="self-start"
+        >
           Email <sup className="text-red-600">*</sup>
         </label>
         <Input
@@ -44,7 +47,10 @@ const LoginForm = () => {
         )}
       </div>
       <div className="flex flex-1 flex-col gap-2 w-full">
-        <label htmlFor="password">
+        <label
+          htmlFor="password"
+          className="self-start"
+        >
           Password <sup className="text-red-600">*</sup>
         </label>
         <Input
@@ -70,7 +76,7 @@ const LoginForm = () => {
       <Button
         type="submit"
         disabled={isSubmitting}
-        styles="font-bold flex items-center justify-center gap-4"
+        styles="font-bold flex items-center justify-center gap-4 shadow-xl"
       >
         {isSubmitting ? "Logging in..." : "Log In"} <LogIn size={20} />
       </Button>
