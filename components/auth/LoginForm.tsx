@@ -29,7 +29,10 @@ const LoginForm = () => {
       onSubmit={handleSubmit(onSubmit)}
     >
       <div className="flex flex-1 flex-col gap-2 w-full">
-        <label htmlFor="email">
+        <label
+          htmlFor="email"
+          className="self-start"
+        >
           Email <sup className="text-red-600">*</sup>
         </label>
         <Input
@@ -44,7 +47,10 @@ const LoginForm = () => {
         )}
       </div>
       <div className="flex flex-1 flex-col gap-2 w-full">
-        <label htmlFor="password">
+        <label
+          htmlFor="password"
+          className="self-start"
+        >
           Password <sup className="text-red-600">*</sup>
         </label>
         <Input
