@@ -70,7 +70,7 @@ const LoginForm = () => {
       <Button
         type="submit"
         disabled={isSubmitting}
-        styles="font-bold flex items-center justify-center gap-4"
+        styles="font-bold flex items-center justify-center gap-4 shadow-xl"
       >
         {isSubmitting ? "Logging in..." : "Log In"} <LogIn size={20} />
       </Button>
