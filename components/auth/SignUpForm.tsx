@@ -6,7 +6,13 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { RegisterFormData, registerSchema } from "@/lib/validations/auth";
 
-const SignUpForm = () => {
+
+interface SignUpFormProps {
+  onSubmit: (data: RegisterFormData) => Promise<void>;
+  error?: string | null; // Auth error from parent
+}
+
+const SignUpForm = ({error, onSubmit}:SignUpFormProps) => {
   const {
     register,
     handleSubmit,
@@ -17,11 +23,11 @@ const SignUpForm = () => {
     reValidateMode: "onChange",
   });
 
-  const onSubmit = (data: RegisterFormData) => {
-    // data is fully typed!
-    console.log(data);
-  };
   return (
+
+
+    
+
     <form
       className="flex flex-col items-center justify-center w-full gap-4"
       onSubmit={handleSubmit(onSubmit)}
