@@ -1,9 +1,56 @@
+"use client"
+
 import AppLogo from "@/components/AppLogo";
 import LoginForm from "@/components/auth/LoginForm";
+import { supabase } from "@/lib/supabase/client";
+import { LoginFormData } from "@/lib/validations/auth";
 import Link from "next/link";
-import React from "react";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
+
+
+
+function getFriendlyErrorMessage(error: string): string {
+  if (error.includes("Invalid login credentials")) {
+    return "Email or password is incorrect. Please try again.";
+  }
+  if (error.includes("Email not confirmed")) {
+    return "Please verify your email address before logging in.";
+  }
+  if (error.includes("Too many requests")) {
+    return "Too many login attempts. Please wait a moment and try again.";
+  }
+  return error; // Fallback to original error
+}
 
 function LoginPage() {
+
+    const [authError, setAuthError] = useState<string | null>(null);
+  const router = useRouter();
+
+ const handleLogin = async (data: LoginFormData) => {
+    try {
+      setAuthError(null); // Clear previous errors
+
+      const { error } = await supabase.auth.signInWithPassword({
+        email: data.email,
+        password: data.password,
+      });
+
+      if (error) {
+        // Map Supabase errors to user-friendly messages
+        setAuthError(getFriendlyErrorMessage(error.message));
+        return;
+      }
+
+      // Success! Redirect to dashboard
+      router.push("/dashboard");
+      router.refresh();
+    } catch (err) {
+      console.error("Login error:", err);
+      setAuthError("An unexpected error occurred. Please try again.");
+    }
+  };
   return (
     <main className="flex items-center justify-center h-full p-6">
       {/* <header>
@@ -19,7 +66,7 @@ function LoginPage() {
         </section>
 
         <section className="flex flex-col items-center justify-center py-10 px-5 sm:px:7 md:px-10 gap-10">
-          <LoginForm />
+          <LoginForm onSubmit={handleLogin} error={authError}/>
           <p className="text-muted/80">
             Don't have an account?{" "}
             <Link
