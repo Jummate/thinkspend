@@ -8,7 +8,13 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoginFormData, loginSchema } from "@/lib/validations/auth";
 
-const LoginForm = () => {
+
+interface LoginFormProps {
+  onSubmit: (data: LoginFormData) => Promise<void>;
+  error?: string | null; // Auth error from parent
+}
+
+const LoginForm = ({error, onSubmit}:LoginFormProps) => {
   const {
     register,
     handleSubmit,
@@ -19,11 +25,16 @@ const LoginForm = () => {
     reValidateMode: "onChange",
   });
 
-  const onSubmit = (data: LoginFormData) => {
-    // data is fully typed!
-    console.log(data);
-  };
+
   return (
+
+
+    <div className="w-full">
+      {error && (
+        <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-md">
+          <p className="text-sm text-red-600">{error}</p>
+        </div>
+      )}
     <form
       className="flex flex-col items-center justify-center w-full gap-4"
       onSubmit={handleSubmit(onSubmit)}
@@ -81,6 +92,7 @@ const LoginForm = () => {
         {isSubmitting ? "Logging in..." : "Log In"} <LogIn size={20} />
       </Button>
     </form>
+    </div>
   );
 };
 
