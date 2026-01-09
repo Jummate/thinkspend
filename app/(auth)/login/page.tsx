@@ -1,14 +1,12 @@
-"use client"
+"use client";
 
 import AppLogo from "@/components/AppLogo";
 import LoginForm from "@/components/auth/LoginForm";
 import { supabase } from "@/lib/supabase/client";
 import { LoginFormData } from "@/lib/validations/auth";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import React, { useState } from "react";
-
-
 
 function getFriendlyErrorMessage(error: string): string {
   if (error.includes("Invalid login credentials")) {
@@ -24,11 +22,13 @@ function getFriendlyErrorMessage(error: string): string {
 }
 
 function LoginPage() {
-
-    const [authError, setAuthError] = useState<string | null>(null);
+  const [authError, setAuthError] = useState<string | null>(null);
   const router = useRouter();
 
- const handleLogin = async (data: LoginFormData) => {
+  const searchParams = useSearchParams();
+  const redirectTo = searchParams.get("redirectTo") || "/dashboard";
+
+  const handleLogin = async (data: LoginFormData) => {
     try {
       setAuthError(null); // Clear previous errors
 
@@ -44,7 +44,7 @@ function LoginPage() {
       }
 
       // Success! Redirect to dashboard
-      router.push("/dashboard");
+      router.push(redirectTo);
       router.refresh();
     } catch (err) {
       console.error("Login error:", err);
@@ -66,7 +66,10 @@ function LoginPage() {
         </section>
 
         <section className="flex flex-col items-center justify-center py-10 px-5 sm:px:7 md:px-10 gap-10">
-          <LoginForm onSubmit={handleLogin} error={authError}/>
+          <LoginForm
+            onSubmit={handleLogin}
+            error={authError}
+          />
           <p className="text-muted/80">
             Don't have an account?{" "}
             <Link
