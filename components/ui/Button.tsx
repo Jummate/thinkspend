@@ -13,6 +13,7 @@ const Button = ({
   type = "button",
   styles,
   children,
+  onClick,
   disabled,
 }: ButtonProps) => {
   return (
@@ -23,6 +24,7 @@ const Button = ({
         "bg-primary/90 text-white w-full rounded-lg p-2 cursor-pointer hover:bg-primary",
         styles
       )}
+      onClick={onClick}
     >
       {children}
     </button>
