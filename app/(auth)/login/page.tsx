@@ -2,6 +2,7 @@
 
 import AppLogo from "@/components/AppLogo";
 import LoginForm from "@/components/auth/LoginForm";
+import { ROUTES } from "@/lib/routes";
 import { supabase } from "@/lib/supabase/client";
 import { getFriendlyErrorMessage } from "@/lib/utils/errorMessages";
 import { LoginFormData } from "@/lib/validations/auth";
@@ -15,7 +16,7 @@ function LoginPage() {
   const router = useRouter();
 
   const searchParams = useSearchParams();
-  const redirectTo = searchParams.get("redirectTo") || "/dashboard";
+  const redirectTo = searchParams.get("redirectTo") || ROUTES.DASHBOARD;
 
   const handleLogin = async (data: LoginFormData) => {
     try {
@@ -62,7 +63,7 @@ function LoginPage() {
           <p className="text-muted/80">
             Don't have an account?{" "}
             <Link
-              href="/signup"
+              href={ROUTES.SIGNUP}
               className="text-primary cursor-pointer hover:underline font-bold"
             >
               Sign up

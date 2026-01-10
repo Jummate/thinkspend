@@ -3,6 +3,7 @@
 
 import AppLogo from "@/components/AppLogo";
 import SignUpForm from "@/components/auth/SignUpForm";
+import { ROUTES } from "@/lib/routes";
 import { supabase } from "@/lib/supabase/client";
 import { getFriendlyErrorMessage } from "@/lib/utils/errorMessages";
 import { RegisterFormData } from "@/lib/validations/auth";
@@ -31,7 +32,7 @@ function SignUpPage() {
       }
 
       // Success! Redirect to dashboard
-      router.push("/dashboard");
+      router.push(ROUTES.DASHBOARD);
       router.refresh();
     } catch (err) {
       console.error("Sign up error:", err);
@@ -62,7 +63,7 @@ function SignUpPage() {
           <p className="text-muted/80">
             Already have an account?{" "}
             <Link
-              href="/login"
+              href={ROUTES.LOGIN}
               className="text-primary cursor-pointer hover:underline font-bold"
             >
               Log in

@@ -7,6 +7,7 @@ import { LogIn } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoginFormData, loginSchema } from "@/lib/validations/auth";
+import { ROUTES } from "@/lib/routes";
 
 
 interface LoginFormProps {
@@ -78,7 +79,7 @@ const LoginForm = ({error, onSubmit}:LoginFormProps) => {
         )}
       </div>
       <Link
-        href="/forgot-password"
+        href={ROUTES.FORGOT_PASSWORD}
         className="self-end -mt-3 text-sm text-primary cursor-pointer hover:underline"
       >
         Forgot Password?
