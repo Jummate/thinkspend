@@ -1,17 +1,23 @@
-import { Moon } from 'lucide-react'
-import React from 'react'
+import { BrainCircuit, Moon } from "lucide-react";
+import React from "react";
 
 const SimpleHeader = () => {
   return (
-    <header className='flex justify-between bg-white items-center p-4 shadow-xs'>
-      <h1>ThinkSpend</h1>
+    <header className="flex bg-white items-center justify-center shadow-xs">
+      <div className="flex flex-1 justify-between items-center p-4 max-w-5xl mx-auto">
+        <div className="flex items-center justify-center gap-1">
+          <div className="bg-primary p-1 rounded-full">
+            <BrainCircuit className="text-white" />
+          </div>
+          <h1 className="font-bold">ThinkSpend</h1>
+        </div>
 
-      <div>
-        <Moon />
+        <div>
+          <Moon />
+        </div>
       </div>
-
     </header>
-  )
-}
+  );
+};
 
-export default SimpleHeader
+export default SimpleHeader;

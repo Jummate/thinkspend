@@ -72,6 +72,7 @@ pre {
   --color-foreground: var(--foreground);
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
+  --color-primary-dark: var(--primary-dark);
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
   --color-muted: var(--muted);
@@ -91,8 +92,10 @@ pre {
 ======================== */
 
 :root {
-  --primary: #4d7cfe;
+  /* --primary: #4d7cfe; */
+  --primary: #2860fb;
   --primary-foreground: #ffffff;
+  --primary-dark: #0e4dfa;
   --background: #f7f8fa;
   --foreground: #0f1419;
   --secondary: #f3f4f6;
@@ -115,8 +118,9 @@ pre {
    Dark Theme
 ======================== */
 .dark {
-  --primary: #4d7cfe;
+  --primary: #2860fb;
   --primary-foreground: #ffffff;
+  --primary-dark: #0e4dfa;
   --background: #0f1419;
   --foreground: #ffffff;
   --secondary: #1c2333;
