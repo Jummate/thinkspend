@@ -1,15 +1,6 @@
-import {
-  ArrowLeft,
-  Check,
-  CheckCircle2,
-  CloudLightning,
-  Sparkles,
-} from "lucide-react";
-import React from "react";
-import { BsMagic } from "react-icons/bs";
-import { DiSpark } from "react-icons/di";
-import { FaMagic } from "react-icons/fa";
-import { FaBoltLightning } from "react-icons/fa6";
+import ExpenseForm from "@/components/expense/ExpenseForm";
+import NaturalLangInputForm from "@/components/expense/NaturalLangInputForm";
+import { ArrowLeft, CheckCircle2, Sparkles } from "lucide-react";
 
 const AddNewExpensePage = () => {
   return (
@@ -34,20 +25,8 @@ const AddNewExpensePage = () => {
             NATURAL LANGUAGE INPUT
           </span>
         </div>
+        <NaturalLangInputForm />
 
-        <div className="p-3 bg-secondary/50 my-4 rounded-lg flex flex-col gap-3">
-          <input
-            type="text"
-            className="w-full"
-          />
-          <button
-            type="button"
-            className="flex items-center justify-center gap-1 cursor-pointer self-end bg-primary hover:bg-primary-dark rounded-lg px-4 py-1 text-white"
-          >
-            <span className="font-bold">Parse</span>{" "}
-            <FaBoltLightning size={15} />
-          </button>
-        </div>
         <p className="italic text-muted-foreground text-xs">
           Try "Lunch #1000", "Uber #12000", "Bought groceries #15500"{" "}
         </p>
@@ -65,65 +44,7 @@ const AddNewExpensePage = () => {
           </small>
         </div>
 
-        <form className="flex flex-col gap-3">
-          <div className="flex gap-4">
-            <div className="flex flex-col flex-1">
-              <label
-                htmlFor=""
-                className="mb-2 text-muted-foreground text-sm"
-              >
-                Amount
-              </label>
-              <input
-                type="text"
-                className="border border-muted-foreground/30 rounded-lg p-2 bg-white px-3 font-bold outline-none focus:shadow-sm focus:ring-1 focus:ring-primary text-sm"
-              />
-            </div>
-            <div className="flex flex-col flex-1">
-              <label
-                htmlFor=""
-                className="mb-2 text-muted-foreground text-sm"
-              >
-                Category
-              </label>
-              <select className="border border-muted-foreground/30 rounded-lg p-2 bg-white px-3 outline-none focus:shadow-sm focus:ring-1 focus:ring-primary">
-                <option value="Food">Food</option>
-                <option value="Grocery">Grocery</option>
-              </select>
-            </div>
-          </div>
-          <div className="flex flex-col">
-            <label
-              htmlFor=""
-              className="mb-2 text-muted-foreground text-sm"
-            >
-              Description
-            </label>
-            <input
-              type="text"
-              className="border border-muted-foreground/30 rounded-lg p-2 bg-white px-3 font-bold outline-none focus:shadow-sm focus:ring-1 focus:ring-primary text-sm"
-            />
-          </div>
-          <div className="flex flex-col">
-            <label
-              htmlFor=""
-              className="mb-2 text-muted-foreground text-sm"
-            >
-              Date
-            </label>
-            <input
-              type="date"
-              className="border border-muted-foreground/30 rounded-lg p-2 bg-white px-3 outline-none focus:shadow-sm focus:ring-1 focus:ring-primary text-sm"
-            />
-          </div>
-
-          <button
-            type="button"
-            className="flex items-center justify-center gap-1 cursor-pointer self-start bg-primary hover:bg-primary-dark rounded-lg px-6 py-2 text-white mt-4"
-          >
-            <span className="font-bold">Save Expense</span> <Check size={15} />
-          </button>
-        </form>
+        <ExpenseForm />
       </section>
     </div>
   );
