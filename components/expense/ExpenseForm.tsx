@@ -123,7 +123,7 @@ const ExpenseForm = ({ error, onSubmit }: ExpenseFormProps) => {
       </div>
 
       <button
-        type="button"
+        type="submit"
         className="flex items-center justify-center gap-1 cursor-pointer self-start bg-primary hover:bg-primary-dark rounded-lg px-6 py-2 text-white mt-4"
       >
         <span className="font-bold">Save Expense</span> <Check size={15} />

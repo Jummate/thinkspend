@@ -1,9 +1,8 @@
 import { z } from "zod";
 
-// export const expenseDataSchema = z.object({
-//   amount: z.string().min(1, "Amount is required"),
-//   category: z.string().min(1, "Category is required"),
-// });
+export const expenseInputSchema = z.object({
+  expenseInput: z.string().trim().min(1, "Please enter an expense to parse"),
+});
 
 export const expenseDataSchema = z.object({
   amount: z
@@ -12,7 +11,7 @@ export const expenseDataSchema = z.object({
     .refine(
       (val) => {
         const num = Number(val);
-        return !isNaN(num) && num > 0 && num < 1000000000; // Max 1 billion
+        return !isNaN(num) && num > 0 && num < 1000000000;
       },
       {
         message: "Enter a valid amount between 0 and 1,000,000,000",
@@ -23,6 +22,7 @@ export const expenseDataSchema = z.object({
 
   description: z
     .string()
+    .trim()
     .max(200, "Description is too long")
     .optional()
     .or(z.literal("")),
@@ -43,4 +43,4 @@ export const expenseDataSchema = z.object({
 });
 
 export type ExpenseFormData = z.infer<typeof expenseDataSchema>;
-// export type RegisterFormData = z.infer<typeof registerSchema>;
+export type ExpenseInputData = z.infer<typeof expenseInputSchema>;
