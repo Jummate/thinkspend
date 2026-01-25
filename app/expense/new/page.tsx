@@ -2,34 +2,50 @@
 
 import ExpenseForm from "@/components/expense/ExpenseForm";
 import NaturalLangInputForm from "@/components/expense/ExpenseInputForm";
-import { ExpenseInputData } from "@/lib/validations/expense";
+import { ExpenseFormData, ExpenseInputData } from "@/lib/validations/expense";
 import { ArrowLeft, CheckCircle2, Sparkles } from "lucide-react";
 import { useState } from "react";
 
 const AddNewExpensePage = () => {
   const [serverError, setServerError] = useState<string | null>(null);
 
-  
-    const handleInputParse = async (data: ExpenseInputData) => {
-      try {
-        setServerError(null); // Clear previous errors
-  
-        // const { error } = await supabase.auth.signInWithPassword({
-        //   email: data.expenseInput,
-        // });
-  
-        // if (error) {
-        //   // Map Supabase errors to user-friendly messages
-        //   setServerError(getFriendlyErrorMessage(error.message));
-        //   return;
-        // }
-  
-     
-      } catch (err) {
-        console.error("Login error:", err);
-        setServerError("An unexpected error occurred. Please try again.");
-      }
-    };
+  const handleInputParse = async (data: ExpenseInputData) => {
+    try {
+      setServerError(null); // Clear previous errors
+
+      // const { error } = await supabase.auth.signInWithPassword({
+      //   email: data.expenseInput,
+      // });
+
+      // if (error) {
+      //   // Map Supabase errors to user-friendly messages
+      //   setServerError(getFriendlyErrorMessage(error.message));
+      //   return;
+      // }
+    } catch (err) {
+      console.error("Login error:", err);
+      setServerError("An unexpected error occurred. Please try again.");
+    }
+  };
+
+  const handleExpense = async (data: ExpenseFormData) => {
+    try {
+      setServerError(null); // Clear previous errors
+
+      // const { error } = await supabase.auth.signInWithPassword({
+      //   email: data.expenseInput,
+      // });
+
+      // if (error) {
+      //   // Map Supabase errors to user-friendly messages
+      //   setServerError(getFriendlyErrorMessage(error.message));
+      //   return;
+      // }
+    } catch (err) {
+      console.error("Login error:", err);
+      setServerError("An unexpected error occurred. Please try again.");
+    }
+  };
 
   return (
     <div className="flex-1 max-w-2xl mx-auto py-5 px-6">
@@ -58,9 +74,9 @@ const AddNewExpensePage = () => {
           onSubmit={handleInputParse}
         />
 
-        {/* <p className="italic text-muted-foreground text-xs">
+        <p className="italic text-muted-foreground text-xs">
           Try "Lunch #1000", "Uber #12000", "Bought groceries #15500"{" "}
-        </p> */}
+        </p>
       </section>
 
       <section className="mt-10">
@@ -75,7 +91,10 @@ const AddNewExpensePage = () => {
           </small>
         </div>
 
-        <ExpenseForm />
+        <ExpenseForm
+          error={serverError}
+          onSubmit={handleExpense}
+        />
       </section>
     </div>
   );

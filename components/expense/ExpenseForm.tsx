@@ -10,7 +10,7 @@ import Select from "../ui/Select";
 import Textarea from "../ui/TextArea";
 
 interface ExpenseFormProps {
-  onSubmit?: (data: ExpenseFormData) => Promise<void>;
+  onSubmit: (data: ExpenseFormData) => Promise<void>;
   error?: string | null; // Auth error from parent
 }
 
