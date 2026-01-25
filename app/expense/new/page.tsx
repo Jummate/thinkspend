@@ -1,7 +1,7 @@
 "use client";
 
 import ExpenseForm from "@/components/expense/ExpenseForm";
-import NaturalLangInputForm from "@/components/expense/NaturalLangInputForm";
+import NaturalLangInputForm from "@/components/expense/ExpenseInputForm";
 import { ExpenseInputData } from "@/lib/validations/expense";
 import { ArrowLeft, CheckCircle2, Sparkles } from "lucide-react";
 import { useState } from "react";

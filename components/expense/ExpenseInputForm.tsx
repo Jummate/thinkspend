@@ -10,15 +10,12 @@ import { useForm } from "react-hook-form";
 import { FaBoltLightning } from "react-icons/fa6";
 import Input from "../ui/Input";
 
-interface NaturalLangInputFormProps {
+interface ExpenseInputFormProps {
   onSubmit: (data: ExpenseInputData) => Promise<void>;
   error?: string | null;
 }
 
-const NaturalLangInputForm = ({
-  error,
-  onSubmit,
-}: NaturalLangInputFormProps) => {
+const ExpenseInputForm = ({ error, onSubmit }: ExpenseInputFormProps) => {
   const {
     register,
     handleSubmit,
@@ -56,4 +53,4 @@ const NaturalLangInputForm = ({
   );
 };
 
-export default NaturalLangInputForm;
+export default ExpenseInputForm;
