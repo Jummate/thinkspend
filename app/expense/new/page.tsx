@@ -9,42 +9,6 @@ import { useState } from "react";
 const AddNewExpensePage = () => {
   const [serverError, setServerError] = useState<string | null>(null);
 
-  // const handleParse = async (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //   setError("");
-
-  //   if (!naturalInput.trim()) {
-  //     setError("Please enter an expense to parse");
-  //     return;
-  //   }
-
-  //   setLoading(true);
-
-  //   try {
-  //     const response = await fetch("/api/parse-expense", {
-  //       method: "POST",
-  //       headers: { "Content-Type": "application/json" },
-  //       body: JSON.stringify({ naturalInput }),
-  //     });
-
-  //     const result = await response.json();
-
-  //     if (!response.ok || !result.success) {
-  //       throw new Error(result.error || "Parsing failed");
-  //     }
-
-  //     // Pass parsed data to parent component
-  //     onParsed(result.data);
-
-  //     // Clear input on success
-  //     setNaturalInput("");
-  //   } catch (err: any) {
-  //     setError(err.message || "Unable to parse. Try 'Coffee $5' or edit manually below.");
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
   const handleInputParse = async (data: ExpenseInputData) => {
     try {
       setServerError(null);
@@ -58,13 +22,16 @@ const AddNewExpensePage = () => {
       const result = await response.json();
 
       if (!response.ok || !result.success) {
-        setServerError(result.error);
+        setServerError(result.error || "Something went wrong");
+        return;
       }
 
       console.log("parsed data", result.data);
     } catch (err) {
-      console.error("Login error:", err);
-      setServerError("Unable to parse. Try to edit manually below.");
+      console.error("Parse error:", err);
+      setServerError(
+        "Unable to connect. Please check your internet connection. As an alternative, try to edit manually below."
+      );
     }
   };
 

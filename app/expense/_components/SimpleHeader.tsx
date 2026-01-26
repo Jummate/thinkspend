@@ -1,5 +1,4 @@
 import { BrainCircuit, Moon } from "lucide-react";
-import React from "react";
 
 const SimpleHeader = () => {
   return (

@@ -1,3 +1,4 @@
+import { ErrorCodes } from "../errors/error-codes";
 import { ExpenseCategory, ParsedExpense } from "../types/expense";
 import chat from "./mistral.service";
 
@@ -41,7 +42,6 @@ Return format:
 }
 
 function validateParsedData(data: any): ParsedExpense {
-
   if (typeof data.amount !== "number" || data.amount <= 0) {
     throw new Error("AI returned invalid amount");
   }
@@ -50,7 +50,7 @@ function validateParsedData(data: any): ParsedExpense {
     console.warn(
       `AI returned invalid category: ${data.category}, defaulting to 'Other'`
     );
-    data.category = "Other"; // Graceful fallback
+    data.category = "Other";
   }
 
   if (typeof data.description !== "string" || data.description.trim() === "") {
@@ -69,11 +69,11 @@ export default async function parseExpense(
   naturalInput: string
 ): Promise<ParsedExpense> {
   if (!naturalInput.trim()) {
-    throw new Error("Input cannot be empty");
+    throw new Error(ErrorCodes.EMPTY_INPUT.code);
   }
 
   if (naturalInput.length > 500) {
-    throw new Error("Input is too long (max 500 characters)");
+    throw new Error(ErrorCodes.INVALID_INPUT.code);
   }
 
   try {
@@ -82,13 +82,17 @@ export default async function parseExpense(
     const parsed = JSON.parse(response);
 
     return validateParsedData(parsed);
-  } catch (error) {
+  } catch (error: any) {
     console.error("Expense parsing failed:", error);
 
-    if (error instanceof SyntaxError) {
-      throw new Error("AI returned invalid JSON. Please try again.");
+    if (error.message in ErrorCodes) {
+      throw error;
     }
 
-    throw error;
+    if (error.message.startsWith("Invalid")) {
+      throw new Error(ErrorCodes.INVALID_INPUT.code);
+    }
+
+    throw new Error(ErrorCodes.UNKNOWN_ERROR.code);
   }
 }
