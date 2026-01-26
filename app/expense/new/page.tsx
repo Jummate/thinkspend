@@ -9,22 +9,62 @@ import { useState } from "react";
 const AddNewExpensePage = () => {
   const [serverError, setServerError] = useState<string | null>(null);
 
+  // const handleParse = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   setError("");
+
+  //   if (!naturalInput.trim()) {
+  //     setError("Please enter an expense to parse");
+  //     return;
+  //   }
+
+  //   setLoading(true);
+
+  //   try {
+  //     const response = await fetch("/api/parse-expense", {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify({ naturalInput }),
+  //     });
+
+  //     const result = await response.json();
+
+  //     if (!response.ok || !result.success) {
+  //       throw new Error(result.error || "Parsing failed");
+  //     }
+
+  //     // Pass parsed data to parent component
+  //     onParsed(result.data);
+
+  //     // Clear input on success
+  //     setNaturalInput("");
+  //   } catch (err: any) {
+  //     setError(err.message || "Unable to parse. Try 'Coffee $5' or edit manually below.");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
   const handleInputParse = async (data: ExpenseInputData) => {
     try {
-      setServerError(null); // Clear previous errors
+      setServerError(null);
 
-      // const { error } = await supabase.auth.signInWithPassword({
-      //   email: data.expenseInput,
-      // });
+      const response = await fetch("/api/parse-expense", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ naturalInput: data.expenseInput }),
+      });
 
-      // if (error) {
-      //   // Map Supabase errors to user-friendly messages
-      //   setServerError(getFriendlyErrorMessage(error.message));
-      //   return;
-      // }
+      const result = await response.json();
+
+      if (!response.ok || !result.success) {
+        setServerError(result.error);
+      }
+
+      console.log("parsed data", result.data);
     } catch (err) {
       console.error("Login error:", err);
-      setServerError("An unexpected error occurred. Please try again.");
+      setServerError("Unable to parse. Try to edit manually below.");
     }
   };
 
@@ -62,6 +102,14 @@ const AddNewExpensePage = () => {
       </header>
 
       <section className="bg-white p-5 mt-10 rounded-lg shadow-xs">
+        <div>
+          {serverError && (
+            <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-md">
+              <p className="text-sm text-red-600">{serverError}</p>
+            </div>
+          )}
+        </div>
+
         <div className="flex items-center gap-2">
           {" "}
           <Sparkles className="text-primary/80" />

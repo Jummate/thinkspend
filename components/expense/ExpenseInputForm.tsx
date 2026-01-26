@@ -44,9 +44,13 @@ const ExpenseInputForm = ({ error, onSubmit }: ExpenseInputFormProps) => {
 
         <button
           type="submit"
+          disabled={isSubmitting}
           className="flex items-center justify-center gap-1 cursor-pointer self-end bg-primary hover:bg-primary-dark rounded-lg px-4 py-1 mt-3 text-white"
         >
-          <span className="font-bold">Parse</span> <FaBoltLightning size={15} />
+          <span className="font-bold">
+            {isSubmitting ? "Parsing..." : "Parse"}
+          </span>{" "}
+          <FaBoltLightning size={15} />
         </button>
       </div>
     </form>
