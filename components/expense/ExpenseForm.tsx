@@ -1,17 +1,20 @@
 "use client";
 
 import { Check } from "lucide-react";
-import React from "react";
+import React, { useEffect } from "react";
 import Input from "../ui/Input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { expenseDataSchema, ExpenseFormData } from "@/lib/validations/expense";
 import Select from "../ui/Select";
 import Textarea from "../ui/TextArea";
+import { ParsedExpense } from "@/lib/types/expense";
+import { mapAICategoryToValue } from "@/lib/utils/category-mapper";
 
 interface ExpenseFormProps {
   onSubmit: (data: ExpenseFormData) => Promise<void>;
   error?: string | null; // Auth error from parent
+  expenseData?: ParsedExpense;
 }
 
 const categoryOptions = [
@@ -22,16 +25,29 @@ const categoryOptions = [
   { value: "other", label: "📦 Other" },
 ];
 
-const ExpenseForm = ({ error, onSubmit }: ExpenseFormProps) => {
+const ExpenseForm = ({ error, onSubmit, expenseData }: ExpenseFormProps) => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm<ExpenseFormData>({
     resolver: zodResolver(expenseDataSchema),
     mode: "onTouched",
     reValidateMode: "onChange",
   });
+
+  useEffect(() => {
+    if (expenseData) {
+      reset({
+        amount: expenseData.amount.toString(),
+        category: mapAICategoryToValue(expenseData.category),
+        description: expenseData.description || "",
+        date: expenseData.date,
+      });
+    }
+  }, [expenseData, reset]);
+
   return (
     <form className="flex flex-col gap-3">
       <div className="flex gap-4">

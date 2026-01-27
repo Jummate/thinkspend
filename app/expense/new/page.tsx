@@ -2,12 +2,14 @@
 
 import ExpenseForm from "@/components/expense/ExpenseForm";
 import NaturalLangInputForm from "@/components/expense/ExpenseInputForm";
+import { ParsedExpense } from "@/lib/types/expense";
 import { ExpenseFormData, ExpenseInputData } from "@/lib/validations/expense";
 import { ArrowLeft, CheckCircle2, Sparkles } from "lucide-react";
 import { useState } from "react";
 
 const AddNewExpensePage = () => {
   const [serverError, setServerError] = useState<string | null>(null);
+  const [parsedData, setParsedData] = useState<ParsedExpense | null>(null);
 
   const handleInputParse = async (data: ExpenseInputData) => {
     try {
@@ -26,7 +28,8 @@ const AddNewExpensePage = () => {
         return;
       }
 
-      console.log("parsed data", result.data);
+      // console.log("parsed data", result.data);
+      setParsedData(result.data);
     } catch (err) {
       console.error("Parse error:", err);
       setServerError(
@@ -53,6 +56,37 @@ const AddNewExpensePage = () => {
       setServerError("An unexpected error occurred. Please try again.");
     }
   };
+
+  //   const handleExpense = async (data: ExpenseFormData) => {
+  //   try {
+  //     setServerError(null);
+
+  //     // Map the dropdown value back to AI format for storage
+  //     const expenseToSave = {
+  //       amount: Number(data.amount),
+  //       category: mapValueToAICategory(data.category),  // ← Map back
+  //       description: data.description,
+  //       date: data.date,
+  //     };
+
+  //     // Save to database
+  //     const { error } = await supabase
+  //       .from("expenses")
+  //       .insert({
+  //         ...expenseToSave,
+  //         user_id: user.id,
+  //       });
+
+  //     if (error) throw error;
+
+  //     // Success - redirect or show message
+  //     router.push("/dashboard");
+
+  //   } catch (err) {
+  //     console.error("Save error:", err);
+  //     setServerError("Failed to save expense. Please try again.");
+  //   }
+  // };
 
   return (
     <div className="flex-1 max-w-2xl mx-auto py-5 px-6">
@@ -109,6 +143,7 @@ const AddNewExpensePage = () => {
         <ExpenseForm
           error={serverError}
           onSubmit={handleExpense}
+          expenseData={parsedData as ParsedExpense}
         />
       </section>
     </div>
