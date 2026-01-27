@@ -120,7 +120,7 @@ const ExpenseForm = ({ error, onSubmit, expenseData }: ExpenseFormProps) => {
       </div>
       <div className="flex flex-col">
         <label
-          htmlFor=""
+          htmlFor="date"
           className="mb-2 text-muted-foreground text-sm"
         >
           Date
