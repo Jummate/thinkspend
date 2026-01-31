@@ -2,14 +2,20 @@
 
 import ExpenseForm from "@/components/expense/ExpenseForm";
 import NaturalLangInputForm from "@/components/expense/ExpenseInputForm";
+import { useUser } from "@/lib/hooks/useUser";
+import { supabase } from "@/lib/supabase/client";
 import { ParsedExpense } from "@/lib/types/expense";
+import { mapValueToAICategory } from "@/lib/utils/category-mapper";
 import { ExpenseFormData, ExpenseInputData } from "@/lib/validations/expense";
 import { ArrowLeft, CheckCircle2, Sparkles } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const AddNewExpensePage = () => {
+  const { user, loading } = useUser();
   const [serverError, setServerError] = useState<string | null>(null);
   const [parsedData, setParsedData] = useState<ParsedExpense | null>(null);
+  const router = useRouter();
 
   const handleInputParse = async (data: ExpenseInputData) => {
     try {
@@ -40,53 +46,48 @@ const AddNewExpensePage = () => {
 
   const handleExpense = async (data: ExpenseFormData) => {
     try {
-      setServerError(null); // Clear previous errors
+      setServerError(null);
 
-      // const { error } = await supabase.auth.signInWithPassword({
-      //   email: data.expenseInput,
-      // });
+      if (!user) {
+        setServerError("You must be logged in to add expenses");
+        return;
+      }
 
-      // if (error) {
-      //   // Map Supabase errors to user-friendly messages
-      //   setServerError(getFriendlyErrorMessage(error.message));
-      //   return;
-      // }
+      // Map the dropdown value back to AI format for storage
+      const expenseToSave = {
+        amount: Number(data.amount),
+        category: mapValueToAICategory(data.category),
+        description: data.description,
+        date: data.date,
+      };
+
+      // Save to database
+      const { error } = await supabase.from("expenses").insert({
+        ...expenseToSave,
+        user_id: user.id,
+      });
+
+      if (error) throw error;
+
+      // Success - redirect or show message
+      router.push("/dashboard");
     } catch (err) {
-      console.error("Login error:", err);
-      setServerError("An unexpected error occurred. Please try again.");
+      console.log("Save error:", err);
+      setServerError("Failed to save expense. Please try again.");
     }
   };
 
-  //   const handleExpense = async (data: ExpenseFormData) => {
-  //   try {
-  //     setServerError(null);
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <p className="text-muted-foreground">Loading...</p>
+      </div>
+    );
+  }
 
-  //     // Map the dropdown value back to AI format for storage
-  //     const expenseToSave = {
-  //       amount: Number(data.amount),
-  //       category: mapValueToAICategory(data.category),  // ← Map back
-  //       description: data.description,
-  //       date: data.date,
-  //     };
-
-  //     // Save to database
-  //     const { error } = await supabase
-  //       .from("expenses")
-  //       .insert({
-  //         ...expenseToSave,
-  //         user_id: user.id,
-  //       });
-
-  //     if (error) throw error;
-
-  //     // Success - redirect or show message
-  //     router.push("/dashboard");
-
-  //   } catch (err) {
-  //     console.error("Save error:", err);
-  //     setServerError("Failed to save expense. Please try again.");
-  //   }
-  // };
+  if (!user) {
+    return null;
+  }
 
   return (
     <div className="flex-1 max-w-2xl mx-auto py-5 px-6">
@@ -102,15 +103,15 @@ const AddNewExpensePage = () => {
         </p>
       </header>
 
-      <section className="bg-white p-5 mt-10 rounded-lg shadow-xs">
-        <div>
-          {serverError && (
-            <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-md">
-              <p className="text-sm text-red-600">{serverError}</p>
-            </div>
-          )}
-        </div>
+      <div className="my-6">
+        {serverError && (
+          <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-md">
+            <p className="text-sm text-red-600">{serverError}</p>
+          </div>
+        )}
+      </div>
 
+      <section className="bg-white p-5 mt-10 rounded-lg shadow-xs">
         <div className="flex items-center gap-2">
           {" "}
           <Sparkles className="text-primary/80" />

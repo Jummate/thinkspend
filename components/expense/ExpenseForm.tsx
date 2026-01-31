@@ -50,7 +50,10 @@ const ExpenseForm = ({ error, onSubmit, expenseData }: ExpenseFormProps) => {
   }, [expenseData, reset]);
 
   return (
-    <form className="flex flex-col gap-3">
+    <form
+      className="flex flex-col gap-3"
+      onSubmit={handleSubmit(onSubmit)}
+    >
       <div className="flex gap-4">
         <div className="flex flex-col flex-1">
           <label
