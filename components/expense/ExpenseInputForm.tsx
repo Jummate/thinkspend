@@ -9,6 +9,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { FaBoltLightning } from "react-icons/fa6";
 import Input from "../ui/Input";
+import clsx from "clsx";
 
 interface ExpenseInputFormProps {
   onSubmit: (data: ExpenseInputData) => Promise<void>;
@@ -45,12 +46,21 @@ const ExpenseInputForm = ({ error, onSubmit }: ExpenseInputFormProps) => {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="flex items-center justify-center gap-1 cursor-pointer self-end bg-primary hover:bg-primary-dark rounded-lg px-4 py-1 mt-3 text-white"
+          className={clsx(
+            "flex items-center justify-center gap-1 cursor-pointer self-end bg-primary hover:bg-primary-dark rounded-lg px-4 py-1 mt-3 text-white",
+            {
+              "opacity-50 pointer-events-none cursor-not-allowed": isSubmitting,
+            }
+          )}
         >
-          <span className="font-bold">
-            {isSubmitting ? "Parsing..." : "Parse"}
-          </span>{" "}
-          <FaBoltLightning size={15} />
+          {isSubmitting ? (
+            "Parsing..."
+          ) : (
+            <span className="font-bold flex justify-center items-center gap-1">
+              Parse
+              <FaBoltLightning size={15} />
+            </span>
+          )}
         </button>
       </div>
     </form>

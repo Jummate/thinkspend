@@ -10,10 +10,11 @@ import Select from "../ui/Select";
 import Textarea from "../ui/TextArea";
 import { ParsedExpense } from "@/lib/types/expense";
 import { mapAICategoryToValue } from "@/lib/utils/category-mapper";
+import clsx from "clsx";
 
 interface ExpenseFormProps {
   onSubmit: (data: ExpenseFormData) => Promise<void>;
-  error?: string | null; // Auth error from parent
+  error?: string | null;
   expenseData?: ParsedExpense;
 }
 
@@ -140,9 +141,21 @@ const ExpenseForm = ({ error, onSubmit, expenseData }: ExpenseFormProps) => {
 
       <button
         type="submit"
-        className="flex items-center justify-center gap-1 cursor-pointer self-start bg-primary hover:bg-primary-dark rounded-lg px-6 py-2 text-white mt-4"
+        disabled={isSubmitting}
+        className={clsx(
+          "flex items-center justify-center gap-1 cursor-pointer self-start bg-primary hover:bg-primary-dark rounded-lg px-6 py-2 text-white mt-4",
+          { "opacity-50 pointer-events-none cursor-not-allowed": isSubmitting }
+        )}
       >
-        <span className="font-bold">Save Expense</span> <Check size={15} />
+        <span className="font-bold"></span>
+
+        {isSubmitting ? (
+          "Saving expense info..."
+        ) : (
+          <span className="font-bold flex justify-center items-center gap-1">
+            Save Expense <Check size={15} />
+          </span>
+        )}
       </button>
     </form>
   );
