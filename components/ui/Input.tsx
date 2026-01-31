@@ -4,7 +4,7 @@ import { Eye, EyeOff } from "lucide-react";
 
 type InputProps = {
   styles?: string;
-  type?: "email" | "password" | "text";
+  type?: "email" | "password" | "text" | "date";
   id?: string;
   placeholder?: string;
   error: boolean;
@@ -26,7 +26,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
               "border p-2 rounded-lg flex-1 placeholder:text-muted-foreground transition-colors",
               error
                 ? "border-red-500 bg-red-50 focus:border-red-500 focus:ring-red-500"
-                : "border-primary",
+                : "border-muted-foreground/30",
               styles
             )}
             {...rest} // Spread the rest of the props (including register props)
@@ -46,7 +46,8 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             "border p-2 rounded-lg flex-1 placeholder:text-muted-foreground transition-colors",
             error
               ? "border-red-500 bg-red-50 focus:border-red-500 focus:ring-red-500"
-              : "border-primary",
+              : "border-muted-foreground/30",
+            // : "border-primary",
             styles
           )}
           //   className={clsx(

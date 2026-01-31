@@ -25,21 +25,20 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 } */
 
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat+Alternates:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Noto+Serif:ital,wght@0,100..900;1,100..900&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap");
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat+Alternates:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Noto+Serif:ital,wght@0,100..900;1,100..900&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap');
-
-@import 'tailwindcss';
+@import "tailwindcss";
 
 :root {
-   /* --font-sans: 'Inter', system-ui, sans-serif; */
-   --font-sans: 'Montserrat Alternates', system-ui, sans-serif;
-   --font-serif: 'Noto Serif', serif;
-   --font-mono: 'Source Code Pro', monospace;
+  /* --font-sans: 'Inter', system-ui, sans-serif; */
+  --font-sans: "Montserrat Alternates", system-ui, sans-serif;
+  --font-serif: "Noto Serif", serif;
+  --font-mono: "Source Code Pro", monospace;
 }
 
 /* Apply fonts */
 body {
-   font-family: var(--font-sans);
+  font-family: var(--font-sans);
 }
 
 /* h1,
@@ -50,36 +49,42 @@ h3 {
 
 code,
 pre {
-   font-family: var(--font-mono);
+  font-family: var(--font-mono);
 }
 
 /* Hide scrollbar for Chrome, Safari and Edge */
 .hide-scrollbar::-webkit-scrollbar {
-   display: none;
+  display: none;
 }
 
 /* Hide scrollbar for Firefox */
 .hide-scrollbar {
-   scrollbar-width: none;
+  scrollbar-width: none;
 }
 
 /* Hide scrollbar for IE, Edge (old) */
 .hide-scrollbar {
-   -ms-overflow-style: none;
+  -ms-overflow-style: none;
 }
 
 @theme inline {
-   --color-background: var(--background);
-   --color-foreground: var(--foreground);
-   --color-primary: var(--primary);
-   --color-primary-foreground: var(--primary-foreground);
-   --color-secondary: var(--secondary);
-   --color-secondary-foreground: var(--secondary-foreground);
-   --color-muted: var(--muted);
-   --color-muted-foreground: var(--muted-foreground);
-   --color-primary-dark: var(--primary-dark);
-   --color-card: var(--card);
-   --color-card-foreground: var(--card-foreground);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-dark: var(--primary-dark);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-border: var(--border);
+  --color-category-food: var(--category-food);
+  --color-category-transport: var(--category-transport);
+  --color-category-groceries: var(--category-groceries);
+  --color-category-bills: var(--category-bills);
+  --color-category-other: var(--category-other);
 }
 
 /* ========================
@@ -87,35 +92,49 @@ pre {
 ======================== */
 
 :root {
-   --primary: #2b8a74;
-   --primary-foreground: #ffffff;
-   --background: #f5f7f6;
-   --foreground: #1a2230;
-   --secondary: oklch(0.97 0 0);
-   --secondary-foreground: oklch(0.205 0 0);
-   --muted: oklch(0.269 0 0);
-   --muted-foreground: oklch(0.708 0 0);
-   --primary-dark: #063798;
-   --card: oklch(1 0 0);
-   --card-foreground: oklch(0.145 0 0);
+  /* --primary: #4d7cfe; */
+  --primary: #2860fb;
+  --primary-foreground: #ffffff;
+  --primary-dark: #0e4dfa;
+  --background: #f7f8fa;
+  --foreground: #0f1419;
+  --secondary: #f3f4f6;
+  --secondary-foreground: #4b5563;
+  --muted: #f3f4f6;
+  --muted-foreground: #6b7280;
+  --card: #ffffff;
+  --card-foreground: #0f1419;
+  --border: #e5e7eb;
+
+  /* Category Colors */
+  --category-food: #f59e0b;
+  --category-transport: #ec4899;
+  --category-groceries: #10b981;
+  --category-bills: #8b5cf6;
+  --category-other: #3b82f6;
 }
 
 /* ========================
    Dark Theme
 ======================== */
 .dark {
-   --primary: #13ec46;
-   --primary-foregound: #ffffff;
-   --background: #0b0f17;
-   --foreground: #ffffff;
-   --secondary: oklch(0.269 0 0);
-   --secondary-foreground: oklch(0.985 0 0);
-   --muted: oklch(0.97 0 0);
-   --muted-foreground: oklch(0.556 0 0);
-   --primary-dark: #135bec;
-   --card: #182131;
-   /* --card: #101622; */
-   /* --card: oklch(0.205 0 0); */
-   --card-foreground: oklch(0.985 0 0);
-}
+  --primary: #2860fb;
+  --primary-foreground: #ffffff;
+  --primary-dark: #0e4dfa;
+  --background: #0f1419;
+  --foreground: #ffffff;
+  --secondary: #1c2333;
+  --secondary-foreground: #f9fafb;
+  --muted: #374151;
+  --muted-foreground: #8b92a8;
+  --card: #1a1f2e;
+  --card-foreground: #f9fafb;
+  --border: #2d3748;
 
+  /* Category Colors (same in both themes) */
+  --category-food: #f59e0b;
+  --category-transport: #ec4899;
+  --category-groceries: #10b981;
+  --category-bills: #8b5cf6;
+  --category-other: #3b82f6;
+}

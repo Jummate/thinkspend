@@ -3,24 +3,14 @@
 
 import AppLogo from "@/components/AppLogo";
 import SignUpForm from "@/components/auth/SignUpForm";
+import { ROUTES } from "@/lib/routes";
 import { supabase } from "@/lib/supabase/client";
+import { getFriendlyErrorMessage } from "@/lib/utils/errorMessages";
 import { RegisterFormData } from "@/lib/validations/auth";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
-function getFriendlyErrorMessage(error: string): string {
-  if (error.includes("Invalid login credentials")) {
-    return "Email or password is incorrect. Please try again.";
-  }
-  if (error.includes("Email not confirmed")) {
-    return "Please verify your email address before logging in.";
-  }
-  if (error.includes("Too many requests")) {
-    return "Too many login attempts. Please wait a moment and try again.";
-  }
-  return error; // Fallback to original error
-}
 
 function SignUpPage() {
   const [authError, setAuthError] = useState<string | null>(null);
@@ -42,7 +32,7 @@ function SignUpPage() {
       }
 
       // Success! Redirect to dashboard
-      router.push("/dashboard");
+      router.push(ROUTES.DASHBOARD);
       router.refresh();
     } catch (err) {
       console.error("Sign up error:", err);
@@ -73,7 +63,7 @@ function SignUpPage() {
           <p className="text-muted/80">
             Already have an account?{" "}
             <Link
-              href="/login"
+              href={ROUTES.LOGIN}
               className="text-primary cursor-pointer hover:underline font-bold"
             >
               Log in

@@ -1,6 +1,7 @@
 "use client";
 
 import Button from "@/components/ui/Button";
+import { ROUTES } from "@/lib/routes";
 import { supabase } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
@@ -18,7 +19,7 @@ const Dashboard = () => {
       return;
     }
 
-    router.push("/login");
+    router.push(ROUTES.LOGIN);
     router.refresh();
   };
 
