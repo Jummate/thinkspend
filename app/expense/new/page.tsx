@@ -114,13 +114,7 @@ const AddNewExpensePage = () => {
       </div>
 
       <section className="bg-white p-5 mt-10 rounded-lg shadow-xs">
-        <div className="flex items-center gap-2">
-          {" "}
-          <Sparkles className="text-primary/80" />
-          <span className="text-xs text-muted-foreground/60 font-bold">
-            NATURAL LANGUAGE INPUT
-          </span>
-        </div>
+        
         <NaturalLangInputForm
           error={serverError}
           onSubmit={handleInputParse}
