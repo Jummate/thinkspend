@@ -8,6 +8,7 @@ import { ParsedExpense } from "@/lib/types/expense";
 import { mapValueToAICategory } from "@/lib/utils/category-mapper";
 import { ExpenseFormData, ExpenseInputData } from "@/lib/validations/expense";
 import { ArrowLeft, CheckCircle2, Sparkles } from "lucide-react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -34,7 +35,6 @@ const AddNewExpensePage = () => {
         return;
       }
 
-      // console.log("parsed data", result.data);
       setParsedData(result.data);
     } catch (err) {
       console.error("Parse error:", err);
@@ -53,7 +53,6 @@ const AddNewExpensePage = () => {
         return;
       }
 
-      // Map the dropdown value back to AI format for storage
       const expenseToSave = {
         amount: Number(data.amount),
         category: mapValueToAICategory(data.category),
@@ -61,7 +60,6 @@ const AddNewExpensePage = () => {
         date: data.date,
       };
 
-      // Save to database
       const { error } = await supabase.from("expenses").insert({
         ...expenseToSave,
         user_id: user.id,
@@ -69,7 +67,6 @@ const AddNewExpensePage = () => {
 
       if (error) throw error;
 
-      // Success - redirect or show message
       router.push("/dashboard");
     } catch (err) {
       console.log("Save error:", err);
@@ -91,10 +88,13 @@ const AddNewExpensePage = () => {
 
   return (
     <div className="flex-1 max-w-2xl mx-auto py-5 px-6">
-      <div className="flex gap-2 text-muted-foreground">
+      <Link
+        href={"/dashboard"}
+        className="flex gap-2 text-muted-foreground"
+      >
         <ArrowLeft />
         <span>Back to Dashboard</span>
-      </div>
+      </Link>
 
       <header className="leading-relaxed mt-5">
         <h1 className="font-bold text-foreground">Add Expense AI</h1>
