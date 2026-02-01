@@ -18,9 +18,23 @@ function buildPrompt(naturalInput: string): string {
 
 Rules:
 - amount: Extract the numeric value (convert to number, no currency symbols)
+- currency: Detect currency from symbols, codes, or names. Always return ISO code (NGN/USD/EUR/GBP). Default to "NGN" if unclear.
 - category: Must be one of: "Food & Drinks", "Transport", "Groceries", "Bills", "Shopping", "Other"
 - description: A clear description of the expense
 - date: Format as YYYY-MM-DD. If no date is mentioned, use "${today}"
+
+Currency detection (return ISO code):
+- Symbols: ₦ or # → "NGN", $ → "USD", € → "EUR", £ → "GBP"
+- ISO codes: NGN → "NGN", USD → "USD", EUR → "EUR", GBP → "GBP"
+- Names: "naira" → "NGN", "dollars" → "USD", "euros" → "EUR", "pounds" → "GBP"
+- No currency mentioned → "NGN" (default)
+
+Examples:
+- "Lunch ₦1000" or "Lunch #1000" or "Lunch 1000 naira" or "Lunch NGN1000" → currency: "NGN"
+- "Coffee $5" or "Coffee 5 dollars" or "Coffee USD 5" → currency: "USD"
+- "Groceries €50" or "Groceries 50 euros" or "Groceries EUR 50" → currency: "EUR"
+- "Taxi £20" or "Taxi 20 pounds" or "Taxi GBP 20" → currency: "GBP"
+- "Bought groceries 5000" (no currency) → currency: "NGN"
 
 Categories guide:
 - "Food & Drinks": Restaurants, cafes, coffee, meals, snacks
@@ -35,6 +49,7 @@ Text to parse: "${naturalInput}"
 Return format:
 {
   "amount": 5.00,
+  "currency": "NGN",
   "category": "Food & Drinks",
   "description": "Coffee at Starbucks",
   "date": "2024-01-03"

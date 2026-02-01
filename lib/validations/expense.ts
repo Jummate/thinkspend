@@ -1,7 +1,11 @@
 import { z } from "zod";
 
 export const expenseInputSchema = z.object({
-  expenseInput: z.string().trim().min(1, "Please enter an expense to parse"),
+  expenseInput: z
+    .string()
+    .trim()
+    .min(1, "Please enter an expense to parse")
+    .max(80, "Keep it short — under 80 characters"),
 });
 
 export const expenseDataSchema = z.object({
@@ -17,7 +21,7 @@ export const expenseDataSchema = z.object({
         message: "Enter a valid amount between 0 and 1,000,000,000",
       }
     ),
-
+  currency: z.string().min(1, "Currency is required").length(3),
   category: z.string().min(1, "Category is required"),
 
   description: z
@@ -34,7 +38,7 @@ export const expenseDataSchema = z.object({
       (val) => {
         const parsedDate = new Date(val);
         const now = new Date();
-        return !isNaN(parsedDate.getTime()) && parsedDate <= now;
+        return !Number.isNaN(parsedDate.getTime()) && parsedDate <= now;
       },
       {
         message: "Date cannot be in the future",
