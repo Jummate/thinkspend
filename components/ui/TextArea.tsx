@@ -19,7 +19,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
           placeholder={placeholder}
           rows={rows}
           className={clsx(
-            "border p-2 rounded-lg w-full placeholder:text-muted-foreground transition-colors resize-none outline-none",
+            "border p-2 rounded-lg w-full placeholder:text-muted-foreground/60 transition-colors resize-none outline-none",
             "focus:shadow-sm focus:ring-1",
             error
               ? "border-red-500 bg-red-50 focus:border-red-500 focus:ring-red-500"

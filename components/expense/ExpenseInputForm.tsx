@@ -47,7 +47,7 @@ const ExpenseInputForm = ({ error, onSubmit }: ExpenseInputFormProps) => {
           type="submit"
           disabled={isSubmitting}
           className={clsx(
-            "flex items-center justify-center gap-1 cursor-pointer self-end bg-primary hover:bg-primary-dark rounded-lg px-4 py-1 mt-3 text-white",
+            "flex items-center justify-center gap-1 cursor-pointer self-end bg-primary hover:bg-primary-dark rounded-lg px-8 py-1.5 mt-3 text-white",
             {
               "opacity-50 pointer-events-none cursor-not-allowed": isSubmitting,
             }
