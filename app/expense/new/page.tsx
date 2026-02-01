@@ -99,7 +99,7 @@ const AddNewExpensePage = () => {
       </Link>
 
       <header className="leading-relaxed mt-5">
-        <h1 className="font-bold text-foreground">Add Expense AI</h1>
+        <h1 className="font-bold text-foreground">Describe Your Expense</h1>
         <p className="text-muted-foreground text-sm">
           Simply type what you spent and let AI do the work.
         </p>
