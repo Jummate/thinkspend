@@ -57,6 +57,7 @@ const AddNewExpensePage = () => {
 
       const expenseToSave = {
         amount: Number(data.amount),
+        currency: data.currency,
         category: mapValueToAICategory(data.category),
         description: data.description,
         date: data.date,
@@ -69,7 +70,7 @@ const AddNewExpensePage = () => {
 
       if (error) throw error;
 
-      router.push("/dashboard");
+      // router.push("/dashboard");
     } catch (err) {
       console.log("Save error:", err);
       setServerError("Failed to save expense. Please try again.");
