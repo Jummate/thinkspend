@@ -38,7 +38,7 @@ export const expenseDataSchema = z.object({
       (val) => {
         const parsedDate = new Date(val);
         const now = new Date();
-        return !isNaN(parsedDate.getTime()) && parsedDate <= now;
+        return !Number.isNaN(parsedDate.getTime()) && parsedDate <= now;
       },
       {
         message: "Date cannot be in the future",

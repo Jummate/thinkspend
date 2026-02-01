@@ -16,6 +16,7 @@ const AddNewExpensePage = () => {
   const { user, loading } = useUser();
   const [serverError, setServerError] = useState<string | null>(null);
   const [parsedData, setParsedData] = useState<ParsedExpense | null>(null);
+  const [isParsed, setIsParsed] = useState<boolean>(false);
   const router = useRouter();
 
   const handleInputParse = async (data: ExpenseInputData) => {
@@ -36,8 +37,9 @@ const AddNewExpensePage = () => {
       }
 
       setParsedData(result.data);
+      setIsParsed(true);
     } catch (err) {
-      console.error("Parse error:", err);
+      console.log("Parse error:", err);
       setServerError(
         "Unable to connect. Please check your internet connection. As an alternative, try to edit manually below."
       );
@@ -131,14 +133,12 @@ const AddNewExpensePage = () => {
 
       <section className="mt-10">
         <div className="flex mb-4 gap-2 items-center">
-          <span className="font-bold text-sm">AI Detected Details</span>{" "}
-          <small className="flex items-center text-category-groceries bg-category-groceries/20 font-bold text-xs p-1 rounded-lg gap-1">
-            <CheckCircle2
-              size={10}
-              className=""
-            />{" "}
-            PARSED
-          </small>
+          <span className="font-bold text-sm">Expense Details</span>
+          {isParsed ? (
+            <small className="flex items-center text-category-groceries bg-category-groceries/20 font-bold text-xs p-1 rounded-lg gap-1">
+              <CheckCircle2 size={10} /> PARSED
+            </small>
+          ) : null}
         </div>
 
         <ExpenseForm
