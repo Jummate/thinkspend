@@ -33,8 +33,9 @@ const ExpenseInputForm = ({ error, onSubmit }: ExpenseInputFormProps) => {
       <div className="my-4 rounded-lg flex flex-col">
         <div
           className={clsx(
-            "flex items-center bg-muted rounded-lg border border-muted-foreground/30 overflow-auto",
-            { "border border-red-500": errors.expenseInput }
+            "flex items-center bg-muted rounded-lg border border-muted-foreground/30 overflow-hidden transition-all",
+            "focus-within:ring-1 focus-within:ring-primary focus-within:shadow-sm",
+            { "border-red-500": errors.expenseInput }
           )}
         >
           <div className="flex items-center justify-center px-2">
@@ -43,7 +44,7 @@ const ExpenseInputForm = ({ error, onSubmit }: ExpenseInputFormProps) => {
           <Input
             type="text"
             id="expenseInput"
-            styles="px-2 py-3 font-bold rounded-none border-none outline-none focus:shadow-sm focus:ring-1 focus:ring-primary text-sm"
+            styles="px-2 py-3 font-bold rounded-none rounded-r-lg border-none outline-none text-sm"
             error={!!errors.expenseInput}
             {...register("expenseInput")}
           />
