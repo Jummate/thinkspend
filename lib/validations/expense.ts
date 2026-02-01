@@ -1,7 +1,11 @@
 import { z } from "zod";
 
 export const expenseInputSchema = z.object({
-  expenseInput: z.string().trim().min(1, "Please enter an expense to parse"),
+  expenseInput: z
+    .string()
+    .trim()
+    .min(1, "Please enter an expense to parse")
+    .max(80, "Keep it short — under 80 characters"),
 });
 
 export const expenseDataSchema = z.object({
