@@ -10,6 +10,7 @@ export type ExpenseCategory =
 
 export interface ParsedExpense {
   amount: number;
+  currency:string;
   category: ExpenseCategory;
   description: string;
   date: string; 

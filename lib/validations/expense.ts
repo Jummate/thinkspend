@@ -21,7 +21,7 @@ export const expenseDataSchema = z.object({
         message: "Enter a valid amount between 0 and 1,000,000,000",
       }
     ),
-
+  currency: z.string().min(1, "Currency is required").length(3),
   category: z.string().min(1, "Category is required"),
 
   description: z

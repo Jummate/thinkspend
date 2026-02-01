@@ -24,7 +24,7 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
           ref={ref}
           id={id}
           className={clsx(
-            "border rounded-lg p-2 bg-white px-3 w-full outline-none transition-colors appearance-none cursor-pointer",
+            "border rounded-lg p-2 px-3 w-full outline-none transition-colors appearance-none cursor-pointer",
             "focus:shadow-sm focus:ring-1",
             error
               ? "border-red-500 bg-red-50 focus:border-red-500 focus:ring-red-500"

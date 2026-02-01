@@ -114,14 +114,13 @@ const AddNewExpensePage = () => {
       </div>
 
       <section className="bg-white p-5 mt-10 rounded-lg shadow-xs">
-        
         <NaturalLangInputForm
           error={serverError}
           onSubmit={handleInputParse}
         />
 
         <p className="italic text-muted-foreground text-xs">
-          Try "Lunch #1000", "Uber #12000", "Bought groceries #15500"{" "}
+          Try "Lunch ₦1000", "Uber ₦12000", "Bought groceries ₦15500"
         </p>
       </section>
 
