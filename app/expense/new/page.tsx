@@ -6,6 +6,7 @@ import { useUser } from "@/lib/hooks/useUser";
 import { supabase } from "@/lib/supabase/client";
 import { ParsedExpense } from "@/lib/types/expense";
 import { mapValueToAICategory } from "@/lib/utils/category-mapper";
+import { formatAmountToNumber } from "@/lib/utils/format-amount";
 import { ExpenseFormData, ExpenseInputData } from "@/lib/validations/expense";
 import { ArrowLeft, CheckCircle2, Sparkles } from "lucide-react";
 import Link from "next/link";
@@ -56,7 +57,7 @@ const AddNewExpensePage = () => {
       }
 
       const expenseToSave = {
-        amount: Number(data.amount),
+        amount: formatAmountToNumber(data.amount),
         currency: data.currency,
         category: mapValueToAICategory(data.category),
         description: data.description,

@@ -11,6 +11,7 @@ import Textarea from "../ui/TextArea";
 import { ParsedExpense } from "@/lib/types/expense";
 import { mapAICategoryToValue } from "@/lib/utils/category-mapper";
 import clsx from "clsx";
+import { formatAmountToString } from "@/lib/utils/format-amount";
 
 interface ExpenseFormProps {
   onSubmit: (data: ExpenseFormData) => Promise<void>;
@@ -59,7 +60,7 @@ const ExpenseForm = ({ error, onSubmit, expenseData }: ExpenseFormProps) => {
   useEffect(() => {
     if (expenseData) {
       reset({
-        amount: expenseData.amount.toString(),
+        amount: formatAmountToString(expenseData.amount),
         currency: expenseData.currency,
         category: mapAICategoryToValue(expenseData.category),
         description: expenseData.description || "",
@@ -82,19 +83,24 @@ const ExpenseForm = ({ error, onSubmit, expenseData }: ExpenseFormProps) => {
             Amount
           </label>
 
-          <div className={clsx(
-                      "flex items-center bg-muted rounded-lg border border-muted-foreground/30 overflow-hidden transition-all",
-                      "focus-within:ring-1 focus-within:ring-primary focus-within:shadow-sm",
-                      { "border-red-500": errors.amount }
-                    )}>
-                       <div className="w-18"> <Select
-              {...register("currency")}
-              id="currency"
-              options={currencyOptions}
-              placeholder="Select a currency"
-              styles="bg-muted border-none outline-none rounded-none font-bold"
-              defaultValue="NGN"
-            /></div>
+          <div
+            className={clsx(
+              "flex items-center bg-muted rounded-lg border border-muted-foreground/30 overflow-hidden transition-all",
+              "focus-within:ring-1 focus-within:ring-primary focus-within:shadow-sm",
+              { "border-red-500": errors.amount }
+            )}
+          >
+            <div className="w-18">
+              {" "}
+              <Select
+                {...register("currency")}
+                id="currency"
+                options={currencyOptions}
+                placeholder="Select a currency"
+                styles="bg-muted border-none outline-none rounded-none font-bold"
+                defaultValue="NGN"
+              />
+            </div>
             <Input
               type="text"
               id="amount"
