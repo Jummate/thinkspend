@@ -24,8 +24,9 @@ const AddNewExpensePage = () => {
   const handleInputParse = async (data: ExpenseInputData) => {
     try {
       setServerError(null);
+      setIsParsed(false);
 
-      const response = await fetch("/api/parse-expense2", {
+      const response = await fetch("/api/parse-expense", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ naturalInput: data.expenseInput }),
