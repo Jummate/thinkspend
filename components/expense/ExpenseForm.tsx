@@ -73,7 +73,7 @@ const ExpenseForm = ({ onSubmit, expenseData }: ExpenseFormProps) => {
       className="flex flex-col gap-3"
       onSubmit={handleSubmit(onSubmit)}
     >
-      <div className="flex gap-4">
+      <div className="flex flex-col sm:flex-row gap-4">
         <div className="flex flex-col flex-1">
           <label
             htmlFor="amount"
@@ -86,7 +86,7 @@ const ExpenseForm = ({ onSubmit, expenseData }: ExpenseFormProps) => {
             className={clsx(
               "flex items-center bg-muted rounded-lg border border-muted-foreground/30 overflow-hidden transition-all",
               "focus-within:ring-1 focus-within:ring-primary focus-within:shadow-sm",
-              { "border-red-500": errors.amount }
+              { "border-red-500": errors.amount },
             )}
           >
             <div className="w-18">
@@ -186,7 +186,7 @@ const ExpenseForm = ({ onSubmit, expenseData }: ExpenseFormProps) => {
         disabled={isSubmitting}
         className={clsx(
           "flex items-center justify-center gap-1 cursor-pointer self-start bg-primary hover:bg-primary-dark rounded-lg px-6 py-2 text-white mt-4",
-          { "opacity-50 pointer-events-none cursor-not-allowed": isSubmitting }
+          { "opacity-50 pointer-events-none cursor-not-allowed": isSubmitting },
         )}
       >
         <span className="font-bold"></span>
