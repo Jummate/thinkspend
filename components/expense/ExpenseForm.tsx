@@ -15,7 +15,6 @@ import { formatAmountToString } from "@/lib/utils/format-amount";
 
 interface ExpenseFormProps {
   onSubmit: (data: ExpenseFormData) => Promise<void>;
-  error?: string | null;
   expenseData?: ParsedExpense;
 }
 
@@ -45,7 +44,7 @@ const currencyOptions = [
 //   return `${symbols[currency] || currency} ${amount.toLocaleString()}`;
 // };
 
-const ExpenseForm = ({ error, onSubmit, expenseData }: ExpenseFormProps) => {
+const ExpenseForm = ({ onSubmit, expenseData }: ExpenseFormProps) => {
   const {
     register,
     handleSubmit,

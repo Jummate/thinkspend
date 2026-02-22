@@ -12,6 +12,7 @@ import { ArrowLeft, CheckCircle2, Sparkles } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { toast } from "sonner";
 
 const AddNewExpensePage = () => {
   const { user, loading } = useUser();
@@ -24,7 +25,7 @@ const AddNewExpensePage = () => {
     try {
       setServerError(null);
 
-      const response = await fetch("/api/parse-expense", {
+      const response = await fetch("/api/parse-expense2", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ naturalInput: data.expenseInput }),
@@ -34,6 +35,7 @@ const AddNewExpensePage = () => {
 
       if (!response.ok || !result.success) {
         setServerError(result.error || "Something went wrong");
+
         return;
       }
 
@@ -42,7 +44,7 @@ const AddNewExpensePage = () => {
     } catch (err) {
       console.log("Parse error:", err);
       setServerError(
-        "Unable to connect. Please check your internet connection. As an alternative, try to edit manually below."
+        "Unable to reach the AI parser. Please check your internet connection. You can still add your expense by filling in the details manually in the form below.",
       );
     }
   };
@@ -52,7 +54,14 @@ const AddNewExpensePage = () => {
       setServerError(null);
 
       if (!user) {
-        setServerError("You must be logged in to add expenses");
+        // setServerError("You must be logged in to add expenses");
+        toast.error("You must be logged in to add expenses", {
+          style: {
+            background: "#fff",
+            color: "#f12f2f",
+            border: "none",
+          },
+        });
         return;
       }
 
@@ -71,10 +80,25 @@ const AddNewExpensePage = () => {
 
       if (error) throw error;
 
+      toast.success("Expense saved successfully", {
+        style: {
+          background: "#fff",
+          color: "#22c55e",
+          border: "none",
+        },
+      });
+
       // router.push("/dashboard");
     } catch (err) {
       console.log("Save error:", err);
-      setServerError("Failed to save expense. Please try again.");
+      // setServerError("Failed to save expense. Please try again.");
+      toast.error("Failed to save expense. Please try again", {
+        style: {
+          background: "#fff",
+          color: "#f12f2f",
+          border: "none",
+        },
+      });
     }
   };
 
@@ -137,7 +161,6 @@ const AddNewExpensePage = () => {
         </div>
 
         <ExpenseForm
-          error={serverError}
           onSubmit={handleExpense}
           expenseData={parsedData as ParsedExpense}
         />
