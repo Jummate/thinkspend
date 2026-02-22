@@ -11,8 +11,9 @@ import { ExpenseFormData, ExpenseInputData } from "@/lib/validations/expense";
 import { ArrowLeft, CheckCircle2, Sparkles } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { toast } from "sonner";
+import { NaturalLangInputFormHandle } from "@/components/expense/ExpenseInputForm";
 
 const AddNewExpensePage = () => {
   const { user, loading } = useUser();
@@ -20,6 +21,7 @@ const AddNewExpensePage = () => {
   const [parsedData, setParsedData] = useState<ParsedExpense | null>(null);
   const [isParsed, setIsParsed] = useState<boolean>(false);
   const router = useRouter();
+  const parseFormRef = useRef<NaturalLangInputFormHandle>(null);
 
   const handleInputParse = async (data: ExpenseInputData) => {
     try {
@@ -42,6 +44,7 @@ const AddNewExpensePage = () => {
 
       setParsedData(result.data);
       setIsParsed(true);
+      parseFormRef.current?.reset();
     } catch (err) {
       console.log("Parse error:", err);
       setServerError(
@@ -142,6 +145,7 @@ const AddNewExpensePage = () => {
 
       <section className="bg-white p-5 mt-10 rounded-lg shadow-xs">
         <NaturalLangInputForm
+          ref={parseFormRef}
           error={serverError}
           onSubmit={handleInputParse}
         />

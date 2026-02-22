@@ -5,7 +5,7 @@ import {
   expenseInputSchema,
 } from "@/lib/validations/expense";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React from "react";
+import React, { forwardRef, useImperativeHandle } from "react";
 import { useForm } from "react-hook-form";
 import { FaBoltLightning } from "react-icons/fa6";
 import Input from "../ui/Input";
@@ -17,16 +17,28 @@ interface ExpenseInputFormProps {
   error?: string | null;
 }
 
-const ExpenseInputForm = ({ error, onSubmit }: ExpenseInputFormProps) => {
+export interface NaturalLangInputFormHandle {
+  reset: () => void;
+}
+
+const ExpenseInputForm = forwardRef<
+  NaturalLangInputFormHandle,
+  ExpenseInputFormProps
+>(({ error, onSubmit }: ExpenseInputFormProps, ref) => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm<ExpenseInputData>({
     resolver: zodResolver(expenseInputSchema),
     mode: "onTouched",
     reValidateMode: "onChange",
   });
+
+  useImperativeHandle(ref, () => ({
+    reset: () => reset(),
+  }));
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -84,6 +96,6 @@ const ExpenseInputForm = ({ error, onSubmit }: ExpenseInputFormProps) => {
       </div>
     </form>
   );
-};
+});
 
 export default ExpenseInputForm;
