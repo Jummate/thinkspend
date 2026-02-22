@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Toaster } from "sonner";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -29,7 +30,8 @@ export default function RootLayout({
         className={`antialiased bg-background flex`}
       >
         <div className="flex-1 min-h-screen mx-auto">
-        {children}
+          {children}
+          <Toaster />
         </div>
       </body>
     </html>

@@ -11,10 +11,10 @@ import Textarea from "../ui/TextArea";
 import { ParsedExpense } from "@/lib/types/expense";
 import { mapAICategoryToValue } from "@/lib/utils/category-mapper";
 import clsx from "clsx";
+import { formatAmountToString } from "@/lib/utils/format-amount";
 
 interface ExpenseFormProps {
   onSubmit: (data: ExpenseFormData) => Promise<void>;
-  error?: string | null;
   expenseData?: ParsedExpense;
 }
 
@@ -44,7 +44,7 @@ const currencyOptions = [
 //   return `${symbols[currency] || currency} ${amount.toLocaleString()}`;
 // };
 
-const ExpenseForm = ({ error, onSubmit, expenseData }: ExpenseFormProps) => {
+const ExpenseForm = ({ onSubmit, expenseData }: ExpenseFormProps) => {
   const {
     register,
     handleSubmit,
@@ -59,7 +59,7 @@ const ExpenseForm = ({ error, onSubmit, expenseData }: ExpenseFormProps) => {
   useEffect(() => {
     if (expenseData) {
       reset({
-        amount: expenseData.amount.toString(),
+        amount: formatAmountToString(expenseData.amount),
         currency: expenseData.currency,
         category: mapAICategoryToValue(expenseData.category),
         description: expenseData.description || "",
@@ -73,7 +73,7 @@ const ExpenseForm = ({ error, onSubmit, expenseData }: ExpenseFormProps) => {
       className="flex flex-col gap-3"
       onSubmit={handleSubmit(onSubmit)}
     >
-      <div className="flex gap-4">
+      <div className="flex flex-col sm:flex-row gap-4">
         <div className="flex flex-col flex-1">
           <label
             htmlFor="amount"
@@ -82,19 +82,31 @@ const ExpenseForm = ({ error, onSubmit, expenseData }: ExpenseFormProps) => {
             Amount
           </label>
 
-          <div className={clsx(
-                      "flex items-center bg-muted rounded-lg border border-muted-foreground/30 overflow-hidden transition-all",
-                      "focus-within:ring-1 focus-within:ring-primary focus-within:shadow-sm",
-                      { "border-red-500": errors.amount }
-                    )}>
-                       <div className="w-18"> <Select
-              {...register("currency")}
-              id="currency"
-              options={currencyOptions}
-              placeholder="Select a currency"
-              styles="bg-muted border-none outline-none rounded-none font-bold"
-              defaultValue="NGN"
-            /></div>
+          <div
+            // className={clsx(
+            //   "flex items-center bg-muted rounded-lg border border-muted-foreground/30 overflow-hidden transition-all",
+            //   "focus-within:ring-1 focus-within:ring-primary focus-within:shadow-sm",
+            //   { "border-red-500": errors.amount },
+            // )}
+
+            className={clsx(
+              "flex items-center bg-muted rounded-lg border overflow-hidden transition-all",
+              errors.amount
+                ? "border-red-500 focus-within:ring-1 focus-within:ring-red-500"
+                : "border-muted-foreground/30 focus-within:ring-1 focus-within:ring-primary focus-within:shadow-sm",
+            )}
+          >
+            <div className="w-18">
+              {" "}
+              <Select
+                {...register("currency")}
+                id="currency"
+                options={currencyOptions}
+                placeholder="Select a currency"
+                styles="bg-muted border-none outline-none rounded-none font-bold"
+                defaultValue="NGN"
+              />
+            </div>
             <Input
               type="text"
               id="amount"
@@ -181,7 +193,7 @@ const ExpenseForm = ({ error, onSubmit, expenseData }: ExpenseFormProps) => {
         disabled={isSubmitting}
         className={clsx(
           "flex items-center justify-center gap-1 cursor-pointer self-start bg-primary hover:bg-primary-dark rounded-lg px-6 py-2 text-white mt-4",
-          { "opacity-50 pointer-events-none cursor-not-allowed": isSubmitting }
+          { "opacity-50 pointer-events-none cursor-not-allowed": isSubmitting },
         )}
       >
         <span className="font-bold"></span>

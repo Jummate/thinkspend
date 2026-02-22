@@ -8,7 +8,7 @@ const API_KEY = process.env.MISTRAL_API_KEY;
 
 export default async function chat(
   prompt: string,
-  model: string = MISTRAL_MODEL
+  model: string = MISTRAL_MODEL,
 ): Promise<string> {
   if (!API_KEY) {
     // throw new Error("API key is required");

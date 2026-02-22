@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { formatAmountToNumber } from "../utils/format-amount";
 
 export const expenseInputSchema = z.object({
   expenseInput: z
@@ -14,8 +15,8 @@ export const expenseDataSchema = z.object({
     .min(1, "Amount is required")
     .refine(
       (val) => {
-        const num = Number(val);
-        return !isNaN(num) && num > 0 && num < 1000000000;
+        const num = formatAmountToNumber(val);
+        return !Number.isNaN(num) && num > 0 && num < 1000000000;
       },
       {
         message: "Enter a valid amount between 0 and 1,000,000,000",

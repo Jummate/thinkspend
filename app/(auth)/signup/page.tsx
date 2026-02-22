@@ -1,5 +1,4 @@
-"use client"
-
+"use client";
 
 import AppLogo from "@/components/AppLogo";
 import SignUpForm from "@/components/auth/SignUpForm";
@@ -10,7 +9,7 @@ import { RegisterFormData } from "@/lib/validations/auth";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
-
+import { toast } from "sonner";
 
 function SignUpPage() {
   const [authError, setAuthError] = useState<string | null>(null);
@@ -18,7 +17,7 @@ function SignUpPage() {
 
   const handleSignUp = async (data: RegisterFormData) => {
     try {
-      setAuthError(null); // Clear previous errors
+      // setAuthError(null); // Clear previous errors
 
       const { error } = await supabase.auth.signUp({
         email: data.email,
@@ -27,7 +26,14 @@ function SignUpPage() {
 
       if (error) {
         // Map Supabase errors to user-friendly messages
-        setAuthError(getFriendlyErrorMessage(error.message));
+        // setAuthError(getFriendlyErrorMessage(error.message));
+        toast.error(getFriendlyErrorMessage(error.message), {
+          style: {
+            background: "#fff",
+            color: "#f12f2f",
+            border: "none",
+          },
+        });
         return;
       }
 
@@ -36,7 +42,14 @@ function SignUpPage() {
       router.refresh();
     } catch (err) {
       console.error("Sign up error:", err);
-      setAuthError("An unexpected error occurred. Please try again.");
+      // setAuthError("An unexpected error occurred. Please try again.");
+      toast.error("An unexpected error occurred. Please try again.", {
+        style: {
+          background: "#fff",
+          color: "#f12f2f",
+          border: "none",
+        },
+      });
     }
   };
 

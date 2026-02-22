@@ -9,7 +9,7 @@ import { LoginFormData } from "@/lib/validations/auth";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useState } from "react";
-
+import { toast } from "sonner";
 
 function LoginPage() {
   const [authError, setAuthError] = useState<string | null>(null);
@@ -20,7 +20,7 @@ function LoginPage() {
 
   const handleLogin = async (data: LoginFormData) => {
     try {
-      setAuthError(null); // Clear previous errors
+      // setAuthError(null); // Clear previous errors
 
       const { error } = await supabase.auth.signInWithPassword({
         email: data.email,
@@ -29,7 +29,14 @@ function LoginPage() {
 
       if (error) {
         // Map Supabase errors to user-friendly messages
-        setAuthError(getFriendlyErrorMessage(error.message));
+        // setAuthError(getFriendlyErrorMessage(error.message));
+        toast.error(getFriendlyErrorMessage(error.message), {
+          style: {
+            background: "#fff",
+            color: "#f12f2f",
+            border: "none",
+          },
+        });
         return;
       }
 
@@ -38,7 +45,14 @@ function LoginPage() {
       router.refresh();
     } catch (err) {
       console.error("Login error:", err);
-      setAuthError("An unexpected error occurred. Please try again.");
+      // setAuthError("An unexpected error occurred. Please try again.");
+      toast.error("An unexpected error occurred. Please try again.", {
+        style: {
+          background: "#fff",
+          color: "#f12f2f",
+          border: "none",
+        },
+      });
     }
   };
   return (

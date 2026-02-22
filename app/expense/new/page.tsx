@@ -6,11 +6,14 @@ import { useUser } from "@/lib/hooks/useUser";
 import { supabase } from "@/lib/supabase/client";
 import { ParsedExpense } from "@/lib/types/expense";
 import { mapValueToAICategory } from "@/lib/utils/category-mapper";
+import { formatAmountToNumber } from "@/lib/utils/format-amount";
 import { ExpenseFormData, ExpenseInputData } from "@/lib/validations/expense";
 import { ArrowLeft, CheckCircle2, Sparkles } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { toast } from "sonner";
+import { NaturalLangInputFormHandle } from "@/components/expense/ExpenseInputForm";
 
 const AddNewExpensePage = () => {
   const { user, loading } = useUser();
@@ -18,10 +21,12 @@ const AddNewExpensePage = () => {
   const [parsedData, setParsedData] = useState<ParsedExpense | null>(null);
   const [isParsed, setIsParsed] = useState<boolean>(false);
   const router = useRouter();
+  const parseFormRef = useRef<NaturalLangInputFormHandle>(null);
 
   const handleInputParse = async (data: ExpenseInputData) => {
     try {
       setServerError(null);
+      setIsParsed(false);
 
       const response = await fetch("/api/parse-expense", {
         method: "POST",
@@ -33,15 +38,17 @@ const AddNewExpensePage = () => {
 
       if (!response.ok || !result.success) {
         setServerError(result.error || "Something went wrong");
+
         return;
       }
 
       setParsedData(result.data);
       setIsParsed(true);
+      parseFormRef.current?.reset();
     } catch (err) {
       console.log("Parse error:", err);
       setServerError(
-        "Unable to connect. Please check your internet connection. As an alternative, try to edit manually below."
+        "Unable to reach the AI parser. Please check your internet connection. You can still add your expense by filling in the details manually in the form below.",
       );
     }
   };
@@ -51,12 +58,19 @@ const AddNewExpensePage = () => {
       setServerError(null);
 
       if (!user) {
-        setServerError("You must be logged in to add expenses");
+        // setServerError("You must be logged in to add expenses");
+        toast.error("You must be logged in to add expenses", {
+          style: {
+            background: "#fff",
+            color: "#f12f2f",
+            border: "none",
+          },
+        });
         return;
       }
 
       const expenseToSave = {
-        amount: Number(data.amount),
+        amount: formatAmountToNumber(data.amount),
         currency: data.currency,
         category: mapValueToAICategory(data.category),
         description: data.description,
@@ -70,10 +84,25 @@ const AddNewExpensePage = () => {
 
       if (error) throw error;
 
+      toast.success("Expense saved successfully", {
+        style: {
+          background: "#fff",
+          color: "#22c55e",
+          border: "none",
+        },
+      });
+
       // router.push("/dashboard");
     } catch (err) {
       console.log("Save error:", err);
-      setServerError("Failed to save expense. Please try again.");
+      // setServerError("Failed to save expense. Please try again.");
+      toast.error("Failed to save expense. Please try again", {
+        style: {
+          background: "#fff",
+          color: "#f12f2f",
+          border: "none",
+        },
+      });
     }
   };
 
@@ -116,6 +145,7 @@ const AddNewExpensePage = () => {
 
       <section className="bg-white p-5 mt-10 rounded-lg shadow-xs">
         <NaturalLangInputForm
+          ref={parseFormRef}
           error={serverError}
           onSubmit={handleInputParse}
         />
@@ -136,7 +166,6 @@ const AddNewExpensePage = () => {
         </div>
 
         <ExpenseForm
-          error={serverError}
           onSubmit={handleExpense}
           expenseData={parsedData as ParsedExpense}
         />

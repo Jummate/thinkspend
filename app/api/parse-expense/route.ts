@@ -66,12 +66,6 @@ export async function POST(request: NextRequest) {
       { status: errorResponse.status }
     );
 
-    // return NextResponse.json(
-    //   {
-    //     error: error.message || "Failed to parse expense",
-    //     success: false,
-    //   },
-    //   { status: 500 }
-    // );
+  
   }
 }

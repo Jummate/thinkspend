@@ -5,6 +5,7 @@ import { ROUTES } from "@/lib/routes";
 import { supabase } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import { toast } from "sonner";
 
 const Dashboard = () => {
   const [authError, setAuthError] = useState<string | null>(null);
@@ -15,7 +16,14 @@ const Dashboard = () => {
 
     let { error } = await supabase.auth.signOut();
     if (error) {
-      setAuthError(error.message);
+      // setAuthError(error.message);
+      toast.error(error.message, {
+        style: {
+          background: "#fff",
+          color: "#f12f2f",
+          border: "none",
+        },
+      });
       return;
     }
 
