@@ -32,10 +32,16 @@ const ExpenseInputForm = ({ error, onSubmit }: ExpenseInputFormProps) => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="my-4 rounded-lg flex flex-col">
         <div
+          // className={clsx(
+          //   "flex items-center bg-muted rounded-lg border border-muted-foreground/30 overflow-hidden transition-all",
+          //   "focus-within:ring-1 focus-within:ring-primary focus-within:shadow-sm",
+          //   { "border-red-500": errors.expenseInput }
+          // )}
           className={clsx(
-            "flex items-center bg-muted rounded-lg border border-muted-foreground/30 overflow-hidden transition-all",
-            "focus-within:ring-1 focus-within:ring-primary focus-within:shadow-sm",
-            { "border-red-500": errors.expenseInput }
+            "flex items-center bg-muted rounded-lg border overflow-hidden transition-all",
+            errors.expenseInput
+              ? "border-red-500 focus-within:ring-1 focus-within:ring-red-500"
+              : "border-muted-foreground/30 focus-within:ring-1 focus-within:ring-primary focus-within:shadow-sm",
           )}
         >
           <div className="flex items-center justify-center px-2">
@@ -63,7 +69,7 @@ const ExpenseInputForm = ({ error, onSubmit }: ExpenseInputFormProps) => {
             "flex items-center justify-center gap-1 cursor-pointer self-end bg-primary hover:bg-primary-dark rounded-lg px-8 py-1.5 mt-3 text-white",
             {
               "opacity-50 pointer-events-none cursor-not-allowed": isSubmitting,
-            }
+            },
           )}
         >
           {isSubmitting ? (

@@ -22,12 +22,20 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             type={type}
             id={id}
             placeholder={placeholder}
+            // className={clsx(
+            //   "border p-2 rounded-lg flex-1 placeholder:text-muted-foreground transition-colors",
+            //   error
+            //     ? "border-red-500 bg-red-50 focus:border-red-500 focus:ring-red-500"
+            //     : "border-muted-foreground/30",
+            //   styles
+            // )}
+
             className={clsx(
               "border p-2 rounded-lg flex-1 placeholder:text-muted-foreground transition-colors",
               error
-                ? "border-red-500 bg-red-50 focus:border-red-500 focus:ring-red-500"
-                : "border-muted-foreground/30",
-              styles
+                ? "border-red-500 bg-red-50 focus:outline-none focus:ring-1 focus:ring-red-500"
+                : "border-muted-foreground/30 focus:outline-none focus:ring-1 focus:ring-primary",
+              styles,
             )}
             {...rest} // Spread the rest of the props (including register props)
           />
@@ -42,18 +50,21 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           type={showPassword ? "text" : "password"}
           id={id}
           placeholder={placeholder}
+          // className={clsx(
+          //   "border p-2 rounded-lg flex-1 placeholder:text-muted-foreground transition-colors",
+          //   error
+          //     ? "border-red-500 bg-red-50 focus:border-red-500 focus:ring-red-500"
+          //     : "border-muted-foreground/30",
+          //   styles,
+          // )}
+
           className={clsx(
             "border p-2 rounded-lg flex-1 placeholder:text-muted-foreground transition-colors",
             error
-              ? "border-red-500 bg-red-50 focus:border-red-500 focus:ring-red-500"
-              : "border-muted-foreground/30",
-            // : "border-primary",
-            styles
+              ? "border-red-500 bg-red-50 focus:outline-none focus:ring-1 focus:ring-red-500"
+              : "border-muted-foreground/30 focus:outline-none focus:ring-1 focus:ring-primary",
+            styles,
           )}
-          //   className={clsx(
-          //     "border border-primary p-2 rounded-lg flex-1 placeholder:text-muted-foreground",
-          //     styles
-          //   )}
           {...rest} // Spread the rest of the props
         />
         {showPassword ? (
@@ -77,7 +88,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         )}
       </div>
     );
-  }
+  },
 );
 
 Input.displayName = "Input";
