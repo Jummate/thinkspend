@@ -6,10 +6,12 @@ import Sidebar from "./_components/Sidebar";
 export default function DashboardLayout({ children }: PropsWithChildren) {
   return (
     <>
-      <DashboardHeader />
-      <div className="flex">
-        <Sidebar />
-        <main>{children}</main>
+      <div className="flex h-full">
+        <Sidebar/>
+        <main className="flex-1">
+          <DashboardHeader />
+          {children}
+        </main>
       </div>
     </>
   );

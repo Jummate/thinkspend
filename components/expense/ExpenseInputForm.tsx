@@ -62,7 +62,8 @@ const ExpenseInputForm = forwardRef<
           <Input
             type="text"
             id="expenseInput"
-            styles="px-2 py-3 font-bold rounded-none rounded-r-lg border-none outline-none text-sm"
+            styles="px-2 py-3 font-bold rounded-none rounded-r-lg border-none outline-none text-sm focus:outline-none focus:ring-0"
+            containerStyles="bg-white"
             error={!!errors.expenseInput}
             {...register("expenseInput")}
           />

@@ -20,7 +20,7 @@ export const ROUTES = {
   
   // Expenses
   EXPENSES: '/expenses',
-  EXPENSES_NEW: '/expenses/new',
+  EXPENSES_NEW: '/expense/new',
   EXPENSES_DETAIL: (id: string) => `/expenses/${id}`,
   EXPENSES_EDIT: (id: string) => `/expenses/${id}/edit`,
   

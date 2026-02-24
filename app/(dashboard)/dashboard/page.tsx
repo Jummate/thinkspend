@@ -38,11 +38,11 @@ const Dashboard = () => {
           <p className="text-sm text-red-600">{authError}</p>
         </div>
       )}
-      <div>
+      <div className="p-4">
         <p>This is coming from the dashboard itself</p>
         <Button onClick={handleLogout}>Log out</Button>
       </div>
-      ;
+      
     </div>
   );
 };
