@@ -16,6 +16,7 @@ import { toast } from "sonner";
 import { NaturalLangInputFormHandle } from "@/components/expense/ExpenseInputForm";
 import { parseExpense } from "@/lib/services/expense-parse.client";
 import { saveExpense } from "@/lib/services/expense.service";
+import { showError, showSuccess } from "@/lib/ui/toast";
 
 const AddNewExpensePage = () => {
   const { user, loading } = useUser();
@@ -63,13 +64,15 @@ const AddNewExpensePage = () => {
 
       if (!user) {
         // setServerError("You must be logged in to add expenses");
-        toast.error("You must be logged in to add expenses", {
-          style: {
-            background: "#fff",
-            color: "#f12f2f",
-            border: "none",
-          },
-        });
+        // toast.error("You must be logged in to add expenses", {
+        //   style: {
+        //     background: "#fff",
+        //     color: "#f12f2f",
+        //     border: "none",
+        //   },
+        // });
+
+        showError("You must be logged in to add expenses")
         return;
       }
 
@@ -90,25 +93,29 @@ const AddNewExpensePage = () => {
 
       await saveExpense(user.id, data);
 
-      toast.success("Expense saved successfully", {
-        style: {
-          background: "#fff",
-          color: "#22c55e",
-          border: "none",
-        },
-      });
+      showSuccess("Expense saved successfully");
+
+      // toast.success("Expense saved successfully", {
+      //   style: {
+      //     background: "#fff",
+      //     color: "#22c55e",
+      //     border: "none",
+      //   },
+      // });
 
       // router.push("/dashboard");
     } catch (err) {
       console.log("Save error:", err);
       // setServerError("Failed to save expense. Please try again.");
-      toast.error("Failed to save expense. Please try again", {
-        style: {
-          background: "#fff",
-          color: "#f12f2f",
-          border: "none",
-        },
-      });
+      // toast.error("Failed to save expense. Please try again", {
+      //   style: {
+      //     background: "#fff",
+      //     color: "#f12f2f",
+      //     border: "none",
+      //   },
+      // });
+
+      showError("Failed to save expense. Please try again")
     }
   };
 

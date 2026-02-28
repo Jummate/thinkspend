@@ -4,6 +4,7 @@ import AppLogo from "@/components/AppLogo";
 import SignUpForm from "@/components/auth/SignUpForm";
 import { ROUTES } from "@/lib/routes";
 import { signup } from "@/lib/services/authService";
+import { showError } from "@/lib/ui/toast";
 import { RegisterFormData } from "@/lib/validations/auth";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -20,7 +21,8 @@ function SignUpPage() {
       const result = await signup(data.email, data.password);
 
       if (!result.success) {
-        toast.error(result.message);
+        // toast.error(result.message);
+        showError(result.message || "");
         return;
       }
 
@@ -30,13 +32,15 @@ function SignUpPage() {
     } catch (err) {
       console.error("Sign up error:", err);
       // setAuthError("An unexpected error occurred. Please try again.");
-      toast.error("An unexpected error occurred. Please try again.", {
-        style: {
-          background: "#fff",
-          color: "#f12f2f",
-          border: "none",
-        },
-      });
+      // toast.error("An unexpected error occurred. Please try again.", {
+      //   style: {
+      //     background: "#fff",
+      //     color: "#f12f2f",
+      //     border: "none",
+      //   },
+      // });
+
+      showError("An unexpected error occurred. Please try again.");
     }
   };
 
@@ -56,9 +60,7 @@ function SignUpPage() {
         </section>
 
         <section className="flex flex-col items-center justify-center py-10 px-5 sm:px:7 md:px-10 gap-10">
-          <SignUpForm
-            onSubmit={handleSignUp}
-          />
+          <SignUpForm onSubmit={handleSignUp} />
           <p className="text-muted/80">
             Already have an account?{" "}
             <Link

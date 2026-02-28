@@ -1,35 +1,3 @@
-// import AppLogo from "@/components/AppLogo";
-// import { ROUTES } from "@/lib/routes";
-// import Link from "next/link";
-// import React from "react";
-
-// const Sidebar = () => {
-//   return (
-//     <div className="w-60 h-full bg-white border-r border-r-gray-200 hidden md:block">
-//       <div className="flex gap-1">
-//         <AppLogo /> <span>ThinkSpend</span>
-//       </div>
-
-//       <ul>
-//         <li>
-//           <Link href={ROUTES.DASHBOARD}>Dashboard</Link>
-//         </li>
-//         <li>
-//           <Link href={ROUTES.EXPENSES}>Expenses</Link>
-//         </li>
-//         <li>
-//           <Link href={ROUTES.ANALYTICS}>Analytics</Link>
-//         </li>
-//         <li>
-//           <Link href={ROUTES.SETTINGS}>Settings</Link>
-//         </li>
-//       </ul>
-//     </div>
-//   );
-// };
-
-// export default Sidebar;
-
 "use client";
 
 import AppLogo from "@/components/AppLogo";

@@ -4,6 +4,7 @@ import AppLogo from "@/components/AppLogo";
 import LoginForm from "@/components/auth/LoginForm";
 import { ROUTES } from "@/lib/routes";
 import { login } from "@/lib/services/authService";
+import { showError } from "@/lib/ui/toast";
 // import { supabase } from "@/lib/supabase/client";
 // import { getFriendlyErrorMessage } from "@/lib/utils/errorMessages";
 import { LoginFormData } from "@/lib/validations/auth";
@@ -26,7 +27,8 @@ function LoginPage() {
       const result = await login(data.email, data.password);
 
       if (!result.success) {
-        toast.error(result.message);
+        // toast.error(result.message);
+        showError(result?.message || "");
         return;
       }
 
@@ -36,13 +38,14 @@ function LoginPage() {
     } catch (err) {
       console.error("Login error:", err);
       // setAuthError("An unexpected error occurred. Please try again.");
-      toast.error("An unexpected error occurred. Please try again.", {
-        style: {
-          background: "#fff",
-          color: "#f12f2f",
-          border: "none",
-        },
-      });
+      // toast.error("An unexpected error occurred. Please try again.", {
+      //   style: {
+      //     background: "#fff",
+      //     color: "#f12f2f",
+      //     border: "none",
+      //   },
+      // });
+      showError("An unexpected error occurred. Please try again.");
     }
   };
   return (
