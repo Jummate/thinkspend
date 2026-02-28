@@ -14,6 +14,8 @@ import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import { toast } from "sonner";
 import { NaturalLangInputFormHandle } from "@/components/expense/ExpenseInputForm";
+import { parseExpense } from "@/lib/services/expense-parse.client";
+import { saveExpense } from "@/lib/services/expense.service";
 
 const AddNewExpensePage = () => {
   const { user, loading } = useUser();
@@ -28,19 +30,21 @@ const AddNewExpensePage = () => {
       setServerError(null);
       setIsParsed(false);
 
-      const response = await fetch("/api/parse-expense", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ naturalInput: data.expenseInput }),
-      });
+      // const response = await fetch("/api/parse-expense", {
+      //   method: "POST",
+      //   headers: { "Content-Type": "application/json" },
+      //   body: JSON.stringify({ naturalInput: data.expenseInput }),
+      // });
 
-      const result = await response.json();
+      // const result = await response.json();
 
-      if (!response.ok || !result.success) {
-        setServerError(result.error || "Something went wrong");
+      const result = await parseExpense(data.expenseInput);
 
-        return;
-      }
+      // if (!response.ok || !result.success) {
+      //   setServerError(result.error || "Something went wrong");
+
+      //   return;
+      // }
 
       setParsedData(result.data);
       setIsParsed(true);
@@ -69,20 +73,22 @@ const AddNewExpensePage = () => {
         return;
       }
 
-      const expenseToSave = {
-        amount: formatAmountToNumber(data.amount),
-        currency: data.currency,
-        category: mapValueToAICategory(data.category),
-        description: data.description,
-        date: data.date,
-      };
+      // const expenseToSave = {
+      //   amount: formatAmountToNumber(data.amount),
+      //   currency: data.currency,
+      //   category: mapValueToAICategory(data.category),
+      //   description: data.description,
+      //   date: data.date,
+      // };
 
-      const { error } = await supabase.from("expenses").insert({
-        ...expenseToSave,
-        user_id: user.id,
-      });
+      // const { error } = await supabase.from("expenses").insert({
+      //   ...expenseToSave,
+      //   user_id: user.id,
+      // });
 
-      if (error) throw error;
+      // if (error) throw error;
+
+      await saveExpense(user.id, data);
 
       toast.success("Expense saved successfully", {
         style: {

@@ -1,8 +1,8 @@
 // app/api/parse-expense/route.ts
 
 import { NextRequest, NextResponse } from "next/server";
-import parseExpense from "@/lib/services/expense-parser.service";
 import { createErrorResponse, ErrorCodes } from "@/lib/errors/error-codes";
+import parseExpenseWithAI from "@/lib/services/expense-parser.service";
 
 export async function POST(request: NextRequest) {
   try {
@@ -37,7 +37,7 @@ export async function POST(request: NextRequest) {
 
     // Initialize service and parse
     // const parserService = parseExpense(naturalInput);
-    const parsedExpense = await parseExpense(naturalInput);
+    const parsedExpense = await parseExpenseWithAI(naturalInput);
 
     // Return parsed data
     return NextResponse.json({

@@ -1,6 +1,6 @@
 import { ErrorCodes } from "../errors/error-codes";
 import { ExpenseCategory, ParsedExpense } from "../types/expense";
-import chat from "./mistral.service";
+import { generateExpenseAnalysis } from "./ai.service";
 
 const validCategories: ExpenseCategory[] = [
   "Food & Drinks",
@@ -63,7 +63,7 @@ function validateParsedData(data: any): ParsedExpense {
 
   if (!validCategories.includes(data.category)) {
     console.warn(
-      `AI returned invalid category: ${data.category}, defaulting to 'Other'`
+      `AI returned invalid category: ${data.category}, defaulting to 'Other'`,
     );
     data.category = "Other";
   }
@@ -80,8 +80,8 @@ function validateParsedData(data: any): ParsedExpense {
   return data as ParsedExpense;
 }
 
-export default async function parseExpense(
-  naturalInput: string
+export default async function parseExpenseWithAI(
+  naturalInput: string,
 ): Promise<ParsedExpense> {
   if (!naturalInput.trim()) {
     throw new Error(ErrorCodes.EMPTY_INPUT.code);
@@ -93,7 +93,7 @@ export default async function parseExpense(
 
   try {
     const prompt = buildPrompt(naturalInput);
-    const response = await chat(prompt);
+    const response = await generateExpenseAnalysis(prompt);
     const parsed = JSON.parse(response);
 
     return validateParsedData(parsed);

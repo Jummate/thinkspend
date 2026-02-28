@@ -11,7 +11,7 @@ interface SignUpFormProps {
   error?: string | null; // Auth error from parent
 }
 
-const SignUpForm = ({ error, onSubmit }: SignUpFormProps) => {
+const SignUpForm = ({ onSubmit }: SignUpFormProps) => {
   const {
     register,
     handleSubmit,

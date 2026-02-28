@@ -44,11 +44,6 @@ const ExpenseInputForm = forwardRef<
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="my-4 rounded-lg flex flex-col">
         <div
-          // className={clsx(
-          //   "flex items-center bg-muted rounded-lg border border-muted-foreground/30 overflow-hidden transition-all",
-          //   "focus-within:ring-1 focus-within:ring-primary focus-within:shadow-sm",
-          //   { "border-red-500": errors.expenseInput }
-          // )}
           className={clsx(
             "flex items-center bg-muted rounded-lg border overflow-hidden transition-all",
             errors.expenseInput

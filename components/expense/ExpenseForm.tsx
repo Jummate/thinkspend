@@ -83,12 +83,6 @@ const ExpenseForm = ({ onSubmit, expenseData }: ExpenseFormProps) => {
           </label>
 
           <div
-            // className={clsx(
-            //   "flex items-center bg-muted rounded-lg border border-muted-foreground/30 overflow-hidden transition-all",
-            //   "focus-within:ring-1 focus-within:ring-primary focus-within:shadow-sm",
-            //   { "border-red-500": errors.amount },
-            // )}
-
             className={clsx(
               "flex items-center bg-muted rounded-lg border overflow-hidden transition-all",
               errors.amount

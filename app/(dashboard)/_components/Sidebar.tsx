@@ -43,20 +43,18 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React from "react";
 
 const Sidebar = () => {
   const pathname = usePathname();
 
-    const user = {
+  const user = {
     id: Date.now(),
     fullName: "Lorem Ipsum",
     firstName: "Lorem",
     lastName: "Ipsum",
     preferredCurrency: "N",
-    email:"lorem_ipsum@gmail.com"
+    email: "lorem_ipsum@gmail.com",
   };
-
 
   const navItems = [
     { href: ROUTES.DASHBOARD, label: "Dashboard", icon: LayoutDashboard },
@@ -108,10 +106,13 @@ const Sidebar = () => {
       <div className="p-4 border-t border-gray-200">
         <div className="flex items-center gap-3 px-4 py-3">
           <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center text-sm font-semibold">
-            {user.firstName.charAt(0)}{user.lastName.charAt(0)}
+            {user.firstName.charAt(0)}
+            {user.lastName.charAt(0)}
           </div>
           <div className="flex-1">
-            <p className="text-sm font-semibold text-gray-900">{user.fullName}</p>
+            <p className="text-sm font-semibold text-gray-900">
+              {user.fullName}
+            </p>
             <p className="text-xs text-gray-500">{user.email}</p>
           </div>
         </div>

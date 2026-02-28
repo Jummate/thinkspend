@@ -11,10 +11,10 @@ import { ROUTES } from "@/lib/routes";
 
 interface LoginFormProps {
   onSubmit: (data: LoginFormData) => Promise<void>;
-  error?: string | null; // Auth error from parent
+  // error?: string | null; // Auth error from parent
 }
 
-const LoginForm = ({ error, onSubmit }: LoginFormProps) => {
+const LoginForm = ({ onSubmit }: LoginFormProps) => {
   const {
     register,
     handleSubmit,
@@ -27,11 +27,11 @@ const LoginForm = ({ error, onSubmit }: LoginFormProps) => {
 
   return (
     <div className="w-full">
-      {error && (
+      {/* {error && (
         <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-md">
           <p className="text-sm text-red-600">{error}</p>
         </div>
-      )}
+      )} */}
       <form
         className="flex flex-col items-center justify-center w-full gap-4"
         onSubmit={handleSubmit(onSubmit)}
