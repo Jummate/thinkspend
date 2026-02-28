@@ -1,70 +1,33 @@
-// "use client";
-
-// import Button from "@/components/ui/Button";
-// import { ROUTES } from "@/lib/routes";
-// import { supabase } from "@/lib/supabase/client";
-// import { useRouter } from "next/navigation";
-// import React, { useState } from "react";
-// import { toast } from "sonner";
-
-// const Dashboard = () => {
-//   const [authError, setAuthError] = useState<string | null>(null);
-//   const router = useRouter();
-
-//   const handleLogout = async () => {
-//     setAuthError(null);
-
-//     let { error } = await supabase.auth.signOut();
-//     if (error) {
-//       // setAuthError(error.message);
-//       toast.error(error.message, {
-//         style: {
-//           background: "#fff",
-//           color: "#f12f2f",
-//           border: "none",
-//         },
-//       });
-//       return;
-//     }
-
-//     router.push(ROUTES.LOGIN);
-//     router.refresh();
-//   };
-
-//   return (
-//     <div>
-//       {authError && (
-//         <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-md">
-//           <p className="text-sm text-red-600">{authError}</p>
-//         </div>
-//       )}
-//       <div className="p-4">
-//         <p>This is coming from the dashboard itself</p>
-//         <Button onClick={handleLogout}>Log out</Button>
-//       </div>
-
-//     </div>
-//   );
-// };
-
-// export default Dashboard;
-
 "use client";
 
 import { ROUTES } from "@/lib/routes";
 import {
   ArrowDown,
   ArrowUp,
+  CarFront,
+  Coffee,
   CreditCard,
+  Headphones,
   Lightbulb,
   ScanLine,
+  ShoppingBasket,
+  TrendingDown,
   TrendingUp,
+  Zap,
 } from "lucide-react";
 import Link from "next/link";
 import React, { useState } from "react";
 
 const Dashboard = () => {
   const [chartView, setChartView] = useState<"weekly" | "monthly">("monthly");
+
+  const user = {
+    id: Date.now(),
+    fullName: "Lorem Ipsum",
+    firstName: "Lorem",
+    lastName: "Ipsum",
+    preferredCurrency: "₦",
+  };
 
   // Mock data - replace with actual data from your API/state
   const stats = {
@@ -87,48 +50,48 @@ const Dashboard = () => {
   const recentExpenses = [
     {
       id: 1,
-      icon: "☕",
+      icon: <Coffee />,
       title: "Coffee at Sta...",
       category: "Food & Drinks",
       date: "Today, 9:30 AM",
       amount: 5.0,
-      color: "bg-orange-500",
+      color: "bg-orange-100 text-orange-500",
     },
     {
       id: 2,
-      icon: "🚗",
+      icon: <CarFront />,
       title: "Uber to office",
       category: "Transport",
       date: "Today, 8:45 AM",
       amount: 12.0,
-      color: "bg-red-500",
+      color: "bg-red-100 text-red-500",
     },
     {
       id: 3,
-      icon: "🛒",
+      icon: <ShoppingBasket />,
       title: "Groceries a...",
       category: "Groceries",
       date: "Yesterday",
       amount: 84.5,
-      color: "bg-green-500",
+      color: "bg-green-100 text-green-500",
     },
     {
       id: 4,
-      icon: "⚡",
+      icon: <Zap />,
       title: "Electric Bill",
       category: "Bills",
       date: "Jan 4, Jan-02 20:25",
       amount: 142.1,
-      color: "bg-purple-500",
+      color: "bg-purple-100 text-purple-500",
     },
     {
       id: 5,
-      icon: "🎧",
+      icon: <Headphones />,
       title: "New Head...",
       category: "Shopping",
       date: "01-2025",
       amount: 299.0,
-      color: "bg-blue-500",
+      color: "bg-blue-100 text-blue-500",
     },
   ];
 
@@ -138,31 +101,34 @@ const Dashboard = () => {
       {/* Header Section */}
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-2">Dashboard Overview</h1>
-        <p className="text-gray-400">
-          Welcome back, John. Here's a summary of your financial health.
+        <p className="text-gray-500">
+          Welcome back, {user.firstName}. Here's a summary of your financial
+          health.
         </p>
       </div>
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         {/* Total Spending Card */}
-        {/* <div className="bg-[#1e293b] rounded-2xl p-6 border border-gray-700"> */}
-        <div className="bg-white rounded-2xl p-6 border border-gray-700">
+
+        <div className="bg-white rounded-2xl p-6 border border-gray-200">
           <div className="flex items-center justify-between mb-2">
-            <p className="text-gray-400 text-sm uppercase tracking-wide">
+            <p className="text-gray-400 font-bold text-sm uppercase tracking-wide">
               Total Spending (Jan)
             </p>
-            <CreditCard
-              size={20}
-              className="text-blue-400"
-            />
+            <div className="bg-blue-100 p-2 rounded-lg">
+              <CreditCard
+                size={20}
+                className="text-blue-500"
+              />
+            </div>
           </div>
-          <div className="flex items-end gap-3">
-            <h2 className="text-4xl font-bold">
+          <div className="flex flex-col">
+            <h2 className="text-4xl font-bold mb-1">
               ${stats.totalSpending.toFixed(2)}
             </h2>
-            <div className="flex items-center gap-1 text-green-400 mb-2">
-              <ArrowDown size={16} />
+            <div className="flex items-center gap-1 text-green-500">
+              <TrendingDown size={16} />
               <span className="text-sm font-semibold">
                 {Math.abs(stats.spendingChange)}% from last month
               </span>
@@ -171,49 +137,54 @@ const Dashboard = () => {
         </div>
 
         {/* Monthly Budget Card */}
-        <div className="bg-white rounded-2xl p-6 border border-gray-700">
+        <div className="bg-white rounded-2xl p-6 border border-gray-200">
           <div className="flex items-center justify-between mb-2">
-            <p className="text-gray-400 text-sm uppercase tracking-wide">
+            <p className="text-gray-400 font-bold text-sm uppercase tracking-wide">
               Monthly Budget
             </p>
-            <TrendingUp
-              size={20}
-              className="text-purple-400"
-            />
+            <div className="bg-purple-100 p-2 rounded-lg">
+              <TrendingUp
+                size={20}
+                className="text-purple-500"
+              />
+            </div>
           </div>
           <h2 className="text-4xl font-bold mb-3">
-            ${stats.monthlyBudget.toFixed(2)}
+            {user.preferredCurrency}{stats.monthlyBudget.toFixed(2)}
           </h2>
-          <div className="w-full bg-gray-700 rounded-full h-2">
+          <div className="w-full bg-muted-foreground/30 rounded-full h-2">
             <div
-              className="bg-blue-500 h-2 rounded-full transition-all"
+              className="bg-purple-500 h-2 rounded-full transition-all"
               style={{ width: `${stats.budgetUsed}%` }}
             ></div>
           </div>
         </div>
 
         {/* AI Savings Insight Card */}
-        <div className="bg-white rounded-2xl p-6 border border-gray-700">
+        <div className="bg-white rounded-2xl p-6 border border-gray-200">
           <div className="flex items-center justify-between mb-2">
-            <p className="text-gray-400 text-sm uppercase tracking-wide">
+            <p className="text-gray-400 font-bold text-sm uppercase tracking-wide">
               AI Savings Insight
             </p>
-            <Lightbulb
-              size={20}
-              className="text-yellow-400"
-            />
+            <div className="bg-yellow-100 p-2 rounded-lg">
+              {" "}
+              <Lightbulb
+                size={20}
+                className="text-yellow-500"
+              />
+            </div>
           </div>
           <h2 className="text-4xl font-bold mb-1">
-            ${stats.aiSavings.toFixed(2)}
+            {user.preferredCurrency}{stats.aiSavings.toFixed(2)}
           </h2>
-          <p className="text-gray-400 text-sm">Potential monthly savings</p>
+          <p className="text-amber-500 text-sm">Potential monthly savings</p>
         </div>
       </div>
 
       {/* Charts and Recent Expenses Row */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Spending by Category Chart */}
-        <div className="lg:col-span-2 bg-white rounded-2xl p-6 border border-gray-700">
+        <div className="lg:col-span-2 bg-white rounded-2xl p-6 border border-gray-200">
           <div className="flex items-center justify-between mb-6">
             <h3 className="text-xl font-semibold">Spending by Category</h3>
             <div className="flex gap-2">
@@ -222,7 +193,7 @@ const Dashboard = () => {
                 className={`px-4 py-1.5 rounded-lg text-sm transition-all ${
                   chartView === "weekly"
                     ? "bg-gray-700 text-white"
-                    : "text-gray-400 hover:text-white"
+                    : "text-gray-400 hover:text-white hover:bg-primary"
                 }`}
               >
                 Weekly
@@ -232,7 +203,7 @@ const Dashboard = () => {
                 className={`px-4 py-1.5 rounded-lg text-sm transition-all ${
                   chartView === "monthly"
                     ? "bg-primary text-white"
-                    : "text-gray-400 hover:text-white"
+                    : "text-gray-400 hover:text-white hover:bg-primary  "
                 }`}
               >
                 Monthly
@@ -272,7 +243,7 @@ const Dashboard = () => {
           </div>
 
           {/* Legend */}
-          <div className="flex flex-wrap gap-4 pt-4 border-t border-gray-700">
+          <div className="flex flex-wrap gap-4 pt-4 border-t border-gray-200">
             {categorySpending
               .filter((item) => item.amount > 0)
               .map((item) => (
@@ -284,8 +255,8 @@ const Dashboard = () => {
                     className="w-3 h-3 rounded-full"
                     style={{ backgroundColor: item.color }}
                   ></div>
-                  <span className="text-sm text-gray-300">
-                    {item.category}: ${item.amount}
+                  <span className="text-sm text-muted-foreground">
+                    <b>{item.category}:</b> {user.preferredCurrency}{item.amount}
                   </span>
                 </div>
               ))}
@@ -293,7 +264,7 @@ const Dashboard = () => {
         </div>
 
         {/* Recent Expenses */}
-        <div className="bg-white rounded-2xl p-6 border border-gray-700">
+        <div className="bg-white rounded-2xl p-6 border border-gray-200">
           <div className="flex items-center justify-between mb-6">
             <h3 className="text-xl font-semibold">Recent Expenses</h3>
             {/* <button className="text-blue-400 text-sm hover:underline">
@@ -312,7 +283,7 @@ const Dashboard = () => {
             {recentExpenses.map((expense) => (
               <div
                 key={expense.id}
-                className="flex items-center gap-3 hover:bg-[#0f172a] p-2 rounded-lg transition-all cursor-pointer"
+                className="flex items-center gap-3 hover:opacity-70 p-2 rounded-lg transition-all cursor-pointer"
               >
                 <div
                   className={`w-10 h-10 ${expense.color} rounded-lg flex items-center justify-center text-xl`}
@@ -326,14 +297,14 @@ const Dashboard = () => {
                   <p className="text-xs text-gray-400">{expense.date}</p>
                 </div>
                 <div className="text-right">
-                  <p className="font-bold">${expense.amount.toFixed(2)}</p>
+                  <p className="font-bold">{user.preferredCurrency}{expense.amount.toFixed(2)}</p>
                 </div>
               </div>
             ))}
           </div>
 
           {/* Add Receipt Scan Button */}
-          <button className="w-full mt-6 bg-white hover:bg-gray-800 border border-gray-700 rounded-lg py-3 flex items-center justify-center gap-2 transition-all">
+          <button className="w-full mt-6 bg-white hover:bg-gray-200 border border-gray-300 rounded-lg py-3 flex items-center justify-center gap-2 transition-all">
             <ScanLine size={18} />
             <span className="font-semibold">Add Receipt Scan</span>
           </button>

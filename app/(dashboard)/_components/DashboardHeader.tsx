@@ -46,7 +46,7 @@ const DashboardHeader = () => {
   return (
     <>
       {/* Desktop Header */}
-      <div className="hidden md:flex bg-white w-full p-4 border-b border-b-gray-200 items-center justify-between">
+      <div className="sticky top-0 right-0 hidden md:flex bg-white w-full p-4 border-b border-b-gray-200 items-center justify-between">
         <div className="w-xs flex items-center rounded-full bg-gray-100 px-3 focus-within:ring-2 focus-within:ring-primary focus-within:bg-white transition-all">
           <Search
             size={16}

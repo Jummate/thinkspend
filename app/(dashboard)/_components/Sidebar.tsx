@@ -48,6 +48,16 @@ import React from "react";
 const Sidebar = () => {
   const pathname = usePathname();
 
+    const user = {
+    id: Date.now(),
+    fullName: "Lorem Ipsum",
+    firstName: "Lorem",
+    lastName: "Ipsum",
+    preferredCurrency: "N",
+    email:"lorem_ipsum@gmail.com"
+  };
+
+
   const navItems = [
     { href: ROUTES.DASHBOARD, label: "Dashboard", icon: LayoutDashboard },
     { href: ROUTES.EXPENSES, label: "Expenses", icon: Receipt },
@@ -67,7 +77,7 @@ const Sidebar = () => {
 
       {/* Navigation */}
       <nav className="flex-1 p-4">
-        <ul className="space-y-1">
+        <ul className="space-y-1 text-sm">
           {navItems.map((item) => {
             const Icon = item.icon;
             const active = isActive(item.href);
@@ -98,11 +108,11 @@ const Sidebar = () => {
       <div className="p-4 border-t border-gray-200">
         <div className="flex items-center gap-3 px-4 py-3">
           <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center text-sm font-semibold">
-            JD
+            {user.firstName.charAt(0)}{user.lastName.charAt(0)}
           </div>
           <div className="flex-1">
-            <p className="text-sm font-semibold text-gray-900">John Doe</p>
-            <p className="text-xs text-gray-500">john@example.com</p>
+            <p className="text-sm font-semibold text-gray-900">{user.fullName}</p>
+            <p className="text-xs text-gray-500">{user.email}</p>
           </div>
         </div>
       </div>
