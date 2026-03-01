@@ -5,13 +5,10 @@ import LoginForm from "@/components/auth/LoginForm";
 import { ROUTES } from "@/lib/routes";
 import { login } from "@/lib/services/authService";
 import { showError } from "@/lib/ui/toast";
-// import { supabase } from "@/lib/supabase/client";
-// import { getFriendlyErrorMessage } from "@/lib/utils/errorMessages";
+
 import { LoginFormData } from "@/lib/validations/auth";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-// import React, { useState } from "react";
-import { toast } from "sonner";
 
 function LoginPage() {
   // const [authError, setAuthError] = useState<string | null>(null);
@@ -37,14 +34,7 @@ function LoginPage() {
       router.refresh();
     } catch (err) {
       console.error("Login error:", err);
-      // setAuthError("An unexpected error occurred. Please try again.");
-      // toast.error("An unexpected error occurred. Please try again.", {
-      //   style: {
-      //     background: "#fff",
-      //     color: "#f12f2f",
-      //     border: "none",
-      //   },
-      // });
+
       showError("An unexpected error occurred. Please try again.");
     }
   };

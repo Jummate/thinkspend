@@ -199,7 +199,7 @@ export default async function parseExpenseWithAI(
     // Preserve AppError thrown inside service or AI
     if (error instanceof AppError) throw error;
 
-    // Wrap unknown errors as AI_SERVICE_ERROR
+  
     throw new AppError(
       "AI_SERVICE_ERROR",
       error?.message || "AI parsing failed",

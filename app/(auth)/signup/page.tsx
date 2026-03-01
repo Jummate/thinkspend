@@ -8,7 +8,6 @@ import { showError } from "@/lib/ui/toast";
 import { RegisterFormData } from "@/lib/validations/auth";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { toast } from "sonner";
 
 function SignUpPage() {
   // const [authError, setAuthError] = useState<string | null>(null);
@@ -31,14 +30,6 @@ function SignUpPage() {
       router.refresh();
     } catch (err) {
       console.error("Sign up error:", err);
-      // setAuthError("An unexpected error occurred. Please try again.");
-      // toast.error("An unexpected error occurred. Please try again.", {
-      //   style: {
-      //     background: "#fff",
-      //     color: "#f12f2f",
-      //     border: "none",
-      //   },
-      // });
 
       showError("An unexpected error occurred. Please try again.");
     }
@@ -46,9 +37,6 @@ function SignUpPage() {
 
   return (
     <main className="flex items-center justify-center h-full p-6">
-      {/* <header>
-      </header> */}
-      {/* <div className='flex flex-col items-center justify-center shadow-lg rounded-lg bg-red-500 w-full mx-auto max-w-lg p-4'> */}
       <div className="shadow-lg rounded-xl w-full mx-auto max-w-lg overflow-hidden">
         <section className="flex flex-col items-center justify-center text-center p-4 bg-primary">
           <AppLogo />

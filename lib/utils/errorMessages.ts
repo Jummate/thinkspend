@@ -8,5 +8,5 @@ export function getFriendlyErrorMessage(error: string): string {
   if (error.includes("Too many requests")) {
     return "Too many login attempts. Please wait a moment and try again.";
   }
-  return error; // Fallback to original error
+  return error;
 }

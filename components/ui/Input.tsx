@@ -11,7 +11,7 @@ type InputProps = {
   placeholder?: string;
   error?: boolean;
   containerStyles?: string;
-} & React.InputHTMLAttributes<HTMLInputElement>; // Add this to accept all input props
+} & React.InputHTMLAttributes<HTMLInputElement>;
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
   (

@@ -1,5 +1,4 @@
 import { AppError } from "../errors/app-error";
-import { ErrorCodes } from "../errors/error-codes";
 import { MistralResponse } from "../types/expense";
 
 const BASE_URL = "https://api.mistral.ai/v1";
@@ -17,7 +16,6 @@ async function callMistral(
   if (!API_KEY) {
     console.error("CRITICAL: AI API key not configured");
     throw new AppError("SERVICE_UNAVAILABLE");
-    // throw new Error(ErrorCodes.SERVICE_UNAVAILABLE.code);
   }
 
   try {
@@ -41,7 +39,6 @@ async function callMistral(
         `AI provider returned non-OK response: ${error.message || response.statusText}`,
       );
       throw new AppError("AI_SERVICE_ERROR");
-      //   throw new Error(ErrorCodes.AI_SERVICE_ERROR.code);
     }
 
     const data: MistralResponse = await response.json();
@@ -49,11 +46,6 @@ async function callMistral(
     return data.choices[0].message.content;
   } catch (error) {
     console.error("AI call failed:", error);
-    // if (error instanceof Error && error.message in ErrorCodes) {
-    //   throw error;
-    // }
-
-    // throw new Error(ErrorCodes.AI_SERVICE_ERROR.code);
 
     if (error instanceof AppError) {
       throw error;

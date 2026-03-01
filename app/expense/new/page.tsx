@@ -17,6 +17,7 @@ import { NaturalLangInputFormHandle } from "@/components/expense/ExpenseInputFor
 import { parseExpense } from "@/lib/services/expense-parse.client";
 import { saveExpense } from "@/lib/services/expense.service";
 import { showError, showSuccess } from "@/lib/ui/toast";
+import { AppError } from "@/lib/errors/app-error";
 
 const AddNewExpensePage = () => {
   const { user, loading } = useUser();
@@ -52,9 +53,18 @@ const AddNewExpensePage = () => {
       parseFormRef.current?.reset();
     } catch (err) {
       console.log("Parse error:", err);
-      setServerError(
-        "Unable to reach the AI parser. Please check your internet connection. You can still add your expense by filling in the details manually in the form below.",
-      );
+
+      if (err instanceof AppError) {
+        setServerError(err.message);
+      } else {
+        setServerError(
+          "Unable to reach the AI parser. Please check your internet connection. You can still add your expense by filling in the details manually in the form below.",
+        );
+      }
+
+      // setServerError(
+      //   "Unable to reach the AI parser. Please check your internet connection. You can still add your expense by filling in the details manually in the form below.",
+      // );
     }
   };
 
@@ -72,7 +82,7 @@ const AddNewExpensePage = () => {
         //   },
         // });
 
-        showError("You must be logged in to add expenses")
+        showError("You must be logged in to add expenses");
         return;
       }
 
@@ -115,7 +125,7 @@ const AddNewExpensePage = () => {
       //   },
       // });
 
-      showError("Failed to save expense. Please try again")
+      showError("Failed to save expense. Please try again");
     }
   };
 

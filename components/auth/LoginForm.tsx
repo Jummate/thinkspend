@@ -11,7 +11,6 @@ import { ROUTES } from "@/lib/routes";
 
 interface LoginFormProps {
   onSubmit: (data: LoginFormData) => Promise<void>;
-  // error?: string | null; // Auth error from parent
 }
 
 const LoginForm = ({ onSubmit }: LoginFormProps) => {

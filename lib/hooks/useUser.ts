@@ -1,4 +1,4 @@
-// hooks/useUser.ts
+
 import { useEffect, useState } from "react";
 import { User } from "@supabase/supabase-js";
 import { supabase } from "@/lib/supabase/client";
@@ -10,7 +10,6 @@ export function useUser() {
   const router = useRouter();
 
   useEffect(() => {
-    // Get initial user
     const getUser = async () => {
       try {
         const { data: { user }, error } = await supabase.auth.getUser();
@@ -31,7 +30,6 @@ export function useUser() {
 
     getUser();
 
-    // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (_event, session) => {
         if (session?.user) {

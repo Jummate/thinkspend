@@ -8,7 +8,7 @@ import { RegisterFormData, registerSchema } from "@/lib/validations/auth";
 
 interface SignUpFormProps {
   onSubmit: (data: RegisterFormData) => Promise<void>;
-  error?: string | null; // Auth error from parent
+  error?: string | null; 
 }
 
 const SignUpForm = ({ onSubmit }: SignUpFormProps) => {
