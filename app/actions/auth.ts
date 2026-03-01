@@ -9,7 +9,7 @@ export async function loginAction(formData: FormData) {
     password: formData.get("password"),
   };
 
-  // Validate with the same schema!
+  
   const result = loginSchema.safeParse(data);
   
   if (!result.success) {

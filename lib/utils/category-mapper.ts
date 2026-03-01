@@ -1,4 +1,4 @@
-// lib/utils/category-mapper.ts
+
 
 export const AI_CATEGORY_TO_VALUE: Record<string, string> = {
   "Food & Drinks": "food",

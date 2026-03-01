@@ -6,13 +6,12 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { RegisterFormData, registerSchema } from "@/lib/validations/auth";
 
-
 interface SignUpFormProps {
   onSubmit: (data: RegisterFormData) => Promise<void>;
-  error?: string | null; // Auth error from parent
+  error?: string | null; 
 }
 
-const SignUpForm = ({error, onSubmit}:SignUpFormProps) => {
+const SignUpForm = ({ onSubmit }: SignUpFormProps) => {
   const {
     register,
     handleSubmit,
@@ -24,21 +23,22 @@ const SignUpForm = ({error, onSubmit}:SignUpFormProps) => {
   });
 
   return (
-
-
-    
-
     <form
       className="flex flex-col items-center justify-center w-full gap-4"
       onSubmit={handleSubmit(onSubmit)}
     >
       <div className="flex flex-1 flex-col gap-2 w-full">
-        <label htmlFor="email" className="self-start">
+        <label
+          htmlFor="email"
+          className="self-start"
+        >
           Email <sup className="text-red-600">*</sup>
         </label>
         <Input
           type="email"
           id="email"
+          styles="rounded-lg"
+          containerStyles="bg-white"
           placeholder="name@gmail.com"
           error={!!errors.email}
           {...register("email")}
@@ -48,12 +48,17 @@ const SignUpForm = ({error, onSubmit}:SignUpFormProps) => {
         )}
       </div>
       <div className="flex flex-1 flex-col gap-2 w-full">
-        <label htmlFor="password" className="self-start">
+        <label
+          htmlFor="password"
+          className="self-start"
+        >
           Password <sup className="text-red-600">*</sup>
         </label>
         <Input
           type="password"
           id="password"
+          styles="rounded-lg"
+          containerStyles="bg-white"
           placeholder="Enter your password"
           error={!!errors.password}
           {...register("password")}
@@ -65,12 +70,17 @@ const SignUpForm = ({error, onSubmit}:SignUpFormProps) => {
         )}
       </div>
       <div className="flex flex-1 flex-col gap-2 w-full">
-        <label htmlFor="confirmPassword" className="self-start">
+        <label
+          htmlFor="confirmPassword"
+          className="self-start"
+        >
           Confirm Password <sup className="text-red-600">*</sup>
         </label>
         <Input
           type="password"
           id="confirmPassword"
+          styles="rounded-lg"
+          containerStyles="bg-white"
           placeholder="Re-enter your password"
           error={!!errors.confirmPassword}
           {...register("confirmPassword")}

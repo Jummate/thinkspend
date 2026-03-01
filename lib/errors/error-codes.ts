@@ -1,7 +1,6 @@
-// lib/errors/error-codes.ts
+
 
 export const ErrorCodes = {
-  // User errors (4xx)
   INVALID_INPUT: {
     code: "INVALID_INPUT",
     status: 400,
@@ -17,8 +16,12 @@ export const ErrorCodes = {
     status: 400,
     message: "Couldn't understand your input. Try: 'Coffee #5000'",
   },
+  INVALID_DATA: {
+    code: "INVALID_DATA",
+    status: 400,
+    message: "Invalid data returned from AI",
+  },
 
-  // Server errors (5xx)
   SERVICE_UNAVAILABLE: {
     code: "SERVICE_UNAVAILABLE",
     status: 503,
@@ -36,7 +39,7 @@ export const ErrorCodes = {
   },
 } as const;
 
-// Helper function to create error responses
+
 export function createErrorResponse(errorCode: keyof typeof ErrorCodes) {
   const error = ErrorCodes[errorCode];
   return {

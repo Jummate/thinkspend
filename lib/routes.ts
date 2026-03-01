@@ -1,5 +1,3 @@
-
-
 /**
  * Application routes configuration
  * Single source of truth for all route paths
@@ -7,31 +5,32 @@
 
 export const ROUTES = {
   // Public
-  HOME: '/',
-  
+  HOME: "/",
+
   // Authentication
-  LOGIN: '/login',
-  SIGNUP: '/signup',
-  FORGOT_PASSWORD: '/forgot-password',
-  RESET_PASSWORD: '/reset-password',
-  
+  LOGIN: "/login",
+  SIGNUP: "/signup",
+  FORGOT_PASSWORD: "/forgot-password",
+  RESET_PASSWORD: "/reset-password",
+
   // Dashboard
-  DASHBOARD: '/dashboard',
-  
+  DASHBOARD: "/dashboard",
+  ANALYTICS: "/analytics",
+
   // Expenses
-  EXPENSES: '/expenses',
-  EXPENSES_NEW: '/expenses/new',
+  EXPENSES: "/expenses",
+  EXPENSES_NEW: "/expense/new",
   EXPENSES_DETAIL: (id: string) => `/expenses/${id}`,
   EXPENSES_EDIT: (id: string) => `/expenses/${id}/edit`,
-  
+
   // Settings
-  SETTINGS: '/settings',
-  SETTINGS_PROFILE: '/settings/profile',
-  SETTINGS_CATEGORIES: '/settings/categories',
-  SETTINGS_NOTIFICATIONS: '/settings/notifications',
-  
+  SETTINGS: "/settings",
+  SETTINGS_PROFILE: "/settings/profile",
+  SETTINGS_CATEGORIES: "/settings/categories",
+  SETTINGS_NOTIFICATIONS: "/settings/notifications",
+
   // Profile
-  PROFILE: '/profile',
+  PROFILE: "/profile",
 } as const;
 
 // Route groups
@@ -49,17 +48,15 @@ export const PROTECTED_ROUTES = [
   ROUTES.PROFILE,
 ] as const;
 
-
 export function isAuthRoute(pathname: string): boolean {
-  return AUTH_ROUTES.some(route => 
-    pathname === route || pathname.startsWith(`${route}/`)
+  return AUTH_ROUTES.some(
+    (route) => pathname === route || pathname.startsWith(`${route}/`),
   );
 }
 
-
 export function isProtectedRoute(pathname: string): boolean {
-  return PROTECTED_ROUTES.some(route => 
-    pathname === route || pathname.startsWith(`${route}/`)
+  return PROTECTED_ROUTES.some(
+    (route) => pathname === route || pathname.startsWith(`${route}/`),
   );
 }
 

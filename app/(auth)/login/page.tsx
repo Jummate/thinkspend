@@ -3,16 +3,15 @@
 import AppLogo from "@/components/AppLogo";
 import LoginForm from "@/components/auth/LoginForm";
 import { ROUTES } from "@/lib/routes";
-import { supabase } from "@/lib/supabase/client";
-import { getFriendlyErrorMessage } from "@/lib/utils/errorMessages";
+import { login } from "@/lib/services/authService";
+import { showError } from "@/lib/ui/toast";
+
 import { LoginFormData } from "@/lib/validations/auth";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import React, { useState } from "react";
-import { toast } from "sonner";
 
 function LoginPage() {
-  const [authError, setAuthError] = useState<string | null>(null);
+  // const [authError, setAuthError] = useState<string | null>(null);
   const router = useRouter();
 
   const searchParams = useSearchParams();
@@ -22,21 +21,11 @@ function LoginPage() {
     try {
       // setAuthError(null); // Clear previous errors
 
-      const { error } = await supabase.auth.signInWithPassword({
-        email: data.email,
-        password: data.password,
-      });
+      const result = await login(data.email, data.password);
 
-      if (error) {
-        // Map Supabase errors to user-friendly messages
-        // setAuthError(getFriendlyErrorMessage(error.message));
-        toast.error(getFriendlyErrorMessage(error.message), {
-          style: {
-            background: "#fff",
-            color: "#f12f2f",
-            border: "none",
-          },
-        });
+      if (!result.success) {
+        // toast.error(result.message);
+        showError(result?.message || "");
         return;
       }
 
@@ -45,14 +34,8 @@ function LoginPage() {
       router.refresh();
     } catch (err) {
       console.error("Login error:", err);
-      // setAuthError("An unexpected error occurred. Please try again.");
-      toast.error("An unexpected error occurred. Please try again.", {
-        style: {
-          background: "#fff",
-          color: "#f12f2f",
-          border: "none",
-        },
-      });
+
+      showError("An unexpected error occurred. Please try again.");
     }
   };
   return (
@@ -72,7 +55,7 @@ function LoginPage() {
         <section className="flex flex-col items-center justify-center py-10 px-5 sm:px:7 md:px-10 gap-10">
           <LoginForm
             onSubmit={handleLogin}
-            error={authError}
+            // error={authError}
           />
           <p className="text-muted/80">
             Don't have an account?{" "}

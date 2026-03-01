@@ -14,6 +14,10 @@ import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import { toast } from "sonner";
 import { NaturalLangInputFormHandle } from "@/components/expense/ExpenseInputForm";
+import { parseExpense } from "@/lib/services/expense-parse.client";
+import { saveExpense } from "@/lib/services/expense.service";
+import { showError, showSuccess } from "@/lib/ui/toast";
+import { AppError } from "@/lib/errors/app-error";
 
 const AddNewExpensePage = () => {
   const { user, loading } = useUser();
@@ -28,28 +32,39 @@ const AddNewExpensePage = () => {
       setServerError(null);
       setIsParsed(false);
 
-      const response = await fetch("/api/parse-expense", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ naturalInput: data.expenseInput }),
-      });
+      // const response = await fetch("/api/parse-expense", {
+      //   method: "POST",
+      //   headers: { "Content-Type": "application/json" },
+      //   body: JSON.stringify({ naturalInput: data.expenseInput }),
+      // });
 
-      const result = await response.json();
+      // const result = await response.json();
 
-      if (!response.ok || !result.success) {
-        setServerError(result.error || "Something went wrong");
+      const result = await parseExpense(data.expenseInput);
 
-        return;
-      }
+      // if (!response.ok || !result.success) {
+      //   setServerError(result.error || "Something went wrong");
+
+      //   return;
+      // }
 
       setParsedData(result.data);
       setIsParsed(true);
       parseFormRef.current?.reset();
     } catch (err) {
       console.log("Parse error:", err);
-      setServerError(
-        "Unable to reach the AI parser. Please check your internet connection. You can still add your expense by filling in the details manually in the form below.",
-      );
+
+      if (err instanceof AppError) {
+        setServerError(err.message);
+      } else {
+        setServerError(
+          "Unable to reach the AI parser. Please check your internet connection. You can still add your expense by filling in the details manually in the form below.",
+        );
+      }
+
+      // setServerError(
+      //   "Unable to reach the AI parser. Please check your internet connection. You can still add your expense by filling in the details manually in the form below.",
+      // );
     }
   };
 
@@ -59,50 +74,58 @@ const AddNewExpensePage = () => {
 
       if (!user) {
         // setServerError("You must be logged in to add expenses");
-        toast.error("You must be logged in to add expenses", {
-          style: {
-            background: "#fff",
-            color: "#f12f2f",
-            border: "none",
-          },
-        });
+        // toast.error("You must be logged in to add expenses", {
+        //   style: {
+        //     background: "#fff",
+        //     color: "#f12f2f",
+        //     border: "none",
+        //   },
+        // });
+
+        showError("You must be logged in to add expenses");
         return;
       }
 
-      const expenseToSave = {
-        amount: formatAmountToNumber(data.amount),
-        currency: data.currency,
-        category: mapValueToAICategory(data.category),
-        description: data.description,
-        date: data.date,
-      };
+      // const expenseToSave = {
+      //   amount: formatAmountToNumber(data.amount),
+      //   currency: data.currency,
+      //   category: mapValueToAICategory(data.category),
+      //   description: data.description,
+      //   date: data.date,
+      // };
 
-      const { error } = await supabase.from("expenses").insert({
-        ...expenseToSave,
-        user_id: user.id,
-      });
+      // const { error } = await supabase.from("expenses").insert({
+      //   ...expenseToSave,
+      //   user_id: user.id,
+      // });
 
-      if (error) throw error;
+      // if (error) throw error;
 
-      toast.success("Expense saved successfully", {
-        style: {
-          background: "#fff",
-          color: "#22c55e",
-          border: "none",
-        },
-      });
+      await saveExpense(user.id, data);
+
+      showSuccess("Expense saved successfully");
+
+      // toast.success("Expense saved successfully", {
+      //   style: {
+      //     background: "#fff",
+      //     color: "#22c55e",
+      //     border: "none",
+      //   },
+      // });
 
       // router.push("/dashboard");
     } catch (err) {
       console.log("Save error:", err);
       // setServerError("Failed to save expense. Please try again.");
-      toast.error("Failed to save expense. Please try again", {
-        style: {
-          background: "#fff",
-          color: "#f12f2f",
-          border: "none",
-        },
-      });
+      // toast.error("Failed to save expense. Please try again", {
+      //   style: {
+      //     background: "#fff",
+      //     color: "#f12f2f",
+      //     border: "none",
+      //   },
+      // });
+
+      showError("Failed to save expense. Please try again");
     }
   };
 

@@ -3,37 +3,25 @@
 import AppLogo from "@/components/AppLogo";
 import SignUpForm from "@/components/auth/SignUpForm";
 import { ROUTES } from "@/lib/routes";
-import { supabase } from "@/lib/supabase/client";
-import { getFriendlyErrorMessage } from "@/lib/utils/errorMessages";
+import { signup } from "@/lib/services/authService";
+import { showError } from "@/lib/ui/toast";
 import { RegisterFormData } from "@/lib/validations/auth";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
-import { toast } from "sonner";
 
 function SignUpPage() {
-  const [authError, setAuthError] = useState<string | null>(null);
+  // const [authError, setAuthError] = useState<string | null>(null);
   const router = useRouter();
 
   const handleSignUp = async (data: RegisterFormData) => {
     try {
       // setAuthError(null); // Clear previous errors
 
-      const { error } = await supabase.auth.signUp({
-        email: data.email,
-        password: data.password,
-      });
+      const result = await signup(data.email, data.password);
 
-      if (error) {
-        // Map Supabase errors to user-friendly messages
-        // setAuthError(getFriendlyErrorMessage(error.message));
-        toast.error(getFriendlyErrorMessage(error.message), {
-          style: {
-            background: "#fff",
-            color: "#f12f2f",
-            border: "none",
-          },
-        });
+      if (!result.success) {
+        // toast.error(result.message);
+        showError(result.message || "");
         return;
       }
 
@@ -42,22 +30,13 @@ function SignUpPage() {
       router.refresh();
     } catch (err) {
       console.error("Sign up error:", err);
-      // setAuthError("An unexpected error occurred. Please try again.");
-      toast.error("An unexpected error occurred. Please try again.", {
-        style: {
-          background: "#fff",
-          color: "#f12f2f",
-          border: "none",
-        },
-      });
+
+      showError("An unexpected error occurred. Please try again.");
     }
   };
 
   return (
     <main className="flex items-center justify-center h-full p-6">
-      {/* <header>
-      </header> */}
-      {/* <div className='flex flex-col items-center justify-center shadow-lg rounded-lg bg-red-500 w-full mx-auto max-w-lg p-4'> */}
       <div className="shadow-lg rounded-xl w-full mx-auto max-w-lg overflow-hidden">
         <section className="flex flex-col items-center justify-center text-center p-4 bg-primary">
           <AppLogo />
@@ -69,10 +48,7 @@ function SignUpPage() {
         </section>
 
         <section className="flex flex-col items-center justify-center py-10 px-5 sm:px:7 md:px-10 gap-10">
-          <SignUpForm
-            onSubmit={handleSignUp}
-            error={authError}
-          />
+          <SignUpForm onSubmit={handleSignUp} />
           <p className="text-muted/80">
             Already have an account?{" "}
             <Link
