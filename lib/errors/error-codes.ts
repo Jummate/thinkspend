@@ -17,6 +17,11 @@ export const ErrorCodes = {
     status: 400,
     message: "Couldn't understand your input. Try: 'Coffee #5000'",
   },
+  INVALID_DATA: {
+    code: "INVALID_DATA",
+    status: 400,
+    message: "Invalid data returned from AI",
+  },
 
   // Server errors (5xx)
   SERVICE_UNAVAILABLE: {
