@@ -1,6 +1,8 @@
 "use client";
 
+import { useUser } from "@/lib/hooks/useUser";
 import { ROUTES } from "@/lib/routes";
+import { formatAmountToString } from "@/lib/utils/format-amount";
 import {
   ArrowDown,
   ArrowUp,
@@ -20,14 +22,7 @@ import React, { useState } from "react";
 
 const Dashboard = () => {
   const [chartView, setChartView] = useState<"weekly" | "monthly">("monthly");
-
-  const user = {
-    id: Date.now(),
-    fullName: "Lorem Ipsum",
-    firstName: "Lorem",
-    lastName: "Ipsum",
-    preferredCurrency: "₦",
-  };
+  const { profile } = useUser();
 
   // Mock data - replace with actual data from your API/state
   const stats = {
@@ -95,6 +90,13 @@ const Dashboard = () => {
     },
   ];
 
+  const currencyMapping = {
+    NGN: "₦",
+    USD: "$",
+  } as const;
+
+  const currencySymbol = profile ? currencyMapping[profile.currency] : "";
+
   return (
     // <div className="min-h-screen bg-[#0f172a] text-white p-6">
     <div className="min-h-screen p-6">
@@ -102,8 +104,8 @@ const Dashboard = () => {
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-2">Dashboard Overview</h1>
         <p className="text-gray-500">
-          Welcome back, {user.firstName}. Here's a summary of your financial
-          health.
+          Welcome back, {profile?.firstName || ""}. Here's a summary of your
+          financial health.
         </p>
       </div>
 
@@ -125,7 +127,8 @@ const Dashboard = () => {
           </div>
           <div className="flex flex-col">
             <h2 className="text-4xl font-bold mb-1">
-              ${stats.totalSpending.toFixed(2)}
+              {currencySymbol}
+              {formatAmountToString(parseFloat(stats.totalSpending.toFixed(2)))}
             </h2>
             <div className="flex items-center gap-1 text-green-500">
               <TrendingDown size={16} />
@@ -150,7 +153,8 @@ const Dashboard = () => {
             </div>
           </div>
           <h2 className="text-4xl font-bold mb-3">
-            {user.preferredCurrency}{stats.monthlyBudget.toFixed(2)}
+            {currencySymbol}
+            {formatAmountToString(parseFloat(stats.monthlyBudget.toFixed(2)))}
           </h2>
           <div className="w-full bg-muted-foreground/30 rounded-full h-2">
             <div
@@ -161,7 +165,7 @@ const Dashboard = () => {
         </div>
 
         {/* AI Savings Insight Card */}
-        <div className="bg-white rounded-2xl p-6 border border-gray-200">
+        {/* <div className="bg-white rounded-2xl p-6 border border-gray-200">
           <div className="flex items-center justify-between mb-2">
             <p className="text-gray-400 font-bold text-sm uppercase tracking-wide">
               AI Savings Insight
@@ -175,10 +179,10 @@ const Dashboard = () => {
             </div>
           </div>
           <h2 className="text-4xl font-bold mb-1">
-            {user.preferredCurrency}{stats.aiSavings.toFixed(2)}
+            {currencySymbol}{stats.aiSavings.toFixed(2)}
           </h2>
           <p className="text-amber-500 text-sm">Potential monthly savings</p>
-        </div>
+        </div> */}
       </div>
 
       {/* Charts and Recent Expenses Row */}
@@ -256,7 +260,8 @@ const Dashboard = () => {
                     style={{ backgroundColor: item.color }}
                   ></div>
                   <span className="text-sm text-muted-foreground">
-                    <b>{item.category}:</b> {user.preferredCurrency}{item.amount}
+                    <b>{item.category}:</b> {currencySymbol}
+                    {formatAmountToString(parseFloat(item.amount.toFixed(2)))}
                   </span>
                 </div>
               ))}
@@ -297,7 +302,12 @@ const Dashboard = () => {
                   <p className="text-xs text-gray-400">{expense.date}</p>
                 </div>
                 <div className="text-right">
-                  <p className="font-bold">{user.preferredCurrency}{expense.amount.toFixed(2)}</p>
+                  <p className="font-bold">
+                    {currencySymbol}
+                    {formatAmountToString(
+                      parseFloat(expense.amount.toFixed(2)),
+                    )}
+                  </p>
                 </div>
               </div>
             ))}

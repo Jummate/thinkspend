@@ -2,10 +2,17 @@
 
 import Button from "@/components/ui/Button";
 import { ROUTES } from "@/lib/routes";
+import { logout } from "@/lib/services/authService";
 import { Bell, Moon, Search } from "lucide-react";
 import Link from "next/link";
 
 const DashboardHeader = () => {
+  const handleLogout = async () => {
+    const { success, message } = await logout();
+    if (!success) {
+      console.log(message);
+    }
+  };
   return (
     <>
       {/* Desktop Header */}
@@ -28,6 +35,7 @@ const DashboardHeader = () => {
           <Link href={ROUTES.EXPENSES_NEW}>
             <Button styles="py-1.5">+ Add Expense</Button>
           </Link>
+            {/* <Button styles="py-1.5 px-4" onClick={handleLogout}>Log out</Button> */}
         </div>
       </div>
 
