@@ -69,7 +69,6 @@ import { User } from "@supabase/supabase-js";
 import { supabase } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 
-
 export const currencyMapping = {
   NGN: "₦",
   USD: "$",
@@ -117,7 +116,7 @@ export function useUser(): UseUserReturn {
           .from("profiles")
           .select("*")
           .eq("id", activeUser.id)
-          .single();
+          .maybeSingle();
 
         if (profileError) {
           console.error("Profile fetch error:", profileError);
