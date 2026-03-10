@@ -2,7 +2,10 @@
 
 import { useUser } from "@/lib/hooks/useUser";
 import { ROUTES } from "@/lib/routes";
+import { getCurrentMonth } from "@/lib/utils/date";
 import { formatAmountToString } from "@/lib/utils/format-amount";
+
+
 import {
   ArrowDown,
   ArrowUp,
@@ -116,7 +119,7 @@ const Dashboard = () => {
         <div className="bg-white rounded-2xl p-6 border border-gray-200">
           <div className="flex items-center justify-between mb-2">
             <p className="text-gray-400 font-bold text-sm uppercase tracking-wide">
-              Total Spending (Jan)
+              Total Spending ({getCurrentMonth()})
             </p>
             <div className="bg-blue-100 p-2 rounded-lg">
               <CreditCard
