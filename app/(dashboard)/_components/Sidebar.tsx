@@ -40,7 +40,7 @@ const Sidebar = () => {
     { href: ROUTES.DASHBOARD, label: "Dashboard", icon: LayoutDashboard },
     { href: ROUTES.EXPENSES, label: "Expenses", icon: Receipt },
     { href: ROUTES.ANALYTICS, label: "Analytics", icon: BarChart3 },
-    // { href: ROUTES.SETTINGS, label: "Settings", icon: Settings },
+    { href: ROUTES.SETTINGS, label: "Settings", icon: Settings },
   ];
 
   const isActive = (href: string) => pathname === href;
@@ -117,12 +117,16 @@ const Sidebar = () => {
 
         {open && (
           <div className="absolute bottom-12 left-0 bg-white shadow-lg rounded-lg p-2">
-            <button className="block w-full text-left px-3 py-2 hover:bg-gray-100">
+            <Link
+              href={ROUTES.SETTINGS}
+              onClick={() => setOpen(false)}
+              className="block w-full text-left px-3 py-2 hover:bg-gray-100 rounded-md text-sm"
+            >
               Settings
-            </button>
+            </Link>
             <button
               onClick={handleLogout}
-              className="block w-full text-left px-3 py-2 hover:bg-gray-100 text-red-500"
+              className="block w-full text-left px-3 py-2 hover:bg-gray-100 text-red-500 rounded-md text-sm"
             >
               Log out
             </button>
