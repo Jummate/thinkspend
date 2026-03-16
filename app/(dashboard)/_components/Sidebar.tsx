@@ -1,7 +1,9 @@
 "use client";
 
 import AppLogo from "@/components/AppLogo";
+import { useUser } from "@/lib/hooks/useUser";
 import { ROUTES } from "@/lib/routes";
+import { logout } from "@/lib/services/authService";
 import {
   BarChart3,
   FileText,
@@ -11,18 +13,28 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useState } from "react";
 
 const Sidebar = () => {
   const pathname = usePathname();
+  const { user, profile } = useUser();
+  const [open, setOpen] = useState<boolean>(false);
 
-  const user = {
-    id: Date.now(),
-    fullName: "Lorem Ipsum",
-    firstName: "Lorem",
-    lastName: "Ipsum",
-    preferredCurrency: "N",
-    email: "lorem_ipsum@gmail.com",
+  const handleLogout = async () => {
+    const { success, message } = await logout();
+    if (!success) {
+      console.log(message);
+    }
   };
+
+  // const user = {
+  //   id: Date.now(),
+  //   fullName: "Lorem Ipsum",
+  //   firstName: "Lorem",
+  //   lastName: "Ipsum",
+  //   preferredCurrency: "N",
+  //   email: "lorem_ipsum@gmail.com",
+  // };
 
   const navItems = [
     { href: ROUTES.DASHBOARD, label: "Dashboard", icon: LayoutDashboard },
@@ -71,19 +83,55 @@ const Sidebar = () => {
       </nav>
 
       {/* User Section (Optional - at bottom) */}
-      <div className="p-4 border-t border-gray-200">
+      {/* <div className="p-4 border-t border-gray-200">
         <div className="flex items-center gap-3 px-4 py-3">
           <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center text-sm font-semibold">
-            {user.firstName.charAt(0)}
-            {user.lastName.charAt(0)}
+            {profile?.firstName?.charAt(0)}
+            {profile?.lastName?.charAt(0)}
           </div>
           <div className="flex-1">
             <p className="text-sm font-semibold text-gray-900">
-              {user.fullName}
+              {profile?.firstName} {profile?.lastName}
             </p>
-            <p className="text-xs text-gray-500">{user.email}</p>
+            <p className="text-xs text-gray-500">{user?.email}</p>
           </div>
         </div>
+      </div> */}
+
+      <div className="relative">
+        <div
+          className="flex items-center gap-3 px-4 py-3"
+          onClick={() => setOpen(!open)}
+        >
+          <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center text-sm font-semibold">
+            {profile?.firstName?.charAt(0)}
+            {profile?.lastName?.charAt(0)}
+          </div>
+          <div className="flex-1">
+            <p className="text-sm font-semibold text-gray-900">
+              {profile?.firstName} {profile?.lastName}
+            </p>
+            <p className="text-xs text-gray-500">{user?.email}</p>
+          </div>
+        </div>
+
+        {open && (
+          <div className="absolute bottom-12 left-0 bg-white shadow-lg rounded-lg p-2">
+            <Link
+              href={ROUTES.SETTINGS}
+              onClick={() => setOpen(false)}
+              className="block w-full text-left px-3 py-2 hover:bg-gray-100 rounded-md text-sm"
+            >
+              Settings
+            </Link>
+            <button
+              onClick={handleLogout}
+              className="block w-full text-left px-3 py-2 hover:bg-gray-100 text-red-500 rounded-md text-sm"
+            >
+              Log out
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

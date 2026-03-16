@@ -17,7 +17,12 @@ function SignUpPage() {
     try {
       // setAuthError(null); // Clear previous errors
 
-      const result = await signup(data.email, data.password);
+      const result = await signup(
+        data.email,
+        data.password,
+        data.firstName,
+        data.lastName,
+      );
 
       if (!result.success) {
         // toast.error(result.message);

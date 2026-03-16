@@ -8,7 +8,7 @@ import { RegisterFormData, registerSchema } from "@/lib/validations/auth";
 
 interface SignUpFormProps {
   onSubmit: (data: RegisterFormData) => Promise<void>;
-  error?: string | null; 
+  error?: string | null;
 }
 
 const SignUpForm = ({ onSubmit }: SignUpFormProps) => {
@@ -27,6 +27,54 @@ const SignUpForm = ({ onSubmit }: SignUpFormProps) => {
       className="flex flex-col items-center justify-center w-full gap-4"
       onSubmit={handleSubmit(onSubmit)}
     >
+      <div className="flex flex-col sm:flex-row gap-2 w-full">
+        <div className="flex flex-col flex-1 gap-2">
+          <label
+            htmlFor="firstName"
+            className="self-start"
+          >
+            First Name <sup className="text-red-600">*</sup>
+          </label>
+          <Input
+            type="text"
+            id="firstName"
+            styles="rounded-lg"
+            containerStyles="bg-white"
+            // placeholder="name@gmail.com"
+            error={!!errors.firstName}
+            {...register("firstName")}
+          />
+          {errors.firstName && (
+            <span className="text-red-600 text-sm">
+              {errors.firstName.message}
+            </span>
+          )}
+        </div>
+
+        <div className="flex flex-col flex-1 gap-2">
+          <label
+            htmlFor="lastName"
+            className="self-start"
+          >
+            Last Name <sup className="text-red-600">*</sup>
+          </label>
+          <Input
+            type="text"
+            id="lastName"
+            styles="rounded-lg"
+            containerStyles="bg-white"
+            // placeholder="name@gmail.com"
+            error={!!errors.lastName}
+            {...register("lastName")}
+          />
+          {errors.lastName && (
+            <span className="text-red-600 text-sm">
+              {errors.lastName.message}
+            </span>
+          )}
+        </div>
+      </div>
+
       <div className="flex flex-1 flex-col gap-2 w-full">
         <label
           htmlFor="email"
