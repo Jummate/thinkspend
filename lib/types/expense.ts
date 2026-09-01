@@ -23,3 +23,15 @@ export interface MistralResponse {
     };
   }>;
 }
+
+
+export interface Expense {
+  id: string;
+  amount: number;
+  currency: string;
+  category: string;
+  description: string;
+  date: string;
+  icon?: string;
+  color: string;
+}

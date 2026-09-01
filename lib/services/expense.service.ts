@@ -22,3 +22,18 @@ export async function saveExpense(
 
   if (error) throw error;
 }
+
+export async function getExpenses(
+  userId: string,
+) {
+
+  const { data, error } = await supabase
+    .from("expenses")
+    .select("*")
+    .eq("user_id", userId);
+
+  if (error) throw error;
+
+  return data;
+}
+
