@@ -93,14 +93,14 @@ function Features() {
               className="relative overflow-hidden rounded-2xl border border-border bg-card p-7"
             >
               <div
-                className="absolute left-0 right-0 top-0 h-[3px]"
+                className="absolute left-0 right-0 top-0 h-0.75"
                 style={{
                   backgroundImage:
                     "repeating-linear-gradient(90deg, var(--border) 0 8px, transparent 8px 14px)",
                 }}
               />
               <div
-                className={`mb-[18px] flex h-11 w-11 items-center justify-center rounded-xl ${feature.iconBg}`}
+                className={`mb-4.5 flex h-11 w-11 items-center justify-center rounded-xl ${feature.iconBg}`}
               >
                 <feature.icon className={`h-5 w-5 ${feature.iconColor}`} />
               </div>

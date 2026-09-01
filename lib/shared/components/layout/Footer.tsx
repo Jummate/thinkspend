@@ -13,13 +13,15 @@ const footerColumns = [
   {
     heading: "Legal",
     links: [
-      { label: "Privacy Policy", href: "/thinkspend-privacy" },
-      { label: "Terms of Service", href: "/thinkspend-terms" },
+      { label: "Privacy Policy", href: "/privacy" },
+      { label: "Terms of Service", href: "/terms-of-service" },
     ],
   },
   {
     heading: "Contact",
-    links: [{ label: "yakubjumat@gmail.com", href: "mailto:yakubjumat@gmail.com" }],
+    links: [
+      { label: "yakubjumat@gmail.com", href: "mailto:yakubjumat@gmail.com" },
+    ],
   },
 ];
 
@@ -27,8 +29,11 @@ function Footer() {
   return (
     <footer className="border-t border-border py-11">
       <Container className="flex flex-wrap items-start justify-between gap-8">
-        <div className="max-w-[220px]">
-          <Link href="/" className="mb-3.5 flex items-center gap-2.5">
+        <div className="max-w-55">
+          <Link
+            href="/"
+            className="mb-3.5 flex items-center gap-2.5"
+          >
             <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-sm font-bold text-primary-foreground">
               TS
             </span>

@@ -38,13 +38,13 @@ function HowItWorks() {
         <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
           {steps.map((step) => (
             <div key={step.number} className="text-center">
-              <div className="mx-auto mb-[18px] flex h-10 w-10 items-center justify-center rounded-full border-2 border-primary font-mono text-[15px] font-bold text-primary">
+              <div className="mx-auto mb-4.5 flex h-10 w-10 items-center justify-center rounded-full border-2 border-primary font-mono text-[15px] font-bold text-primary">
                 {step.number}
               </div>
               <h4 className="mb-2 text-[15.5px] font-extrabold text-foreground">
                 {step.title}
               </h4>
-              <p className="mx-auto max-w-[230px] text-[13px] leading-relaxed text-muted-foreground">
+              <p className="mx-auto max-w-57.5 text-[13px] leading-relaxed text-muted-foreground">
                 {step.description}
               </p>
             </div>

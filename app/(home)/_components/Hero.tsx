@@ -67,10 +67,10 @@ function Hero() {
 
         {/* Right: receipt visual */}
         <div className="relative mx-auto w-full max-w-md">
-          <div className="relative rotate-[1.5deg] rounded-[18px] border border-border bg-card p-[26px] shadow-2xl shadow-black/5">
+          <div className="relative rotate-[1.5deg] rounded-[18px] border border-border bg-card p-6.5 shadow-2xl shadow-black/5">
             {/* torn top edge */}
             <div
-              className="absolute left-4 right-4 top-0 h-[3px]"
+              className="absolute left-4 right-4 top-0 h-0.75"
               style={{
                 backgroundImage:
                   "repeating-linear-gradient(90deg, var(--border) 0 8px, transparent 8px 14px)",
@@ -89,14 +89,14 @@ function Hero() {
             {expenses.map((expense, index) => (
               <div
                 key={expense.name}
-                className={`flex items-center gap-3 py-[13px] ${
+                className={`flex items-center gap-3 py-3.25 ${
                   index !== expenses.length - 1
                     ? "border-b border-dashed border-border"
                     : ""
                 }`}
               >
                 <span
-                  className={`flex h-[34px] w-[34px] shrink-0 items-center justify-center rounded-[9px] text-[15px] ${expense.iconBg}`}
+                  className={`flex h-8.5 w-8.5 shrink-0 items-center justify-center rounded-[9px] text-[15px] ${expense.iconBg}`}
                 >
                   {expense.icon}
                 </span>
