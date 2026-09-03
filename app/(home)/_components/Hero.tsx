@@ -1,6 +1,7 @@
 import React from "react";
 import { ArrowRight, Check, Sparkles } from "lucide-react";
 import Container from "@/lib/shared/components/layout/Container";
+import Link from "next/link";
 
 const expenses = [
   {
@@ -46,18 +47,24 @@ function Hero() {
           <p className="mt-5 max-w-md text-[17px] leading-relaxed text-muted-foreground">
             No forms, no dropdowns to fight with. Just describe an expense in
             plain words — &quot;Uber ₦12000&quot; — and it&apos;s categorized,
-            dated, and logged. Track spending across multiple currencies
-            without the busywork.
+            dated, and logged. Track spending across multiple currencies without
+            the busywork.
           </p>
 
           <div className="mt-8 flex flex-wrap items-center gap-4">
-            <button className="inline-flex items-center gap-2.5 rounded-xl bg-primary px-6 py-3.5 text-[15px] font-extrabold text-primary-foreground transition-opacity hover:opacity-90">
+            <Link
+              href="/signup"
+              className="inline-flex items-center gap-2.5 rounded-xl bg-primary px-6 py-3.5 text-[15px] font-extrabold text-primary-foreground transition-opacity hover:opacity-90"
+            >
               Get started free
               <ArrowRight className="h-4 w-4" />
-            </button>
-            <button className="rounded-xl border-[1.5px] border-border px-6 py-3.5 text-[15px] font-extrabold text-foreground transition-colors hover:bg-secondary">
+            </Link>
+            <Link
+              href="/#how-it-works"
+              className="rounded-xl border-[1.5px] border-border px-6 py-3.5 text-[15px] font-extrabold text-foreground transition-colors hover:bg-secondary"
+            >
               See how it works
-            </button>
+            </Link>
           </div>
 
           <p className="mt-4 text-[12.5px] text-muted-foreground/80">
