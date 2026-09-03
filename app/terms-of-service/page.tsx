@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { SectionHeading, Paragraph, List, ListItem } from "@/lib/shared/components/doc/DocText";
+import { SectionHeading } from "@/lib/shared/components/doc/DocText";
 import DocPage from "@/lib/shared/components/doc/DocPage";
 
 const toc = [
@@ -33,173 +33,201 @@ function TermsOfService() {
         </>
       }
     >
-      <Paragraph>
+      <p className="my-6 text-[14.5px] leading-relaxed text-muted-foreground">
         These Terms of Service (&quot;Terms&quot;) govern your use of
         ThinkSpend. By creating an account or using the app, you agree to
         these Terms. If you don&apos;t agree, please don&apos;t use
         ThinkSpend.
-      </Paragraph>
+      </p>
 
-      <SectionHeading number="01">
-        <span id="acceptance">Acceptance of terms</span>
+      <SectionHeading number="01" id="acceptance">
+        Acceptance of terms
       </SectionHeading>
-      <Paragraph>
+
+      <p className="mb-3 text-[14.5px] leading-relaxed text-muted-foreground">
         By registering for an account, you confirm that you&apos;re able
         to enter into a binding agreement (see Section 3 on eligibility)
         and that you accept these Terms and our{" "}
-        <Link href="/privacy">Privacy Policy</Link>.
-      </Paragraph>
+        <Link
+          href="/privacy"
+          className="text-primary font-bold"
+        >
+          Privacy Policy
+        </Link>
+        .
+      </p>
 
-      <SectionHeading number="02">
-        <span id="service">Description of the service</span>
+      <SectionHeading number="02" id="service">
+        Description of the service
       </SectionHeading>
-      <Paragraph>
+
+      <p className="mb-3 text-[14.5px] leading-relaxed text-muted-foreground">
         ThinkSpend is a personal expense-tracking tool. It lets you
         manually log expenses (including via AI-assisted natural-language
         parsing), organize them by category, set monthly budgets, and view
         basic analytics. ThinkSpend does not connect to your bank accounts
         or move money — it is a record-keeping tool only, and figures
         shown are only as accurate as what you enter.
-      </Paragraph>
+      </p>
 
-      <SectionHeading number="03">
-        <span id="accounts">Accounts & eligibility</span>
+      <SectionHeading number="03" id="accounts">
+        Accounts & eligibility
       </SectionHeading>
-      <List>
-        <ListItem>
+
+      <ul className="mb-3 ml-[22px] list-disc">
+        <li className="mb-1.5 text-[14.5px] leading-relaxed text-muted-foreground">
           You must provide accurate information when creating an account
           and keep your login credentials secure.
-        </ListItem>
-        <ListItem>
+        </li>
+        <li className="mb-1.5 text-[14.5px] leading-relaxed text-muted-foreground">
           You&apos;re responsible for all activity that happens under your
           account.
-        </ListItem>
-        <ListItem>
+        </li>
+        <li className="mb-1.5 text-[14.5px] leading-relaxed text-muted-foreground">
           You must be at least 13 years old (or the minimum age required
           in your country) to use ThinkSpend.
-        </ListItem>
-        <ListItem>
+        </li>
+        <li className="mb-1.5 text-[14.5px] leading-relaxed text-muted-foreground">
           Notify us immediately if you suspect unauthorized access to your
           account.
-        </ListItem>
-      </List>
+        </li>
+      </ul>
 
-      <SectionHeading number="04">
-        <span id="acceptable-use">Acceptable use</span>
+      <SectionHeading number="04" id="acceptable-use">
+        Acceptable use
       </SectionHeading>
-      <Paragraph>You agree not to:</Paragraph>
-      <List>
-        <ListItem>Use ThinkSpend for any unlawful purpose</ListItem>
-        <ListItem>
+
+      <p className="mb-3 text-[14.5px] leading-relaxed text-muted-foreground">
+        You agree not to:
+      </p>
+
+      <ul className="mb-3 ml-[22px] list-disc">
+        <li className="mb-1.5 text-[14.5px] leading-relaxed text-muted-foreground">
+          Use ThinkSpend for any unlawful purpose
+        </li>
+        <li className="mb-1.5 text-[14.5px] leading-relaxed text-muted-foreground">
           Attempt to gain unauthorized access to other users&apos;
           accounts or data
-        </ListItem>
-        <ListItem>
+        </li>
+        <li className="mb-1.5 text-[14.5px] leading-relaxed text-muted-foreground">
           Interfere with, disrupt, or attempt to reverse-engineer the app
-        </ListItem>
-        <ListItem>
+        </li>
+        <li className="mb-1.5 text-[14.5px] leading-relaxed text-muted-foreground">
           Use automated means (bots, scrapers) to access the service
           without permission
-        </ListItem>
-        <ListItem>
+        </li>
+        <li className="mb-1.5 text-[14.5px] leading-relaxed text-muted-foreground">
           Upload malicious code or attempt to compromise the app&apos;s
           security
-        </ListItem>
-      </List>
+        </li>
+      </ul>
 
-      <SectionHeading number="05">
-        <span id="content">Your content</span>
+      <SectionHeading number="05" id="content">
+        Your content
       </SectionHeading>
-      <Paragraph>
+
+      <p className="mb-3 text-[14.5px] leading-relaxed text-muted-foreground">
         You retain ownership of the expense data and any other information
         you enter into ThinkSpend (&quot;your content&quot;). You grant us
         a limited license to store, process, and display your content
         solely to provide and improve the service to you. We won&apos;t
         use your content for any other purpose without your consent.
-      </Paragraph>
+      </p>
 
-      <SectionHeading number="06">
-        <span id="disclaimer">Disclaimer of warranties</span>
+      <SectionHeading number="06" id="disclaimer">
+        Disclaimer of warranties
       </SectionHeading>
-      <Paragraph>
+
+      <p className="mb-3 text-[14.5px] leading-relaxed text-muted-foreground">
         ThinkSpend is provided &quot;as is&quot; and &quot;as
         available,&quot; without warranties of any kind, express or
         implied. We don&apos;t guarantee the app will be uninterrupted,
         error-free, or perfectly accurate — including AI-parsed expense
         details, which you should always review before saving. ThinkSpend
         is not financial, tax, or investment advice.
-      </Paragraph>
+      </p>
 
-      <SectionHeading number="07">
-        <span id="liability">Limitation of liability</span>
+      <SectionHeading number="07" id="liability">
+        Limitation of liability
       </SectionHeading>
-      <Paragraph>
+
+      <p className="mb-3 text-[14.5px] leading-relaxed text-muted-foreground">
         To the fullest extent permitted by law, ThinkSpend and its
         operator will not be liable for any indirect, incidental, or
         consequential damages arising from your use of the app, including
         any loss of data or financial decisions made based on information
         shown in the app.
-      </Paragraph>
+      </p>
 
-      <SectionHeading number="08">
-        <span id="termination">Termination</span>
+      <SectionHeading number="08" id="termination">
+        Termination
       </SectionHeading>
-      <Paragraph>
+
+      <p className="mb-3 text-[14.5px] leading-relaxed text-muted-foreground">
         You&apos;re always in control of your own account, in one of three
         ways:
-      </Paragraph>
-      <List>
-        <ListItem>
+      </p>
+
+      <ul className="mb-3 ml-[22px] list-disc">
+        <li className="mb-1.5 text-[14.5px] leading-relaxed text-muted-foreground">
           <strong className="text-foreground">Pause.</strong> You can
           disable login on your account at any time from Settings, without
           deleting anything. Your data stays intact and untouched;
           reactivate by logging back in whenever you&apos;re ready.
-        </ListItem>
-        <ListItem>
+        </li>
+        <li className="mb-1.5 text-[14.5px] leading-relaxed text-muted-foreground">
           <strong className="text-foreground">Delete.</strong> You can
           permanently delete your account and all associated data at any
           time from Settings. This cannot be undone.
-        </ListItem>
-        <ListItem>
+        </li>
+        <li className="mb-1.5 text-[14.5px] leading-relaxed text-muted-foreground">
           <strong className="text-foreground">Suspension by us.</strong>{" "}
           Separately, we may suspend or terminate accounts that violate
           these Terms, engage in abusive behavior, or pose a security risk
           to the service or other users. Where practical, we&apos;ll try
           to notify you of the reason.
-        </ListItem>
-      </List>
+        </li>
+      </ul>
 
-      <SectionHeading number="09">
-        <span id="changes">Changes to these terms</span>
+      <SectionHeading number="09" id="changes">
+        Changes to these terms
       </SectionHeading>
-      <Paragraph>
+
+      <p className="mb-3 text-[14.5px] leading-relaxed text-muted-foreground">
         We may update these Terms from time to time. If we make material
         changes, we&apos;ll update the &quot;Last updated&quot; date above
         and, where appropriate, notify you directly. Continuing to use
         ThinkSpend after changes take effect means you accept the updated
         Terms.
-      </Paragraph>
+      </p>
 
-      <SectionHeading number="10">
-        <span id="law">Governing law</span>
+      <SectionHeading number="10" id="law">
+        Governing law
       </SectionHeading>
-      <Paragraph>
+
+      <p className="mb-3 text-[14.5px] leading-relaxed text-muted-foreground">
         <em>
           [Placeholder — specify the country/state whose law governs these
           Terms, and where disputes would be resolved, once decided.
           Nigeria is the likely default given where the app is built, but
           confirm with a lawyer.]
         </em>
-      </Paragraph>
+      </p>
 
-      <SectionHeading number="11">
-        <span id="contact">Contact us</span>
+      <SectionHeading number="11" id="contact">
+        Contact us
       </SectionHeading>
-      <Paragraph>
+
+      <p className="mb-3 text-[14.5px] leading-relaxed text-muted-foreground">
         Questions about these Terms? Reach out at{" "}
-        <Link href="mailto:yakubjumat@gmail.com">yakubjumat@gmail.com</Link>
+        <Link
+          href="mailto:yakubjumat@gmail.com"
+          className="text-primary font-bold"
+        >
+          yakubjumat@gmail.com
+        </Link>
         .
-      </Paragraph>
+      </p>
     </DocPage>
   );
 }
