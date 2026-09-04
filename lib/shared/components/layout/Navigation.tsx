@@ -4,14 +4,44 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { ArrowRight, Menu, X } from "lucide-react";
 import Container from "@/lib/shared/components/layout/Container";
+import { useUser } from "@/lib/hooks/useUser";
 
 const navLinks = [
   { label: "Features", href: "/#features" },
   { label: "How it works", href: "/#how-it-works" },
 ];
 
+function getInitials(
+  profile: { firstName: string; lastName: string } | null,
+  email: string | undefined,
+): string {
+  if (profile?.firstName || profile?.lastName) {
+    const initials = `${profile.firstName?.[0] ?? ""}${profile.lastName?.[0] ?? ""}`;
+    if (initials) return initials.toUpperCase();
+  }
+  if (email) return email.slice(0, 2).toUpperCase();
+  return "?";
+}
+
+function Avatar({ initials, className = "" }: { initials: string; className?: string }) {
+  return (
+    <span
+      className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-xs font-bold text-white ${className}`}
+      style={{
+        backgroundImage:
+          "linear-gradient(155deg, var(--category-bills), var(--primary-dark))",
+      }}
+    >
+      {initials}
+    </span>
+  );
+}
+
 function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { user, profile, loading } = useUser();
+  const isAuthenticated = !loading && !!user;
+  const initials = getInitials(profile, user?.email);
 
   const closeMenu = () => {
     setIsMenuOpen(false);
@@ -63,21 +93,41 @@ function Navigation() {
           </div>
 
           {/* Desktop actions */}
-          <div className="hidden items-center gap-6 md:flex">
-            <Link
-              href="/login"
-              className="text-sm font-semibold text-foreground transition-colors hover:text-primary"
-            >
-              Log in
-            </Link>
-
-            <Link
-              href="/signup"
-              className="inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90"
-            >
-              Get started free
-              <ArrowRight className="h-4 w-4" />
-            </Link>
+          <div className="hidden items-center gap-4 md:flex">
+            {!loading && (
+              <>
+                {isAuthenticated ? (
+                  <>
+                    <Link
+                      href="/dashboard"
+                      className="inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90"
+                    >
+                      Go to Dashboard
+                      <ArrowRight className="h-4 w-4" />
+                    </Link>
+                    <Link href="/settings" aria-label="Account settings">
+                      <Avatar initials={initials} />
+                    </Link>
+                  </>
+                ) : (
+                  <>
+                    <Link
+                      href="/login"
+                      className="text-sm font-semibold text-foreground transition-colors hover:text-primary"
+                    >
+                      Log in
+                    </Link>
+                    <Link
+                      href="/signup"
+                      className="inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90"
+                    >
+                      Get started free
+                      <ArrowRight className="h-4 w-4" />
+                    </Link>
+                  </>
+                )}
+              </>
+            )}
           </div>
 
           {/* Mobile menu button */}
@@ -90,7 +140,7 @@ function Navigation() {
             aria-controls="mobile-navigation"
           >
             {isMenuOpen ? (
-              <X className="h-6 w-6"/>
+              <X className="h-6 w-6" />
             ) : (
               <Menu className="h-6 w-6" />
             )}
@@ -106,9 +156,7 @@ function Navigation() {
             type="button"
             aria-label="Close menu"
             onClick={closeMenu}
-            // className="fixed inset-0 top-[73px] z-40 bg-black/10 md:hidden"
             className="fixed inset-0 z-40 bg-black/10 md:hidden"
-
           />
 
           {/* Mobile menu */}
@@ -130,24 +178,55 @@ function Navigation() {
                   </Link>
                 ))}
 
-                {/* Login */}
-                <Link
-                  href="/login"
-                  onClick={closeMenu}
-                  className="py-4 text-sm font-semibold text-foreground"
-                >
-                  Log in
-                </Link>
+                {!loading &&
+                  (isAuthenticated ? (
+                    <>
+                      {/* Account row */}
+                      <Link
+                        href="/settings"
+                        onClick={closeMenu}
+                        className="flex items-center gap-3 py-4"
+                      >
+                        <Avatar initials={initials} />
+                        <span className="text-sm font-semibold text-foreground">
+                          {profile?.firstName
+                            ? `${profile.firstName} ${profile.lastName ?? ""}`.trim()
+                            : user?.email}
+                        </span>
+                      </Link>
 
-                {/* CTA */}
-                <Link
-                  href="/signup"
-                  onClick={closeMenu}
-                  className="mt-3 inline-flex h-14 items-center justify-center gap-2 rounded-xl bg-primary px-5 text-lg font-semibold text-primary-foreground transition-opacity hover:opacity-90"
-                >
-                  Get started free
-                  <ArrowRight className="h-5 w-5" />
-                </Link>
+                      {/* CTA */}
+                      <Link
+                        href="/dashboard"
+                        onClick={closeMenu}
+                        className="mt-3 inline-flex h-14 items-center justify-center gap-2 rounded-xl bg-primary px-5 text-lg font-semibold text-primary-foreground transition-opacity hover:opacity-90"
+                      >
+                        Go to Dashboard
+                        <ArrowRight className="h-5 w-5" />
+                      </Link>
+                    </>
+                  ) : (
+                    <>
+                      {/* Login */}
+                      <Link
+                        href="/login"
+                        onClick={closeMenu}
+                        className="py-4 text-sm font-semibold text-foreground"
+                      >
+                        Log in
+                      </Link>
+
+                      {/* CTA */}
+                      <Link
+                        href="/signup"
+                        onClick={closeMenu}
+                        className="mt-3 inline-flex h-14 items-center justify-center gap-2 rounded-xl bg-primary px-5 text-lg font-semibold text-primary-foreground transition-opacity hover:opacity-90"
+                      >
+                        Get started free
+                        <ArrowRight className="h-5 w-5" />
+                      </Link>
+                    </>
+                  ))}
               </div>
             </div>
           </div>

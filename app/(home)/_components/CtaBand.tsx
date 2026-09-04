@@ -1,6 +1,7 @@
 import React from "react";
 import { ArrowRight } from "lucide-react";
 import Container from "@/lib/shared/components/layout/Container";
+import Link from "next/link";
 
 function CtaBand() {
   return (
@@ -19,10 +20,10 @@ function CtaBand() {
           <p className="mt-3 text-[15px] opacity-90">
             No setup, no charge — just describe your first expense.
           </p>
-          <button className="mt-7 inline-flex items-center gap-2.5 rounded-xl bg-card px-6 py-3.5 text-[15px] font-extrabold text-primary transition-opacity hover:opacity-90">
+          <Link href="/signup" className="mt-7 inline-flex items-center gap-2.5 rounded-xl bg-card px-6 py-3.5 text-[15px] font-extrabold text-primary transition-opacity hover:opacity-90">
             Get started free
             <ArrowRight className="h-4 w-4" />
-          </button>
+          </Link>
         </div>
       </Container>
     </section>
