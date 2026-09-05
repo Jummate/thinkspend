@@ -26,11 +26,6 @@ const LoginForm = ({ onSubmit }: LoginFormProps) => {
 
   return (
     <div className="w-full">
-      {/* {error && (
-        <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-md">
-          <p className="text-sm text-red-600">{error}</p>
-        </div>
-      )} */}
       <form
         className="flex flex-col items-center justify-center w-full gap-4"
         onSubmit={handleSubmit(onSubmit)}
@@ -40,7 +35,7 @@ const LoginForm = ({ onSubmit }: LoginFormProps) => {
             htmlFor="email"
             className="self-start"
           >
-            Email <sup className="text-red-600">*</sup>
+            Email <sup className="text-danger">*</sup>
           </label>
           <Input
             type="email"
@@ -52,7 +47,7 @@ const LoginForm = ({ onSubmit }: LoginFormProps) => {
             {...register("email")}
           />
           {errors.email && (
-            <span className="text-red-600 text-sm">{errors.email.message}</span>
+            <span className="text-danger text-sm">{errors.email.message}</span>
           )}
         </div>
         <div className="flex flex-1 flex-col gap-2 w-full">
@@ -60,7 +55,7 @@ const LoginForm = ({ onSubmit }: LoginFormProps) => {
             htmlFor="password"
             className="self-start"
           >
-            Password <sup className="text-red-600">*</sup>
+            Password <sup className="text-danger">*</sup>
           </label>
           <Input
             type="password"
@@ -72,7 +67,7 @@ const LoginForm = ({ onSubmit }: LoginFormProps) => {
             {...register("password")}
           />
           {errors.password && (
-            <span className="text-red-600 text-sm">
+            <span className="text-danger text-sm">
               {errors.password.message}
             </span>
           )}

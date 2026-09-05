@@ -2,6 +2,7 @@ import React from "react";
 import { ArrowRight, Check, Sparkles } from "lucide-react";
 import Container from "@/lib/shared/components/layout/Container";
 import Link from "next/link";
+import { ROUTES } from "@/lib/routes";
 
 const expenses = [
   {
@@ -53,7 +54,7 @@ function Hero() {
 
           <div className="mt-8 flex flex-wrap items-center gap-4">
             <Link
-              href="/signup"
+              href={ROUTES.SIGNUP}
               className="inline-flex items-center gap-2.5 rounded-xl bg-primary px-6 py-3.5 text-[15px] font-extrabold text-primary-foreground transition-opacity hover:opacity-90"
             >
               Get started free

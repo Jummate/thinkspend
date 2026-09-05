@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ArrowRight, Menu, X } from "lucide-react";
 import Container from "@/lib/shared/components/layout/Container";
 import { useUser } from "@/lib/hooks/useUser";
+import { ROUTES } from "@/lib/routes";
 
 const navLinks = [
   { label: "Features", href: "/#features" },
@@ -66,7 +67,7 @@ function Navigation() {
         <nav className="relative z-50 flex items-center justify-between py-4">
           {/* Logo */}
           <Link
-            href="/"
+            href={ROUTES.HOME}
             onClick={closeMenu}
             className="flex items-center gap-2.5"
           >
@@ -99,26 +100,26 @@ function Navigation() {
                 {isAuthenticated ? (
                   <>
                     <Link
-                      href="/dashboard"
+                      href={ROUTES.DASHBOARD}
                       className="inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90"
                     >
                       Go to Dashboard
                       <ArrowRight className="h-4 w-4" />
                     </Link>
-                    <Link href="/settings" aria-label="Account settings">
+                    <Link href={ROUTES.SETTINGS} aria-label="Account settings">
                       <Avatar initials={initials} />
                     </Link>
                   </>
                 ) : (
                   <>
                     <Link
-                      href="/login"
+                      href={ROUTES.LOGIN}
                       className="text-sm font-semibold text-foreground transition-colors hover:text-primary"
                     >
                       Log in
                     </Link>
                     <Link
-                      href="/signup"
+                      href={ROUTES.SIGNUP}
                       className="inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90"
                     >
                       Get started free
@@ -197,7 +198,7 @@ function Navigation() {
 
                       {/* CTA */}
                       <Link
-                        href="/dashboard"
+                        href={ROUTES.DASHBOARD}
                         onClick={closeMenu}
                         className="mt-3 inline-flex h-14 items-center justify-center gap-2 rounded-xl bg-primary px-5 text-lg font-semibold text-primary-foreground transition-opacity hover:opacity-90"
                       >
@@ -209,7 +210,7 @@ function Navigation() {
                     <>
                       {/* Login */}
                       <Link
-                        href="/login"
+                        href={ROUTES.LOGIN}
                         onClick={closeMenu}
                         className="py-4 text-sm font-semibold text-foreground"
                       >
@@ -218,7 +219,7 @@ function Navigation() {
 
                       {/* CTA */}
                       <Link
-                        href="/signup"
+                        href={ROUTES.SIGNUP}
                         onClick={closeMenu}
                         className="mt-3 inline-flex h-14 items-center justify-center gap-2 rounded-xl bg-primary px-5 text-lg font-semibold text-primary-foreground transition-opacity hover:opacity-90"
                       >

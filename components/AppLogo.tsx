@@ -1,22 +1,11 @@
-import React from 'react'
-
-// import Image from 'next/image'
- 
-
+import React from "react";
 
 const AppLogo = () => {
   return (
+    <span className="flex h-[46px] w-[46px] shrink-0 items-center justify-center rounded-xl bg-primary text-lg font-bold text-primary-foreground">
+      TS
+    </span>
+  );
+};
 
-    <div className='bg-purple-500 h-10 w-10 rounded-full text-center'>
-        Logo
-    </div>
-    // <Image
-    //   src="/profile.png"
-    //   alt="Picture of the author"
-    //   width={500}
-    //   height={500}
-    // />
-  )
-}
-
-export default AppLogo
+export default AppLogo;

@@ -1,6 +1,8 @@
 "use client";
 
 import AppLogo from "@/components/AppLogo";
+import AuthCard from "@/components/auth/AuthCard";
+import AuthCardHeader from "@/components/auth/AuthCardHeader";
 import SignUpForm from "@/components/auth/SignUpForm";
 import { ROUTES } from "@/lib/routes";
 import { signup } from "@/lib/services/authService";
@@ -10,13 +12,10 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 function SignUpPage() {
-  // const [authError, setAuthError] = useState<string | null>(null);
   const router = useRouter();
 
   const handleSignUp = async (data: RegisterFormData) => {
     try {
-      // setAuthError(null); // Clear previous errors
-
       const result = await signup(
         data.email,
         data.password,
@@ -25,7 +24,6 @@ function SignUpPage() {
       );
 
       if (!result.success) {
-        // toast.error(result.message);
         showError(result.message || "");
         return;
       }
@@ -41,35 +39,27 @@ function SignUpPage() {
   };
 
   return (
-    <main className="flex items-center justify-center h-full p-6">
-      <div className="shadow-lg rounded-xl w-full mx-auto max-w-lg overflow-hidden">
-        <section className="flex flex-col items-center justify-center text-center p-4 bg-primary">
-          <AppLogo />
-          <h1 className="text-white text-2xl mb-4 font-bold">Create Account</h1>
-          <p className="text-sm text-white/80">Start tracking today.</p>
-          <p className="text-sm text-white/80">
-            Create an account to manage your expenses effortlessly.
-          </p>
-        </section>
+    <main className="flex h-full items-center justify-center p-6">
+      <AuthCard>
+        <AuthCardHeader
+          icon={<AppLogo />}
+          title="Create account"
+          subtitle="Start tracking today — set up your ThinkSpend account."
+        />
 
-        <section className="flex flex-col items-center justify-center py-10 px-5 sm:px:7 md:px-10 gap-10">
+        <div className="flex flex-col items-center justify-center gap-6 px-8 pb-9">
           <SignUpForm onSubmit={handleSignUp} />
-          <p className="text-muted/80">
+          <p className="text-sm text-muted-foreground">
             Already have an account?{" "}
             <Link
               href={ROUTES.LOGIN}
-              className="text-primary cursor-pointer hover:underline font-bold"
+              className="cursor-pointer font-bold text-primary hover:underline"
             >
               Log in
             </Link>
           </p>
-        </section>
-
-        {/* <section className='p-4 text-center flex flex-col justify-center items-center gap-2'>
-          <p className='text-muted-foreground mb-4'>Log in to manage your finances</p>
-
-        </section> */}
-      </div>
+        </div>
+      </AuthCard>
     </main>
   );
 }

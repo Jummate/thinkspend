@@ -16,10 +16,70 @@ async function handleSupabaseCall(callback: () => Promise<AuthResponse>) {
   };
 }
 
-export async function login(email: string, password: string) {
-  return handleSupabaseCall(() =>
-    supabase.auth.signInWithPassword({ email, password }),
-  );
+type ActiveLoginResult = {
+  success: true;
+  status: "active";
+  data: AuthResponse["data"];
+};
+
+type PausedLoginResult = {
+  success: true;
+  status: "paused";
+  userId: string;
+  pausedAt: string;
+};
+
+type FailedLoginResult = {
+  success: false;
+  message: string;
+};
+
+export type LoginResult =
+  | ActiveLoginResult
+  | PausedLoginResult
+  | FailedLoginResult;
+
+export async function login(
+  email: string,
+  password: string,
+): Promise<LoginResult> {
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email,
+    password,
+  });
+
+  if (error) {
+    return {
+      success: false,
+      message: getFriendlyErrorMessage(error.message),
+    };
+  }
+
+  const user = data.user;
+
+  const { data: profile, error: profileError } = await supabase
+    .from("profiles")
+    .select("paused_at")
+    .eq("id", user.id)
+    .maybeSingle();
+
+  if (profileError) {
+    // Don't block a successful credential check on a profile-read hiccup —
+    // fail open to "active" rather than stranding the user.
+    console.error("Profile fetch error during login:", profileError);
+    return { success: true, status: "active", data };
+  }
+
+  if (profile?.paused_at) {
+    return {
+      success: true,
+      status: "paused",
+      userId: user.id,
+      pausedAt: profile.paused_at,
+    };
+  }
+
+  return { success: true, status: "active", data };
 }
 
 export async function signup(
@@ -50,9 +110,31 @@ export async function signup(
   };
 }
 
-// export async function signup(email: string, password: string) {
-//   return handleSupabaseCall(() => supabase.auth.signUp({ email, password }));
-// }
+/**
+ * Clears paused_at, restoring normal login. Caller is responsible for
+ * establishing/continuing the session afterward (the credential check
+ * already succeeded once, in login(), before this is ever reachable).
+ */
+export async function reactivateAccount(userId: string) {
+  const { error } = await supabase
+    .from("profiles")
+    .update({ paused_at: null })
+    .eq("id", userId);
+
+  if (error) {
+    // Note: this is a Postgrest error, not a Supabase Auth error — worth
+    // checking whether getFriendlyErrorMessage (built for auth error
+    // codes) produces a sane message here, or whether this needs its own
+    // mapping.
+    console.error("Reactivate account error:", error);
+    return {
+      success: false,
+      message: getFriendlyErrorMessage(error.message),
+    };
+  }
+
+  return { success: true };
+}
 
 export async function logout() {
   const { error } = await supabase.auth.signOut();
@@ -68,12 +150,3 @@ export async function logout() {
     success: true,
   };
 }
-
-// export async function logout() {
-//   return handleSupabaseCall(() => supabase.auth.signOut());
-// }
-
-// const handleLogout = async () => {
-//   await supabase.auth.signOut();
-//   router.push("/login");
-// };
