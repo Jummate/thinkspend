@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import Input from "../ui/Input";
 import Button from "../ui/Button";
+import FormInput from "../ui/FormInput";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { RegisterFormData, registerSchema } from "@/lib/validations/auth";
@@ -13,7 +13,7 @@ interface SignUpFormProps {
   error?: string | null;
 }
 
-const SignUpForm = ({ onSubmit }: SignUpFormProps) => {
+const   SignUpForm = ({ onSubmit }: SignUpFormProps) => {
   const {
     register,
     handleSubmit,
@@ -33,117 +33,58 @@ const SignUpForm = ({ onSubmit }: SignUpFormProps) => {
       onSubmit={handleSubmit(onSubmit)}
     >
       <div className="flex flex-col sm:flex-row gap-2 w-full">
-        <div className="flex flex-col flex-1 min-w-0 gap-2">
-          <label
-            htmlFor="firstName"
-            className="self-start"
-          >
-            First Name <sup className="text-danger">*</sup>
-          </label>
-          <Input
-            type="text"
+        <div className="flex-1 min-w-0">
+          <FormInput
             id="firstName"
-            styles="rounded-lg"
-            containerStyles="bg-secondary"
+            label="First Name"
+            required
             placeholder="Yakub"
-            error={!!errors.firstName}
+            error={errors.firstName?.message}
             {...register("firstName")}
           />
-          {errors.firstName && (
-            <span className="text-danger text-sm">
-              {errors.firstName.message}
-            </span>
-          )}
         </div>
 
-        <div className="flex flex-col flex-1 min-w-0 gap-2">
-          <label
-            htmlFor="lastName"
-            className="self-start"
-          >
-            Last Name <sup className="text-danger">*</sup>
-          </label>
-          <Input
-            type="text"
+        <div className="flex-1 min-w-0">
+          <FormInput
             id="lastName"
-            styles="rounded-lg"
-            containerStyles="bg-secondary"
+            label="Last Name"
+            required
             placeholder="Jumat"
-            error={!!errors.lastName}
+            error={errors.lastName?.message}
             {...register("lastName")}
           />
-          {errors.lastName && (
-            <span className="text-danger text-sm">
-              {errors.lastName.message}
-            </span>
-          )}
         </div>
       </div>
 
-      <div className="flex flex-1 flex-col gap-2 w-full">
-        <label
-          htmlFor="email"
-          className="self-start"
-        >
-          Email <sup className="text-danger">*</sup>
-        </label>
-        <Input
-          type="email"
-          id="email"
-          styles="rounded-lg"
-          containerStyles="bg-secondary"
-          placeholder="name@gmail.com"
-          error={!!errors.email}
-          {...register("email")}
-        />
-        {errors.email && (
-          <span className="text-danger text-sm">{errors.email.message}</span>
-        )}
-      </div>
-      <div className="flex flex-1 flex-col gap-2 w-full">
-        <label
-          htmlFor="password"
-          className="self-start"
-        >
-          Password <sup className="text-danger">*</sup>
-        </label>
-        <Input
-          type="password"
-          id="password"
-          styles="rounded-lg"
-          containerStyles="bg-secondary"
-          placeholder="Enter your password"
-          error={!!errors.password}
-          {...register("password")}
-        />
-        {errors.password && (
-          <span className="text-danger text-sm">
-            {errors.password.message}
-          </span>
-        )}
-      </div>
-      <div className="flex flex-1 flex-col gap-2 w-full">
-        <label
-          htmlFor="confirmPassword"
-          className="self-start"
-        >
-          Confirm Password <sup className="text-danger">*</sup>
-        </label>
-        <Input
-          type="password"
-          id="confirmPassword"
-          styles="rounded-lg"
-          containerStyles="bg-secondary"
-          placeholder="Re-enter your password"
-          error={!!errors.confirmPassword}
-          {...register("confirmPassword")}
-        />
-        {errors.confirmPassword && (
-          <span className="text-danger text-sm">
-            {errors.confirmPassword.message}
-          </span>
-        )}
-      </div>
+      <FormInput
+        id="email"
+        label="Email"
+        required
+        type="email"
+        placeholder="name@gmail.com"
+        error={errors.email?.message}
+        {...register("email")}
+      />
+
+      <FormInput
+        id="password"
+        label="Password"
+        required
+        type="password"
+        placeholder="Enter your password"
+        error={errors.password?.message}
+        {...register("password")}
+      />
+
+      <FormInput
+        id="confirmPassword"
+        label="Confirm Password"
+        required
+        type="password"
+        placeholder="Re-enter your password"
+        error={errors.confirmPassword?.message}
+        {...register("confirmPassword")}
+      />
 
       <label className="flex w-full items-start gap-2.5 cursor-pointer">
         <input
@@ -173,7 +114,7 @@ const SignUpForm = ({ onSubmit }: SignUpFormProps) => {
         </span>
       </label>
       {errors.consent && (
-        <span className="self-start text-danger text-sm">
+        <span className="self-start text-danger text-xs">
           {errors.consent.message}
         </span>
       )}
@@ -181,7 +122,7 @@ const SignUpForm = ({ onSubmit }: SignUpFormProps) => {
       <Button
         type="submit"
         disabled={isSubmitting || !hasConsented}
-        styles="font-bold flex items-center justify-center gap-4 shadow-xl disabled:opacity-30 disabled:cursor-not-allowed"
+        styles="font-bold flex items-center justify-center gap-4 shadow-xl"
       >
         {isSubmitting ? "Creating account..." : "Sign up"}
       </Button>

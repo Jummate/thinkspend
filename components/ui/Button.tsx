@@ -21,8 +21,11 @@ const Button = ({
       type={type}
       disabled={disabled}
       className={clsx(
-        "bg-primary/90 text-white w-full rounded-lg p-2 cursor-pointer hover:bg-primary",
-        styles
+        "w-full rounded-lg p-2 transition-colors",
+        disabled
+          ? "bg-secondary text-muted-foreground cursor-not-allowed"
+          : "bg-primary/90 text-white cursor-pointer hover:bg-primary",
+        styles,
       )}
       onClick={onClick}
     >
