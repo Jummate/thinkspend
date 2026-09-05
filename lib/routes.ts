@@ -7,7 +7,7 @@ export const ROUTES = {
   // Public
   HOME: "/",
   TERMS:"/terms-of-service",
-  PRIVACY:"/policy",
+  PRIVACY:"/privacy",
 
   // Authentication
   LOGIN: "/login",
