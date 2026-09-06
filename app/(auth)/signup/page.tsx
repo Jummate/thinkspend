@@ -5,7 +5,7 @@ import AuthCard from "@/components/auth/AuthCard";
 import AuthCardHeader from "@/components/auth/AuthCardHeader";
 import SignUpForm from "@/components/auth/SignUpForm";
 import { ROUTES } from "@/lib/routes";
-import { signup } from "@/lib/services/authService";
+import { signup } from "@/lib/services/auth.service";
 import { showError } from "@/lib/ui/toast";
 import { RegisterFormData } from "@/lib/validations/auth";
 import Link from "next/link";

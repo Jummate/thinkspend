@@ -1,6 +1,6 @@
 import React from "react";
 import type { LucideIcon } from "lucide-react";
-import Container from "@/lib/shared/components/layout/Container";
+import Container from "@/app/components/layout/Container";
 import {
   Sparkles,
   ArrowLeftRight,
@@ -71,7 +71,10 @@ const features: Feature[] = [
 
 function Features() {
   return (
-    <section id="features" className="py-20">
+    <section
+      id="features"
+      className="py-20"
+    >
       <Container>
         <div className="mx-auto mb-12 max-w-xl text-center">
           <div className="text-xs font-extrabold uppercase tracking-wider text-primary">

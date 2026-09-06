@@ -10,7 +10,7 @@ import CheckEmailForm, {
   RESEND_COOLDOWN_SECONDS,
   ResendOutcome,
 } from "@/components/auth/CheckEmailForm";
-import { forgotPassword } from "@/lib/services/authService";
+import { forgotPassword } from "@/lib/services/auth.service";
 import { showError } from "@/lib/ui/toast";
 import { ROUTES } from "@/lib/routes";
 
@@ -73,7 +73,12 @@ function CheckEmailPage() {
     <main className="flex h-full items-center justify-center p-6">
       <AuthCard>
         <AuthCardHeader
-          icon={<AuthStatusIcon icon={Mail} variant="success" />}
+          icon={
+            <AuthStatusIcon
+              icon={Mail}
+              variant="success"
+            />
+          }
           title="Check your email"
         />
 

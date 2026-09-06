@@ -3,7 +3,7 @@
 import AppLogo from "@/components/AppLogo";
 import { useUser } from "@/lib/hooks/useUser";
 import { ROUTES } from "@/lib/routes";
-import { logout } from "@/lib/services/authService";
+import { logout } from "@/lib/services/auth.service";
 import {
   BarChart3,
   FileText,

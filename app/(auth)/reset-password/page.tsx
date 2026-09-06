@@ -6,7 +6,7 @@ import Link from "next/link";
 import AppLogo from "@/components/AppLogo";
 import AuthCard from "@/components/auth/AuthCard";
 import AuthCardHeader from "@/components/auth/AuthCardHeader";
-import { logout, updatePassword } from "@/lib/services/authService";
+import { logout, updatePassword } from "@/lib/services/auth.service";
 import { showError, showSuccess } from "@/lib/ui/toast";
 import { ROUTES } from "@/lib/routes";
 import { ResetPasswordFormData } from "@/lib/validations/auth";
@@ -57,7 +57,10 @@ function ResetPasswordPage() {
     return (
       <main className="flex h-full items-center justify-center p-6">
         <AuthCard>
-          <AuthCardHeader icon={<AppLogo />} title="Loading..." />
+          <AuthCardHeader
+            icon={<AppLogo />}
+            title="Loading..."
+          />
         </AuthCard>
       </main>
     );
@@ -74,7 +77,10 @@ function ResetPasswordPage() {
   return (
     <main className="flex h-full items-center justify-center p-6">
       <AuthCard>
-        <AuthCardHeader icon={<AppLogo />} title="Set a new password" />
+        <AuthCardHeader
+          icon={<AppLogo />}
+          title="Set a new password"
+        />
 
         <div className="flex flex-col items-center justify-center gap-6 px-8 pb-9">
           <ResetPasswordForm

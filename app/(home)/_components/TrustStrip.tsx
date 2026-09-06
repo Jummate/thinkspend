@@ -1,5 +1,5 @@
 import React from "react";
-import Container from "@/lib/shared/components/layout/Container";
+import Container from "@/app/components/layout/Container";
 
 const currencies = [
   { flag: "🇳🇬", label: "Naira" },
@@ -17,7 +17,10 @@ function TrustStrip() {
         </p>
         <div className="mt-4.5 flex flex-wrap items-center justify-center gap-11 text-[15px] font-extrabold text-muted-foreground/70">
           {currencies.map((currency) => (
-            <span key={currency.label} className="flex items-center gap-2">
+            <span
+              key={currency.label}
+              className="flex items-center gap-2"
+            >
               <span aria-hidden>{currency.flag}</span>
               {currency.label}
             </span>

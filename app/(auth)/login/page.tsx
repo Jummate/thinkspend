@@ -6,7 +6,7 @@ import AuthCard from "@/components/auth/AuthCard";
 import AuthCardHeader from "@/components/auth/AuthCardHeader";
 import LoginForm from "@/components/auth/LoginForm";
 import { ROUTES } from "@/lib/routes";
-import { login, reactivateAccount } from "@/lib/services/authService";
+import { login, reactivateAccount } from "@/lib/services/auth.service";
 import { showError } from "@/lib/ui/toast";
 import { LoginFormData } from "@/lib/validations/auth";
 import Link from "next/link";

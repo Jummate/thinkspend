@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { ArrowRight, Menu, X } from "lucide-react";
-import Container from "@/lib/shared/components/layout/Container";
+import Container from "@/app/components/layout/Container";
 import { useUser } from "@/lib/hooks/useUser";
 import { ROUTES } from "@/lib/routes";
 
@@ -24,7 +24,13 @@ function getInitials(
   return "?";
 }
 
-function Avatar({ initials, className = "" }: { initials: string; className?: string }) {
+function Avatar({
+  initials,
+  className = "",
+}: {
+  initials: string;
+  className?: string;
+}) {
   return (
     <span
       className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-xs font-bold text-white ${className}`}
@@ -106,7 +112,10 @@ function Navigation() {
                       Go to Dashboard
                       <ArrowRight className="h-4 w-4" />
                     </Link>
-                    <Link href={ROUTES.SETTINGS} aria-label="Account settings">
+                    <Link
+                      href={ROUTES.SETTINGS}
+                      aria-label="Account settings"
+                    >
                       <Avatar initials={initials} />
                     </Link>
                   </>

@@ -1,6 +1,6 @@
 import React from "react";
 import { AlertTriangle } from "lucide-react";
-import DocNav from "@/lib/shared/components/layout/DocNav";
+import DocNav from "@/app/components/layout/DocNav";
 
 type TocItem = {
   id: string;
@@ -15,7 +15,13 @@ type DocPageProps = {
   children: React.ReactNode;
 };
 
-function DocPage({ title, lastUpdated, disclaimer, toc, children }: DocPageProps) {
+function DocPage({
+  title,
+  lastUpdated,
+  disclaimer,
+  toc,
+  children,
+}: DocPageProps) {
   return (
     <>
       <DocNav />
