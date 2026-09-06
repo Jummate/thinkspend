@@ -92,7 +92,7 @@ const CheckEmailForm = ({
       <p className="text-center text-[13.5px] leading-relaxed text-muted-foreground">
         We&apos;ve sent a password reset link to{" "}
         <span className="font-bold text-foreground">{email}</span>. It
-        expires in 15 minutes.
+        expires in 1 hour.
       </p>
 
       <Button
