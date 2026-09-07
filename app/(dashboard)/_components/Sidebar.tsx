@@ -139,13 +139,6 @@
 
 // export default Sidebar;
 
-
-
-
-
-
-
-
 "use client";
 
 import Link from "next/link";
@@ -153,9 +146,7 @@ import { usePathname } from "next/navigation";
 
 import AppLogo from "@/components/AppLogo";
 import ProfileMenu from "./ProfileMenu";
-import { navItems } from "./nav-items";
-
-
+import { navItems } from "../_lib/nav-items";
 
 const Sidebar = () => {
   const pathname = usePathname();
@@ -192,7 +183,10 @@ const Sidebar = () => {
                       : "text-muted-foreground hover:bg-secondary hover:text-foreground"
                   }`}
                 >
-                  <Icon size={20} className="shrink-0" />
+                  <Icon
+                    size={20}
+                    className="shrink-0"
+                  />
                   <span className="hidden lg:inline">{item.label}</span>
                 </Link>
               </li>

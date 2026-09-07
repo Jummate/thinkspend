@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Plus } from "lucide-react";
-import { navItems, type NavItem } from "./nav-items";
+import { navItems, type NavItem } from "../_lib/nav-items";
 import { ROUTES } from "@/lib/routes";
 
 // Ceiling on how many destinations can show as direct tabs before we'd
@@ -49,7 +49,11 @@ function MobileBottomNav() {
     <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-card md:hidden">
       <div className="relative grid grid-cols-5 items-center px-2">
         {leftItems.map((item) => (
-          <NavTab key={item.href} item={item} active={isActive(item.href)} />
+          <NavTab
+            key={item.href}
+            item={item}
+            active={isActive(item.href)}
+          />
         ))}
 
         {/* Center spacer — reserves the FAB's horizontal slot in the grid
@@ -57,7 +61,11 @@ function MobileBottomNav() {
         <div />
 
         {rightItems.map((item) => (
-          <NavTab key={item.href} item={item} active={isActive(item.href)} />
+          <NavTab
+            key={item.href}
+            item={item}
+            active={isActive(item.href)}
+          />
         ))}
 
         <Link
