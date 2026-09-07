@@ -164,7 +164,7 @@ function Navigation() {
                     <>
                       {/* Account row */}
                       <Link
-                        href="/settings"
+                        href={ROUTES.SETTINGS}
                         onClick={closeMenu}
                         className="flex items-center gap-3 py-4"
                       >

@@ -150,25 +150,12 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import {
-  BarChart3,
-  LayoutDashboard,
-  Receipt,
-  Settings,
-} from "lucide-react";
+
 import AppLogo from "@/components/AppLogo";
 import ProfileMenu from "./ProfileMenu";
-import { ROUTES } from "@/lib/routes";
+import { navItems } from "./nav-items";
 
-// NOTE: Analytics has no page yet ((dashboard)/analytics doesn't exist in
-// the folder tree) — this link currently 404s. Left in per earlier
-// discussion pending a decision on whether Analytics is in scope yet.
-const navItems = [
-  { href: ROUTES.DASHBOARD, label: "Dashboard", icon: LayoutDashboard },
-  { href: ROUTES.EXPENSES, label: "Expenses", icon: Receipt },
-  { href: ROUTES.ANALYTICS, label: "Analytics", icon: BarChart3 },
-  { href: ROUTES.SETTINGS, label: "Settings", icon: Settings },
-];
+
 
 const Sidebar = () => {
   const pathname = usePathname();
