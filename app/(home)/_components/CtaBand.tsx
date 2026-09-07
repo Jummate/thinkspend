@@ -1,6 +1,6 @@
 import React from "react";
 import { ArrowRight } from "lucide-react";
-import Container from "@/app/components/layout/Container";
+import Container from "@/components/layout/Container";
 import Link from "next/link";
 import { ROUTES } from "@/lib/routes";
 

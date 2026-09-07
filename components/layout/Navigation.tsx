@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { ArrowRight, Menu, X } from "lucide-react";
-import Container from "@/app/components/layout/Container";
+import Container from "@/components/layout/Container";
 import { useUser } from "@/lib/hooks/useUser";
 import { ROUTES } from "@/lib/routes";
 

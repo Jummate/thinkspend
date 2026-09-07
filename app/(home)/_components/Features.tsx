@@ -1,6 +1,6 @@
 import React from "react";
 import type { LucideIcon } from "lucide-react";
-import Container from "@/app/components/layout/Container";
+import Container from "@/components/layout/Container";
 import {
   Sparkles,
   ArrowLeftRight,

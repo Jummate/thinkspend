@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import Container from "@/app/components/layout/Container";
+import Container from "@/components/layout/Container";
 
 const footerColumns = [
   {

@@ -191,7 +191,7 @@ export default function SettingsPage() {
       if (!user) return;
       const amount = formatAmountToNumber(data.amount);
       await upsertBudget(user.id, amount, data.currency, currentMonth, currentYear);
-      await refetchDashboard();
+      refetchDashboard();
       showSuccess("Budget saved successfully");
     } catch {
       showError("Failed to save budget. Please try again.");

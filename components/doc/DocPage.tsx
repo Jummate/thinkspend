@@ -1,6 +1,6 @@
 import React from "react";
 import { AlertTriangle } from "lucide-react";
-import DocNav from "@/app/components/layout/DocNav";
+import DocNav from "@/components/layout/DocNav";
 
 type TocItem = {
   id: string;

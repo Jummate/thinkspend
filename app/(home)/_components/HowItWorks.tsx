@@ -1,5 +1,5 @@
 import React from "react";
-import Container from "@/app/components/layout/Container";
+import Container from "@/components/layout/Container";
 
 const steps = [
   {

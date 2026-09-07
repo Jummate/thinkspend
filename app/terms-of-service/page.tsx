@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
-import { SectionHeading } from "@/app/components/doc/DocText";
-import DocPage from "@/app/components/doc/DocPage";
+import { SectionHeading } from "@/components/doc/DocText";
+import DocPage from "@/components/doc/DocPage";
 
 const toc = [
   { id: "acceptance", label: "1. Acceptance of terms" },
