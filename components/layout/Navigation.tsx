@@ -6,43 +6,14 @@ import { ArrowRight, Menu, X } from "lucide-react";
 import Container from "@/components/layout/Container";
 import { useUser } from "@/lib/hooks/useUser";
 import { ROUTES } from "@/lib/routes";
+import { getInitials } from "@/lib/utils/get-initials";
+import Avatar from "../ui/Avatar";
 
 const navLinks = [
   { label: "Features", href: "/#features" },
   { label: "How it works", href: "/#how-it-works" },
 ];
 
-function getInitials(
-  profile: { firstName: string; lastName: string } | null,
-  email: string | undefined,
-): string {
-  if (profile?.firstName || profile?.lastName) {
-    const initials = `${profile.firstName?.[0] ?? ""}${profile.lastName?.[0] ?? ""}`;
-    if (initials) return initials.toUpperCase();
-  }
-  if (email) return email.slice(0, 2).toUpperCase();
-  return "?";
-}
-
-function Avatar({
-  initials,
-  className = "",
-}: {
-  initials: string;
-  className?: string;
-}) {
-  return (
-    <span
-      className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-xs font-bold text-white ${className}`}
-      style={{
-        backgroundImage:
-          "linear-gradient(155deg, var(--category-bills), var(--primary-dark))",
-      }}
-    >
-      {initials}
-    </span>
-  );
-}
 
 function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
