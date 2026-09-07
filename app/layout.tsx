@@ -1,16 +1,7 @@
 import type { Metadata } from "next";
 import { Toaster } from "sonner";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css"
-// const geistSans = Geist({
-//   variable: "--font-geist-sans",
-//   subsets: ["latin"],
-// });
-
-// const geistMono = Geist_Mono({
-//   variable: "--font-geist-mono",
-//   subsets: ["latin"],
-// });
+import ThemeProvider from "@/components/providers/ThemeProvider";
+import "./globals.css";
 
 export const metadata: Metadata = {
   title: "ThinkSpend",
@@ -23,15 +14,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        // className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background flex`}
-        className={`antialiased bg-background flex`}
-      >
-        <div className="flex-1 min-h-screen mx-auto">
-          {children}
-          <Toaster />
-        </div>
+    <html lang="en" suppressHydrationWarning>
+      <body className="antialiased bg-background flex">
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <div className="flex-1 min-h-screen mx-auto">
+            {children}
+            <Toaster />
+          </div>
+        </ThemeProvider>
       </body>
     </html>
   );
