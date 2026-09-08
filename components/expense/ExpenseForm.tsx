@@ -12,19 +12,17 @@ import { ParsedExpense } from "@/lib/types/expense";
 import { mapAICategoryToValue } from "@/lib/utils/category-mapper";
 import clsx from "clsx";
 import { formatAmountToString } from "@/lib/utils/format-amount";
+import { CATEGORIES } from "@/lib/config/categories";
 
 interface ExpenseFormProps {
   onSubmit: (data: ExpenseFormData) => Promise<void>;
   expenseData?: ParsedExpense;
 }
 
-const categoryOptions = [
-  { value: "food", label: "🍔 Food & Drinks" },
-  { value: "transport", label: "🚗 Transport" },
-  { value: "groceries", label: "🛒 Groceries" },
-  { value: "bills", label: "⚡ Bills" },
-  { value: "other", label: "📦 Other" },
-];
+const categoryOptions = CATEGORIES.map((category) => ({
+  value: category.value,
+  label: `${category.emoji} ${category.label}`,
+}));
 const currencyOptions = [
   { value: "NGN", label: "₦" },
   { value: "USD", label: "$" },

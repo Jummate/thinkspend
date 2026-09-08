@@ -3,19 +3,9 @@
 import { useCallback, useEffect, useState } from "react";
 import { User } from "@supabase/supabase-js";
 import { supabase } from "@/lib/supabase/client";
+import { Profile } from "../types/profile";
 
-export const currencyMapping = {
-  NGN: "₦",
-  USD: "$",
-} as const;
 
-type CurrencyCode = keyof typeof currencyMapping;
-
-interface Profile {
-  firstName: string;
-  lastName: string;
-  currency: CurrencyCode;
-}
 
 interface UseUserReturn {
   user: User | null;

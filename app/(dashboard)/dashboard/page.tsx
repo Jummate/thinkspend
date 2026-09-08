@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useUser, currencyMapping } from "@/lib/hooks/useUser";
+import { useUser } from "@/lib/hooks/useUser";
 import { useDashboard } from "@/lib/hooks/useDashboard";
 import { ROUTES } from "@/lib/routes";
 import { getCurrentMonth } from "@/lib/utils/date";
@@ -31,6 +31,7 @@ import {
   ResponsiveContainer,
   Cell,
 } from "recharts";
+import { currencyMapping } from "@/lib/types/profile";
 
 // ── Category icon renderer ────────────────────────────────────────────────────
 function CategoryIcon({ iconName }: { iconName: string }) {

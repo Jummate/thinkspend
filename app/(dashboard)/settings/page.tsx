@@ -1,6 +1,7 @@
 "use client";
 
-import { useUser, currencyMapping } from "@/lib/hooks/useUser";
+import { supabase } from "@/lib/supabase/client";
+import { useUser } from "@/lib/hooks/useUser";
 import { useDashboard } from "@/lib/hooks/useDashboard";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -27,6 +28,7 @@ import Select from "@/components/ui/Select";
 import { User, Wallet, Lock, DollarSign, CheckCircle2 } from "lucide-react";
 import { useEffect } from "react";
 import clsx from "clsx";
+import { currencyMapping } from "@/lib/types/profile";
 
 // ─── Reusable section wrapper ───────────────────────────────────────────────
 function SettingsSection({
@@ -130,7 +132,7 @@ export default function SettingsPage() {
   const onProfileSave = async (data: ProfileFormData) => {
     try {
       if (!user) return;
-      await updateProfile(user.id, data.firstName, data.lastName);
+      await updateProfile(supabase, user.id, data.firstName, data.lastName);
       showSuccess("Profile updated successfully");
     } catch {
       showError("Failed to update profile. Please try again.");
@@ -157,7 +159,7 @@ export default function SettingsPage() {
   const onCurrencySave = async (data: CurrencyFormData) => {
     try {
       if (!user) return;
-      await updateCurrency(user.id, data.currency);
+      await updateCurrency(supabase, user.id, data.currency);
       showSuccess("Currency preference updated");
     } catch {
       showError("Failed to update currency. Please try again.");
@@ -190,7 +192,7 @@ export default function SettingsPage() {
     try {
       if (!user) return;
       const amount = formatAmountToNumber(data.amount);
-      await upsertBudget(user.id, amount, data.currency, currentMonth, currentYear);
+      await upsertBudget(supabase, user.id, amount, data.currency, currentMonth, currentYear);
       refetchDashboard();
       showSuccess("Budget saved successfully");
     } catch {
@@ -211,7 +213,7 @@ export default function SettingsPage() {
 
   const onPasswordSave = async (data: ChangePasswordFormData) => {
     try {
-      await changePassword(data.newPassword);
+      await changePassword(supabase, data.newPassword);
       resetPassword();
       showSuccess("Password changed successfully");
     } catch {

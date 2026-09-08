@@ -51,6 +51,7 @@ pre {
   --color-category-groceries: var(--category-groceries);
   --color-category-bills: var(--category-bills);
   --color-category-other: var(--category-other);
+  --color-category-shopping: var(--category-shopping);
   --color-danger: var(--danger);
   --color-warning: var(--warning);
   --color-warning-dim: var(--warning-dim);
@@ -80,6 +81,7 @@ pre {
   --category-groceries: #10b981;
   --category-bills: #8b5cf6;
   --category-other: #3b82f6;
+  --category-shopping: #06b6d4;
 
   /* Status Colors */
   --danger: #e5484d;
@@ -110,6 +112,7 @@ pre {
   --category-groceries: #10b981;
   --category-bills: #8b5cf6;
   --category-other: #3b82f6;
+  --category-shopping: #06b6d4;
 
   /* Status Colors (same in both themes) */
   --danger: #e5484d;
