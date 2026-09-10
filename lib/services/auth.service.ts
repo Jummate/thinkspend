@@ -159,6 +159,25 @@ export async function reactivateAccount(userId: string) {
   return { success: true };
 }
 
+
+
+export async function pauseAccount(userId: string) {
+  const { error } = await supabase
+    .from("profiles")
+    .update({ paused_at: new Date().toISOString() })
+    .eq("id", userId);
+
+  if (error) {
+    console.error("Pause account error:", error);
+    return {
+      success: false,
+      message: getFriendlyErrorMessage(error.message),
+    };
+  }
+
+  return { success: true };
+}
+
 /**
  * Updates the user's password.
  */

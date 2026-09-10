@@ -7,14 +7,11 @@ export const profileSchema = z.object({
   lastName: z.string().min(1, "Last name is required").trim(),
 });
 
-export const currencySchema = z.object({
+export const currencyBudgetSchema = z.object({
   currency: z.enum(["NGN", "USD", "EUR", "GBP"], {
     error: "Please select a valid currency",
   }),
-});
-
-export const budgetSchema = z.object({
-  amount: z
+  budgetAmount: z
     .string()
     .min(1, "Budget amount is required")
     .refine(
@@ -24,9 +21,6 @@ export const budgetSchema = z.object({
       },
       { message: "Enter a valid amount between 0 and 1,000,000,000" }
     ),
-  currency: z.enum(["NGN", "USD", "EUR", "GBP"], {
-    error: "Please select a valid currency",
-  }),
 });
 
 export const changePasswordSchema = z
@@ -40,6 +34,5 @@ export const changePasswordSchema = z
   });
 
 export type ProfileFormData = z.infer<typeof profileSchema>;
-export type CurrencyFormData = z.infer<typeof currencySchema>;
-export type BudgetFormData = z.infer<typeof budgetSchema>;
 export type ChangePasswordFormData = z.infer<typeof changePasswordSchema>;
+export type CurrencyBudgetFormData = z.infer<typeof currencyBudgetSchema>;
