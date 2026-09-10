@@ -1,10 +1,9 @@
-import React from "react";
 import Link from "next/link";
 import { ArrowRight, Pause } from "lucide-react";
 import AuthCard from "@/components/auth/AuthCard";
 import AuthCardHeader from "@/components/auth/AuthCardHeader";
-import AuthStatusIcon from "./AuthStatusIcon";
 import { currencyMapping } from "@/lib/types/profile";
+import StatusIcon from "../ui/StatusIcon";
 
 type Snapshot = {
   expensesLogged: number;
@@ -48,7 +47,7 @@ function PausedAccountCard({
   return (
     <AuthCard>
       <AuthCardHeader
-        icon={<AuthStatusIcon icon={Pause} variant="warning" />}
+        icon={<StatusIcon icon={Pause} variant="warning" />}
         title="Welcome back"
         subtitle="Your account is paused."
         meta={

@@ -7,6 +7,7 @@ import { getBudgetForMonth, type Budget } from "@/lib/services/budget.service";
 import ProfileSection from "./_components/ProfileSection";
 import PasswordSection from "./_components/PasswordSection";
 import CurrencyBudgetSection from "./_components/CurrencyBudgetSection";
+import DangerZoneSection from "./_components/DangerZoneSection";
 
 export default function SettingsPage() {
   const { user, profile, loading } = useUser();
@@ -35,7 +36,7 @@ export default function SettingsPage() {
   }
 
   return (
-    <div className="mx-auto min-h-screen max-w-2xl p-6">
+     <div className="min-h-screen max-w-2xl p-6">
       <div className="mb-8">
         <h1 className="mb-2 text-3xl font-bold text-foreground">Settings</h1>
         <p className="text-muted-foreground">
@@ -56,6 +57,7 @@ export default function SettingsPage() {
           initialBudget={budget}
         />
         <PasswordSection />
+        <DangerZoneSection userId={user.id} />
       </div>
     </div>
   );

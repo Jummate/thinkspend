@@ -5,7 +5,6 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { Mail } from "lucide-react";
 import AuthCard from "@/components/auth/AuthCard";
 import AuthCardHeader from "@/components/auth/AuthCardHeader";
-import AuthStatusIcon from "@/components/auth/AuthStatusIcon";
 import CheckEmailForm, {
   RESEND_COOLDOWN_SECONDS,
   ResendOutcome,
@@ -13,6 +12,7 @@ import CheckEmailForm, {
 import { forgotPassword } from "@/lib/services/auth.service";
 import { showError } from "@/lib/ui/toast";
 import { ROUTES } from "@/lib/routes";
+import StatusIcon from "@/components/ui/StatusIcon";
 
 function getInitialCooldownSeconds(sentAtParam: string | null): number {
   const sentAt = sentAtParam ? Number(sentAtParam) : NaN;
@@ -73,12 +73,7 @@ function CheckEmailPage() {
     <main className="flex h-full items-center justify-center p-6">
       <AuthCard>
         <AuthCardHeader
-          icon={
-            <AuthStatusIcon
-              icon={Mail}
-              variant="success"
-            />
-          }
+             icon={<StatusIcon icon={Mail} variant="warning" />}
           title="Check your email"
         />
 

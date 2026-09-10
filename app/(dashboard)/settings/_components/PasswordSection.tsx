@@ -49,7 +49,8 @@ function PasswordSection() {
         onSubmit={handleSubmit(onPasswordSave)}
         className="flex flex-col gap-4"
       >
-        <Field label="New Password" error={errors.newPassword?.message}>
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <Field label="New Password" error={errors.newPassword?.message}>
           <Input
             id="newPassword"
             type="password"
@@ -72,6 +73,7 @@ function PasswordSection() {
             {...register("confirmPassword")}
           />
         </Field>
+    </div>
         <SaveButton isSubmitting={isSubmitting} />
       </form>
     </SettingsSection>

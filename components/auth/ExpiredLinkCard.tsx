@@ -2,14 +2,14 @@ import Link from "next/link";
 import { Clock } from "lucide-react";
 import AuthCard from "./AuthCard";
 import AuthCardHeader from "./AuthCardHeader";
-import AuthStatusIcon from "./AuthStatusIcon";
 import { ROUTES } from "@/lib/routes";
+import StatusIcon from "../ui/StatusIcon";
 
 function ExpiredLinkCard() {
   return (
     <AuthCard>
       <AuthCardHeader
-        icon={<AuthStatusIcon icon={Clock} variant="warning" />}
+        icon={<StatusIcon icon={Clock} variant="warning" />}
         title="This link has expired"
       />
 
