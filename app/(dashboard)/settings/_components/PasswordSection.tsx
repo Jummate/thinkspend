@@ -12,6 +12,7 @@ import { changePassword } from "@/lib/services/settings.service";
 import { supabase } from "@/lib/supabase/client";
 import { showError, showSuccess } from "@/lib/ui/toast";
 import { SettingsSection, Field, SaveButton } from "./SettingsFormElements";
+import { passwordRequirements } from "@/lib/validations/passwordRequirements";
 
 function PasswordSection() {
   const {
@@ -23,6 +24,10 @@ function PasswordSection() {
     resolver: zodResolver(changePasswordSchema),
     mode: "onTouched",
   });
+
+  const requirementsText = passwordRequirements
+  .map((r) => r.label.toLowerCase())
+  .join(", ");
 
   const onPasswordSave = async (data: ChangePasswordFormData) => {
     try {
@@ -38,7 +43,7 @@ function PasswordSection() {
     <SettingsSection
       icon={Lock}
       title="Change Password"
-      description="Choose a strong password with at least 8 characters, one uppercase letter, and one number."
+    description={`Choose a strong password with ${requirementsText}.`}
     >
       <form
         onSubmit={handleSubmit(onPasswordSave)}

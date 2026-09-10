@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { formatAmountToNumber } from "../utils/format-amount";
+import { passwordSchema } from "./password";
 
 export const profileSchema = z.object({
   firstName: z.string().min(1, "First name is required").trim(),
@@ -30,11 +31,7 @@ export const budgetSchema = z.object({
 
 export const changePasswordSchema = z
   .object({
-    newPassword: z
-      .string()
-      .min(8, "Password must be at least 8 characters")
-      .regex(/[A-Z]/, "Must contain at least one uppercase letter")
-      .regex(/[0-9]/, "Must contain at least one number"),
+    newPassword: passwordSchema,
     confirmPassword: z.string(),
   })
   .refine((data) => data.newPassword === data.confirmPassword, {

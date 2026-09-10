@@ -1,13 +1,7 @@
 import { z } from "zod";
-import { passwordRequirements } from "./passwordRequirements";
+import { passwordSchema } from "./password";
 
-const passwordSchema = passwordRequirements.reduce(
-  (schema, requirement) =>
-    schema.refine((password) => requirement.test(password), {
-      message: `Password must include ${requirement.label.toLowerCase()}`,
-    }),
-  z.string().min(1, "Password is required"),
-);
+
 
 const emailSchema = z
   .string()
