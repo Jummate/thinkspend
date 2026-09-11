@@ -36,7 +36,7 @@ function DangerZoneRow({
       <button
         type="button"
         onClick={onClick}
-        className={`shrink-0 rounded-lg border border-danger px-4 py-2 text-sm font-bold text-danger transition-colors hover:bg-danger/10 ${buttonClassName}`}
+        className={`shrink-0 rounded-lg border border-danger px-4 py-2 text-sm font-bold text-danger transition-colors ${buttonClassName}`}
       >
         {buttonLabel}
       </button>
@@ -111,13 +111,14 @@ function DangerZoneSection({ userId }: DangerZoneSectionProps) {
             title="Pause account"
             description="Disables login and stops your account from being processed — a reversible middle step before deleting. Your data isn't touched; log back in anytime to pick up where you left off."
             buttonLabel="Pause account"
+            buttonClassName="hover:bg-danger/10"
             onClick={() => setIsPauseModalOpen(true)}
           />
           <DangerZoneRow
             title="Delete account permanently"
             description="Permanently deletes your account and all expense data. This can't be undone."
             buttonLabel="Delete Account"
-            buttonClassName="bg-danger text-white"
+            buttonClassName="bg-danger text-white hover:bg-danger/80"
             onClick={() => setIsDeleteModalOpen(true)}
           />
         </div>
