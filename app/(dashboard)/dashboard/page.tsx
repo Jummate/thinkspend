@@ -71,6 +71,8 @@ export default async function DashboardPage() {
         </p>
       </div>
 
+
+
       <div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-3">
         <TotalSpendingCard
           currencySymbol={currencySymbol}

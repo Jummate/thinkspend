@@ -19,6 +19,10 @@ import { Expense } from "@/lib/types/expense";
 import { useExpenses } from "@/lib/hooks/useExpenses";
 
 const ExpensesPage = () => {
+
+   const [page, setPage] = useState(1);
+
+   const totalPages = 15;
   // const [expenses, setExpenses] = useState<Expense[]>([
   //   {
   //     id: "1",
@@ -171,6 +175,7 @@ console.log("user id", user?.id);
         </p>
       </div>
 
+
       {/* Filter Section */}
       <div className="bg-[#1e293b] rounded-2xl p-6 border border-gray-700 mb-8">
         <div className="flex items-center gap-2 mb-4">
@@ -281,6 +286,8 @@ console.log("user id", user?.id);
           ))}
         </div>
       )}
+
+
 
       {/* Delete Confirmation Modal */}
       {deleteConfirm && (

@@ -9,6 +9,7 @@ import PasswordSection from "./_components/PasswordSection";
 import CurrencyBudgetSection from "./_components/CurrencyBudgetSection";
 import DangerZoneSection from "./_components/DangerZoneSection";
 
+
 export default function SettingsPage() {
   const { user, profile, loading } = useUser();
   const [budget, setBudget] = useState<Budget | null>(null);
@@ -17,6 +18,8 @@ export default function SettingsPage() {
   const now = new Date();
   const currentMonth = now.getMonth() + 1;
   const currentYear = now.getFullYear();
+
+
 
   useEffect(() => {
     if (!user) return;
@@ -43,6 +46,9 @@ export default function SettingsPage() {
           Manage your profile, budget, and account preferences.
         </p>
       </div>
+
+    
+
 
       <div className="flex flex-col gap-6">
         <ProfileSection
