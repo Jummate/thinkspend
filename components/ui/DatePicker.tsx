@@ -4,6 +4,7 @@ import {
   forwardRef,
   useCallback,
   useEffect,
+  useId,
   useMemo,
   useRef,
   useState,
@@ -50,6 +51,10 @@ const YEARS_PER_PAGE = 12;
 interface Props
   extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "size" | "type"> {
   label?: string;
+  // Accessible name for the trigger button. Defaults to `label` when
+  // present. Set this explicitly when `label` is omitted, so screen
+  // reader users still hear what the picker is for.
+  "aria-label"?: string;
   error?: string;
   hint?: string;
   onValueChange?: (value: string) => void;
@@ -104,6 +109,7 @@ const DatePicker = forwardRef<HTMLInputElement, Props>(
   (
     {
       label,
+      "aria-label": ariaLabel,
       error,
       hint,
       className,
@@ -125,7 +131,10 @@ const DatePicker = forwardRef<HTMLInputElement, Props>(
     },
     ref,
   ) => {
-    const inputId = id ?? label?.toLowerCase().replace(/\s+/g, "-");
+    const reactId = useId();
+    const inputId =
+      id ?? (label ? label.toLowerCase().replace(/\s+/g, "-") : reactId);
+    const accessibleName = ariaLabel ?? label;
     const hiddenInputRef = useRef<HTMLInputElement | null>(null);
     const containerRef = useRef<HTMLDivElement | null>(null);
     const triggerRef = useRef<HTMLButtonElement | null>(null);
@@ -406,13 +415,15 @@ const DatePicker = forwardRef<HTMLInputElement, Props>(
         ref={containerRef}
         className={cn("relative flex flex-col gap-1", className)}
       >
-        <label
-          htmlFor={inputId}
-          className="text-sm font-medium text-foreground"
-        >
-          {label}
-          {required && <span className="text-danger ml-1">*</span>}
-        </label>
+        {label && (
+          <label
+            htmlFor={inputId}
+            className="text-sm font-medium text-foreground"
+          >
+            {label}
+            {required && <span className="text-danger ml-1">*</span>}
+          </label>
+        )}
 
         <input
           {...props}
@@ -429,6 +440,7 @@ const DatePicker = forwardRef<HTMLInputElement, Props>(
           type="button"
           id={inputId}
           disabled={disabled}
+          aria-label={accessibleName}
           aria-haspopup="dialog"
           aria-expanded={open}
           onClick={() => {
