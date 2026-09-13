@@ -59,8 +59,7 @@ const AddNewExpensePage = () => {
         return;
       }
 
-      await saveExpense(user.id, data);
-
+      await saveExpense(supabase, user.id, data);
       showSuccess("Expense saved successfully");
 
       // router.push("/dashboard");
