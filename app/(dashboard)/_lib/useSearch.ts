@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase/client";
 import { useUser } from "@/lib/hooks/useUser";
+import { useDebounce } from "@/lib/hooks/useDebounce";
 import {
   getRecentExpenses,
   type RecentExpense,
@@ -26,16 +27,11 @@ const DEBOUNCE_MS = 300;
 export function useSearch(): UseSearchReturn {
   const { user } = useUser();
   const [query, setQuery] = useState("");
-  const [debouncedQuery, setDebouncedQuery] = useState("");
   const [expenseResults, setExpenseResults] = useState<RecentExpense[]>([]);
   const [recentExpenses, setRecentExpenses] = useState<RecentExpense[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  // Debounce the query before it triggers a network request.
-  useEffect(() => {
-    const timer = setTimeout(() => setDebouncedQuery(query), DEBOUNCE_MS);
-    return () => clearTimeout(timer);
-  }, [query]);
+  const debouncedQuery = useDebounce(query, DEBOUNCE_MS);
 
   // Preload recent expenses once, for the empty-query "Try searching" state.
   useEffect(() => {
