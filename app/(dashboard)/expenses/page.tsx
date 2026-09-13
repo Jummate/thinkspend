@@ -1,323 +1,174 @@
-// import React from "react";
-
-// const ExpensesPage = () => {
-//   return <div>This is expenses page.</div>;
-// };
-
-// export default ExpensesPage;
-
-
-
-
 "use client";
 
-import { Trash2, ChevronDown, Filter } from "lucide-react";
-import React, { useState, useMemo } from "react";
+import { useEffect, useState } from "react";
 import { useUser } from "@/lib/hooks/useUser";
-
-import { Expense } from "@/lib/types/expense";
 import { useExpenses } from "@/lib/hooks/useExpenses";
+import { useDebounce } from "@/lib/hooks/useDebounce";
+import { currencyMapping } from "@/lib/types/profile";
+import type { Expense } from "@/lib/types/expense";
+import type { ExpenseSort } from "@/lib/services/expense.service";
+import type { ViewMode } from "@/components/ui/ViewToggle";
+import Pagination from "@/components/ui/Pagination";
+import ExpensesToolbar from "./_components/ExpensesToolbar";
+import ExpenseListRow from "./_components/ExpenseListRow";
+import ExpenseGridCard from "./_components/ExpenseGridCard";
 
-const ExpensesPage = () => {
+import {
+  EMPTY_FILTERS,
+  hasAppliedFilters,
+  PAGE_SIZE,
+  type AppliedFilters,
+} from "./_lib/filters";
+import ExpensesFilterPanel from "./_components/ExpensesFilterPanel";
 
-   const [page, setPage] = useState(1);
+const DEBOUNCE_MS = 300;
 
-   const totalPages = 15;
-  // const [expenses, setExpenses] = useState<Expense[]>([
-  //   {
-  //     id: "1",
-  //     amount: 5.0,
-  //     currency: "USD",
-  //     category: "Food & Drinks",
-  //     description: "Coffee at Starbucks",
-  //     date: "2025-01-09",
-  //     icon: "☕",
-  //     color: "bg-orange-500",
-  //   },
-  //   {
-  //     id: "2",
-  //     amount: 12.0,
-  //     currency: "USD",
-  //     category: "Transport",
-  //     description: "Uber to office",
-  //     date: "2025-01-09",
-  //     icon: "🚗",
-  //     color: "bg-red-500",
-  //   },
-  //   {
-  //     id: "3",
-  //     amount: 84.5,
-  //     currency: "NGN",
-  //     category: "Groceries",
-  //     description: "Weekly groceries",
-  //     date: "2025-01-08",
-  //     icon: "🛒",
-  //     color: "bg-green-500",
-  //   },
-  //   {
-  //     id: "4",
-  //     amount: 142.1,
-  //     currency: "USD",
-  //     category: "Bills",
-  //     description: "Electric Bill",
-  //     date: "2025-01-07",
-  //     icon: "⚡",
-  //     color: "bg-purple-500",
-  //   },
-  //   {
-  //     id: "5",
-  //     amount: 299.0,
-  //     currency: "USD",
-  //     category: "Shopping",
-  //     description: "New Headphones",
-  //     date: "2025-01-06",
-  //     icon: "🎧",
-  //     color: "bg-blue-500",
-  //   },
-  //   {
-  //     id: "6",
-  //     amount: 45.0,
-  //     currency: "USD",
-  //     category: "Food & Drinks",
-  //     description: "Dinner with friends",
-  //     date: "2025-01-06",
-  //     icon: "🍽️",
-  //     color: "bg-orange-500",
-  //   },
-  // ]);
-const { profile, user } = useUser();
+export default function ExpensesPage() {
+  const { user, profile } = useUser();
+  const currencySymbol = profile ? currencyMapping[profile.currency] : "";
 
-console.log("user id", user?.id);
-  const { expenses: fetchedExpenses } = useExpenses(user?.id)
-  console.log("fetched expenses 2", fetchedExpenses);
-  const [expenses, setExpenses] = useState<Expense[]>(fetchedExpenses ?? []);
-  const [selectedCategory, setSelectedCategory] = useState<string>("all");
-  const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
+  // --- Search (live, debounced) ---
+  const [searchInput, setSearchInput] = useState("");
+  const debouncedSearch = useDebounce(searchInput, DEBOUNCE_MS);
 
-  const categories = [
-    "all",
-    "Food & Drinks",
-    "Transport",
-    "Groceries",
-    "Bills",
-    "Shopping",
-    "Other",
-  ];
+  // --- Sort + view + pagination (live) ---
+  const [sort, setSort] = useState<ExpenseSort>("newest");
+  const [viewMode, setViewMode] = useState<ViewMode>("list");
+  const [page, setPage] = useState(1);
 
-  // Group expenses by date
-  const groupedExpenses = useMemo(() => {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+  // --- Filter panel UI ---
+  const [filtersOpen, setFiltersOpen] = useState(false);
+  const [appliedFilters, setAppliedFilters] =
+    useState<AppliedFilters>(EMPTY_FILTERS);
 
-    const yesterday = new Date(today);
-    yesterday.setDate(yesterday.getDate() - 1);
+  // --- Data ---
+  const { data, isLoading, error } = useExpenses(user?.id, {
+    search: debouncedSearch || undefined,
+    sort,
+    page,
+    pageSize: PAGE_SIZE,
+    categories:
+      appliedFilters.categories.length > 0
+        ? appliedFilters.categories
+        : undefined,
+    dateFrom: appliedFilters.dateFrom,
+    dateTo: appliedFilters.dateTo,
+    minAmount: appliedFilters.minAmount,
+    maxAmount: appliedFilters.maxAmount,
+  });
 
-    const filtered =
-      selectedCategory === "all"
-        ? expenses
-        : expenses.filter((e) => e.category === selectedCategory);
+  const expenses = data?.expenses ?? [];
+  const totalCount = data?.totalCount ?? 0;
+  const totalAmount = data?.totalAmount ?? 0;
+  const totalPages = Math.ceil(totalCount / PAGE_SIZE);
 
-    const grouped: { [key: string]: Expense[] } = {};
+  const isFiltered =
+    Boolean(debouncedSearch) || hasAppliedFilters(appliedFilters);
 
-    filtered.forEach((expense) => {
-      const expenseDate = new Date(expense.date);
-      expenseDate.setHours(0, 0, 0, 0);
+  // Reset to page 1 whenever the result set changes shape. Without this,
+  // applying a filter while on page 5 can leave the user stranded on an
+  // empty page.
+  useEffect(() => {
+    setPage(1);
+  }, [debouncedSearch, sort, appliedFilters]);
 
-      let label: string;
-
-      if (expenseDate.getTime() === today.getTime()) {
-        label = "Today";
-      } else if (expenseDate.getTime() === yesterday.getTime()) {
-        label = "Yesterday";
-      } else {
-        label = expenseDate.toLocaleDateString("en-US", {
-          month: "short",
-          day: "numeric",
-          year: expenseDate.getFullYear() !== today.getFullYear() ? "numeric" : undefined,
-        });
-      }
-
-      if (!grouped[label]) {
-        grouped[label] = [];
-      }
-      grouped[label].push(expense);
-    });
-
-    // Sort groups by date
-    const sorted = Object.entries(grouped).sort((a, b) => {
-      const dateA = new Date(grouped[a[0]][0].date);
-      const dateB = new Date(grouped[b[0]][0].date);
-      return dateB.getTime() - dateA.getTime();
-    });
-
-    return Object.fromEntries(sorted);
-  }, [expenses, selectedCategory]);
-
-  const handleDelete = (id: string) => {
-    setExpenses(expenses.filter((e) => e.id !== id));
-    setDeleteConfirm(null);
+  // --- Placeholder handlers (modals come later) ---
+  const handleEdit = (_expense: Expense) => {
+    // TODO: open edit modal
   };
 
-  const totalExpenses = fetchedExpenses.reduce((sum, e) => sum + e.amount, 0);
-  const filteredTotal = Object.values(groupedExpenses)
-    .flat()
-    .reduce((sum, e) => sum + e.amount, 0);
-
-  const isEmpty = Object.keys(groupedExpenses).length === 0;
+  const handleDelete = (_expense: Expense) => {
+    // TODO: open delete confirmation modal
+  };
 
   return (
-    <div className="min-h-screen bg-[#0f172a] text-white p-6">
+    <div className="flex flex-col gap-6 p-6">
       {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">Expenses</h1>
-        <p className="text-gray-400">
+      <div>
+        <h1 className="text-3xl font-bold text-foreground">Expenses</h1>
+        <p className="text-sm text-muted-foreground">
           Manage and track all your expenses in one place.
         </p>
       </div>
 
+      <ExpensesToolbar
+        search={searchInput}
+        onSearchChange={setSearchInput}
+        filtersOpen={filtersOpen}
+        onFiltersToggle={() => setFiltersOpen((prev) => !prev)}
+        hasActiveFilters={hasAppliedFilters(appliedFilters)}
+        sort={sort}
+        onSortChange={setSort}
+        viewMode={viewMode}
+        onViewModeChange={setViewMode}
+        total={totalAmount}
+        currencySymbol={currencySymbol}
+        isFiltered={isFiltered}
+      />
 
-      {/* Filter Section */}
-      <div className="bg-[#1e293b] rounded-2xl p-6 border border-gray-700 mb-8">
-        <div className="flex items-center gap-2 mb-4">
-          <Filter size={20} />
-          <h2 className="text-lg font-semibold">Filter</h2>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* Category Filter */}
-          <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">
-              Category
-            </label>
-            <div className="relative">
-              <select
-                value={selectedCategory}
-                onChange={(e) => setSelectedCategory(e.target.value)}
-                className="w-full bg-[#0f172a] border border-gray-600 rounded-lg px-4 py-2.5 text-white appearance-none cursor-pointer hover:border-gray-500 focus:border-blue-500 focus:outline-none"
-              >
-                {categories.map((cat) => (
-                  <option key={cat} value={cat}>
-                    {cat === "all" ? "All Categories" : cat}
-                  </option>
-                ))}
-              </select>
-              <ChevronDown
-                size={18}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none text-gray-400"
-              />
-            </div>
-          </div>
-
-          {/* Stats */}
-          <div className="flex items-end gap-4">
-            <div>
-              <p className="text-sm text-gray-400 mb-1">Total Expenses</p>
-              <p className="text-2xl font-bold">${totalExpenses.toFixed(2)}</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Empty State */}
-      {isEmpty ? (
-        <div className="bg-[#1e293b] rounded-2xl p-12 border border-gray-700 text-center">
-          <div className="text-gray-400 mb-4">
-            <Filter size={48} className="mx-auto opacity-50 mb-4" />
-          </div>
-          <h3 className="text-xl font-semibold mb-2">No expenses found</h3>
-          <p className="text-gray-400">
-            {selectedCategory !== "all"
-              ? `No expenses in "${selectedCategory}" category.`
-              : "Start adding expenses to see them here."}
+  {filtersOpen && (
+  <ExpensesFilterPanel
+    appliedFilters={appliedFilters}
+    onApply={setAppliedFilters}
+    currencySymbol={currencySymbol}
+  />
+)}
+      {/* Results */}
+      {isLoading ? (
+        <p className="py-12 text-center text-sm text-muted-foreground">
+          Loading expenses...
+        </p>
+      ) : error ? (
+        <p className="py-12 text-center text-sm text-danger">
+          Failed to load expenses. Please refresh.
+        </p>
+      ) : expenses.length === 0 ? (
+        <div className="flex flex-col items-center justify-center gap-2 rounded-2xl border border-border bg-card py-16">
+          <p className="text-sm text-muted-foreground">
+            {isFiltered
+              ? "No expenses match your filters."
+              : "No expenses yet. Add your first one to get started."}
           </p>
         </div>
+      ) : viewMode === "list" ? (
+        <div className="flex flex-col gap-1">
+          {expenses.map((expense) => (
+            <ExpenseListRow
+              key={expense.id}
+              expense={expense}
+              currencySymbol={currencySymbol}
+              onEdit={handleEdit}
+              onDelete={handleDelete}
+            />
+          ))}
+        </div>
       ) : (
-        /* Expenses List */
-        <div className="space-y-6">
-          {Object.entries(groupedExpenses).map(([dateLabel, dateExpenses]) => (
-            <div key={dateLabel}>
-              {/* Date Header */}
-              <h3 className="text-lg font-semibold text-gray-300 mb-3 px-2">
-                {dateLabel}
-              </h3>
-
-              {/* Expenses in this date */}
-              <div className="space-y-2">
-                {dateExpenses.map((expense) => (
-                  <div
-                    key={expense.id}
-                    className="bg-[#1e293b] rounded-xl p-4 border border-gray-700 hover:border-gray-600 transition-all flex items-center gap-4 group"
-                  >
-                    {/* Icon */}
-                    <div
-                      className={`w-12 h-12 ${expense.color} rounded-lg flex items-center justify-center text-xl shrink-0`}
-                    >
-                      {expense.icon}
-                    </div>
-
-                    {/* Details */}
-                    <div className="flex-1 min-w-0">
-                      <p className="font-semibold text-white truncate">
-                        {expense.description}
-                      </p>
-                      <p className="text-sm text-gray-400">{expense.category}</p>
-                    </div>
-
-                    {/* Amount */}
-                    <div className="text-right shrink-0">
-                      <p className="font-bold text-lg">
-                        {expense.currency === "NGN" ? "₦" : "$"}
-                        {expense.amount.toFixed(2)}
-                      </p>
-                    </div>
-
-                    {/* Delete Button */}
-                    <button
-                      onClick={() => setDeleteConfirm(expense.id)}
-                      className="p-2 text-gray-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-all opacity-0 group-hover:opacity-100"
-                      title="Delete expense"
-                    >
-                      <Trash2 size={18} />
-                    </button>
-                  </div>
-                ))}
-              </div>
-            </div>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {expenses.map((expense) => (
+            <ExpenseGridCard
+              key={expense.id}
+              expense={expense}
+              currencySymbol={currencySymbol}
+              onEdit={handleEdit}
+              onDelete={handleDelete}
+            />
           ))}
         </div>
       )}
 
-
-
-      {/* Delete Confirmation Modal */}
-      {deleteConfirm && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-          <div className="bg-[#1e293b] rounded-xl border border-gray-700 p-6 max-w-sm w-full">
-            <h3 className="text-xl font-bold mb-2">Delete Expense?</h3>
-            <p className="text-gray-400 mb-6">
-              Are you sure you want to delete this expense? This action cannot be
-              undone.
-            </p>
-
-            <div className="flex gap-3">
-              <button
-                onClick={() => setDeleteConfirm(null)}
-                className="flex-1 px-4 py-2 rounded-lg border border-gray-600 hover:bg-gray-700 transition-all font-medium"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={() => handleDelete(deleteConfirm)}
-                className="flex-1 px-4 py-2 rounded-lg bg-red-600 hover:bg-red-700 transition-all font-medium text-white"
-              >
-                Delete
-              </button>
-            </div>
-          </div>
+      {/* Showing count + pagination */}
+      {!isLoading && !error && expenses.length > 0 && (
+        <div className="flex flex-col items-center gap-4">
+          <p className="text-xs text-muted-foreground">
+            Showing {expenses.length} of {totalCount} expenses
+          </p>
+          <Pagination
+            page={page}
+            totalPages={totalPages}
+            onPageChange={setPage}
+          />
         </div>
       )}
     </div>
   );
-};
-
-export default ExpensesPage;
+}
