@@ -6,24 +6,20 @@ import {
   Zap,
   ShoppingBag,
   Package,
+  Pill,
 } from "lucide-react";
 
 export interface CategoryConfig {
-  /** Exact value stored in expenses.category — must match the DB string. */
   id: string;
-  /** Lowercase slug used as the <select> value in manual-entry forms. */
   value: string;
   label: string;
   emoji: string;
   icon: LucideIcon;
-  /**
-   * Full, literal Tailwind class string for icon backgrounds/badges.
-   * Written out completely (not interpolated) so Tailwind's compiler can
-   * actually find and generate these classes.
-   */
+
   badgeClass: string;
-  /** CSS var reference for Recharts' `fill` prop (SVG, not a Tailwind class). */
   chartColorVar: string;
+
+  filterable: boolean;
 }
 
 export const CATEGORIES: CategoryConfig[] = [
@@ -35,6 +31,7 @@ export const CATEGORIES: CategoryConfig[] = [
     icon: Coffee,
     badgeClass: "bg-category-food/15 text-category-food",
     chartColorVar: "var(--category-food)",
+    filterable: true,
   },
   {
     id: "Transport",
@@ -44,6 +41,7 @@ export const CATEGORIES: CategoryConfig[] = [
     icon: CarFront,
     badgeClass: "bg-category-transport/15 text-category-transport",
     chartColorVar: "var(--category-transport)",
+    filterable: true,
   },
   {
     id: "Groceries",
@@ -53,6 +51,7 @@ export const CATEGORIES: CategoryConfig[] = [
     icon: ShoppingBasket,
     badgeClass: "bg-category-groceries/15 text-category-groceries",
     chartColorVar: "var(--category-groceries)",
+    filterable: true,
   },
   {
     id: "Bills",
@@ -62,6 +61,7 @@ export const CATEGORIES: CategoryConfig[] = [
     icon: Zap,
     badgeClass: "bg-category-bills/15 text-category-bills",
     chartColorVar: "var(--category-bills)",
+    filterable: true,
   },
   {
     id: "Shopping",
@@ -71,6 +71,7 @@ export const CATEGORIES: CategoryConfig[] = [
     icon: ShoppingBag,
     badgeClass: "bg-category-shopping/15 text-category-shopping",
     chartColorVar: "var(--category-shopping)",
+    filterable: true,
   },
   {
     id: "Other",
@@ -80,15 +81,20 @@ export const CATEGORIES: CategoryConfig[] = [
     icon: Package,
     badgeClass: "bg-category-other/15 text-category-other",
     chartColorVar: "var(--category-other)",
+    filterable: false,
+  },
+  {
+    id: "Health",
+    value: "health",
+    label: "Health",
+    emoji: "💊",
+    icon: Pill,
+    badgeClass: "bg-category-health/15 text-category-health",
+    chartColorVar: "var(--category-health)",
+    filterable: true,
   },
 ];
 
-/**
- * Deliberately NOT a themed category color — this represents unexpected
- * data (an unrecognized/corrupted category string), not a real category
- * the user chose, so it stays visually distinct using generic neutral
- * tokens rather than blending in as if it were legitimate.
- */
 export const FALLBACK_CATEGORY: CategoryConfig = {
   id: "__unknown__",
   value: "other",
@@ -97,6 +103,7 @@ export const FALLBACK_CATEGORY: CategoryConfig = {
   icon: Package,
   badgeClass: "bg-muted text-muted-foreground",
   chartColorVar: "var(--muted-foreground)",
+  filterable: false,
 };
 
 export function getCategoryConfig(categoryId: string): CategoryConfig {

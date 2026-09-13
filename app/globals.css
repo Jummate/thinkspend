@@ -52,6 +52,8 @@ pre {
   --color-category-bills: var(--category-bills);
   --color-category-other: var(--category-other);
   --color-category-shopping: var(--category-shopping);
+  --color-category-health: var(--category-health);
+
   --color-danger: var(--danger);
   --color-warning: var(--warning);
   --color-warning-dim: var(--warning-dim);
@@ -82,6 +84,7 @@ pre {
   --category-bills: #8b5cf6;
   --category-other: #3b82f6;
   --category-shopping: #06b6d4;
+  --category-health: #f43f5e;
 
   /* Status Colors */
   --danger: #e5484d;
