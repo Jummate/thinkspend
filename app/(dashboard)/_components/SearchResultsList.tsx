@@ -90,11 +90,8 @@ function ExpenseRow({
   const label = expense.description || expense.category;
 
   return (
-    // NOTE: assuming a clicked expense should open it for editing —
-    // unconfirmed, easy to redirect to a detail view instead if that's
-    // the intended destination.
     <Link
-      href={ROUTES.EXPENSES_EDIT(expense.id)}
+      href={ROUTES.EXPENSES_DETAIL(expense.id)}
       onClick={onSelect}
       className="flex items-center gap-3 px-4 py-2.5 transition-colors hover:bg-secondary"
     >

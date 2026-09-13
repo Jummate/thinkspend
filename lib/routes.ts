@@ -24,7 +24,6 @@ export const ROUTES = {
   EXPENSES: "/expenses",
   EXPENSES_NEW: "/expense/new",
   EXPENSES_DETAIL: (id: string) => `/expenses/${id}`,
-  EXPENSES_EDIT: (id: string) => `/expenses/${id}/edit`,
 
   // Settings
   SETTINGS: "/settings",
