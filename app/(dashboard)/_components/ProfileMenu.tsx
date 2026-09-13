@@ -1,21 +1,18 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
 import { LogOut } from "lucide-react";
 import Avatar from "@/components/ui/Avatar";
 import { useUser } from "@/lib/hooks/useUser";
+import { useClickOutside } from "@/lib/hooks/useClickOutside";
 import { logout } from "@/lib/services/auth.service";
 import { getInitials } from "@/lib/utils/get-initials";
 import { ROUTES } from "@/lib/routes";
 
 interface ProfileMenuProps {
-  /**
-   * Which direction the dropdown opens relative to the trigger.
-   * "up" for a footer-anchored trigger (desktop/tablet sidebar),
-   * "down" for a header-anchored trigger (mobile).
-   */
+
   menuAlign?: "up" | "down";
 }
 
@@ -33,21 +30,7 @@ function ProfileMenu({ menuAlign = "down" }: ProfileMenuProps) {
     ? `${profile.firstName} ${profile.lastName ?? ""}`.trim()
     : "Account";
 
-  useEffect(() => {
-    if (!open) return;
-
-    function handleClickOutside(event: MouseEvent) {
-      if (
-        containerRef.current &&
-        !containerRef.current.contains(event.target as Node)
-      ) {
-        setOpen(false);
-      }
-    }
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [open]);
+  useClickOutside(containerRef, () => setOpen(false), open);
 
   const handleLogout = async () => {
     setOpen(false);
@@ -68,9 +51,6 @@ function ProfileMenu({ menuAlign = "down" }: ProfileMenuProps) {
         className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left transition-colors hover:bg-secondary"
       >
         <Avatar initials={initials} />
-        {/* Hidden below the "full sidebar" breakpoint — this same instance
-            renders correctly as icon-only (tablet rail) or icon+name
-            (desktop) without needing two separate mounted components. */}
         <div className="hidden min-w-0 flex-1 lg:block">
           <p className="truncate text-sm font-semibold text-foreground">
             {fullName}

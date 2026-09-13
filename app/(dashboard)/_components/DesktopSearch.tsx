@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Search } from "lucide-react";
 import { useUser } from "@/lib/hooks/useUser";
 import { currencyMapping } from "@/lib/types/profile";
+import { useClickOutside } from "@/lib/hooks/useClickOutside";
 import { useSearch } from "../_lib/useSearch";
 import SearchResultsList from "./SearchResultsList";
 
@@ -16,21 +17,7 @@ function DesktopSearch() {
 
   const currencySymbol = profile ? currencyMapping[profile.currency] : "";
 
-  useEffect(() => {
-    if (!isOpen) return;
-
-    function handleClickOutside(event: MouseEvent) {
-      if (
-        containerRef.current &&
-        !containerRef.current.contains(event.target as Node)
-      ) {
-        setIsOpen(false);
-      }
-    }
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [isOpen]);
+  useClickOutside(containerRef, () => setIsOpen(false), isOpen);
 
   const handleSelect = () => {
     setIsOpen(false);

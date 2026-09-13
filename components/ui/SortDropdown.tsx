@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { ArrowUpDown, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useClickOutside } from "@/lib/hooks/useClickOutside";
 
 export interface SortOption {
   value: string;
@@ -19,23 +20,9 @@ function SortDropdown({ options, value, onChange }: SortDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
+  useClickOutside(containerRef, () => setIsOpen(false), isOpen);
+
   const selectedLabel = options.find((o) => o.value === value)?.label ?? "";
-
-  useEffect(() => {
-    if (!isOpen) return;
-
-    function handleClickOutside(event: MouseEvent) {
-      if (
-        containerRef.current &&
-        !containerRef.current.contains(event.target as Node)
-      ) {
-        setIsOpen(false);
-      }
-    }
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [isOpen]);
 
   return (
     <div className="relative" ref={containerRef}>

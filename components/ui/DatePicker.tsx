@@ -16,6 +16,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useClickOutside } from "@/lib/hooks/useClickOutside";
 
 const DAYS = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
 const MONTHS = [
@@ -185,25 +186,16 @@ const DatePicker = forwardRef<HTMLInputElement, Props>(
       }
     }, [open]);
 
-    useEffect(() => {
-      if (!open) return;
-
-      function handleClickOutside(event: MouseEvent) {
-        if (
-          containerRef.current &&
-          !containerRef.current.contains(event.target as Node)
-        ) {
-          setOpen(false);
-          onBlur?.({
-            target: hiddenInputRef.current,
-          } as React.FocusEvent<HTMLInputElement>);
-        }
-      }
-
-      document.addEventListener("mousedown", handleClickOutside);
-      return () =>
-        document.removeEventListener("mousedown", handleClickOutside);
-    }, [open, onBlur]);
+   useClickOutside(
+  containerRef,
+  () => {
+    setOpen(false);
+    onBlur?.({
+      target: hiddenInputRef.current,
+    } as React.FocusEvent<HTMLInputElement>);
+  },
+  open,
+);
 
     useEffect(() => {
       if (isControlled && hiddenInputRef.current) {
