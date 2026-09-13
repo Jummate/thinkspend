@@ -3,5 +3,5 @@ export function formatAmountToString(amount: number) {
 }
 
 export function formatAmountToNumber(amountInString: string) {
-  return parseFloat(amountInString.replace(",", ""));
+  return parseFloat(amountInString.replace(/,/g, ""));
 }

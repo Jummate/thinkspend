@@ -3,9 +3,8 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { DollarSign } from "lucide-react";
-import clsx from "clsx";
-import Input from "@/components/ui/Input";
 import Select from "@/components/ui/Select";
+import FormAmountInput from "@/components/ui/FormAmountInput";
 import {
   currencyBudgetSchema,
   CurrencyBudgetFormData,
@@ -13,10 +12,6 @@ import {
 import { updateCurrency } from "@/lib/services/settings.service";
 import { upsertBudget, type Budget } from "@/lib/services/budget.service";
 import { supabase } from "@/lib/supabase/client";
-import {
-  formatAmountToNumber,
-  formatAmountToString,
-} from "@/lib/utils/format-amount";
 import { currencyMapping, type CurrencyCode } from "@/lib/types/profile";
 import { showError, showSuccess } from "@/lib/ui/toast";
 import { SettingsSection, Field, SaveButton } from "./SettingsFormElements";
@@ -46,6 +41,7 @@ function CurrencyBudgetSection({
 
   const {
     register,
+    control,
     handleSubmit,
     watch,
     formState: { errors, isSubmitting },
@@ -54,9 +50,8 @@ function CurrencyBudgetSection({
     mode: "onTouched",
     defaultValues: {
       currency: currentCurrency,
-      budgetAmount: initialBudget
-        ? formatAmountToString(initialBudget.amount)
-        : "",
+      // Raw integer string — AmountInput formats it for display.
+      budgetAmount: initialBudget ? String(initialBudget.amount) : "",
     },
   });
 
@@ -66,7 +61,9 @@ function CurrencyBudgetSection({
 
   const onSave = async (data: CurrencyBudgetFormData) => {
     try {
-      const amount = formatAmountToNumber(data.budgetAmount);
+      // budgetAmount is a raw integer string ("15500") — no commas to
+      // strip, so parsing is direct.
+      const amount = Number(data.budgetAmount);
       await Promise.all([
         updateCurrency(supabase, userId, data.currency),
         upsertBudget(
@@ -101,30 +98,17 @@ function CurrencyBudgetSection({
               {...register("currency")}
             />
           </Field>
-          <Field
+
+          {/* FormAmountInput renders its own label + error, so it replaces
+              Field rather than nesting inside it. */}
+          <FormAmountInput
+            control={control}
+            name="budgetAmount"
             label={`Monthly Budget — ${monthLabel} ${currentYear}`}
+            placeholder="200,000"
             error={errors.budgetAmount?.message}
-          >
-            <div
-              className={clsx(
-                "flex items-center overflow-hidden rounded-lg border bg-card transition-all",
-                errors.budgetAmount
-                  ? "border-danger focus-within:ring-1 focus-within:ring-danger"
-                  : "border-muted-foreground/30 focus-within:ring-1 focus-within:ring-primary",
-              )}
-            >
-              <span className="border-r border-muted-foreground/30 px-3 text-sm font-bold text-muted-foreground">
-                {currencyMapping[selectedCurrency] ?? ""}
-              </span>
-              <Input
-                id="budgetAmount"
-                placeholder="200,000"
-                error={!!errors.budgetAmount}
-                styles="rounded-none border-none outline-none px-3 py-2.5 text-sm"
-                {...register("budgetAmount")}
-              />
-            </div>
-          </Field>
+            prefix={currencyMapping[selectedCurrency] ?? ""}
+          />
         </div>
         <SaveButton isSubmitting={isSubmitting} />
       </form>

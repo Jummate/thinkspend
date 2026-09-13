@@ -51,9 +51,6 @@ const YEARS_PER_PAGE = 12;
 interface Props
   extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "size" | "type"> {
   label?: string;
-  // Accessible name for the trigger button. Defaults to `label` when
-  // present. Set this explicitly when `label` is omitted, so screen
-  // reader users still hear what the picker is for.
   "aria-label"?: string;
   error?: string;
   hint?: string;
