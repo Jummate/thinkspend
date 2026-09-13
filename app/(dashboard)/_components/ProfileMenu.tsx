@@ -10,6 +10,7 @@ import { useClickOutside } from "@/lib/hooks/useClickOutside";
 import { logout } from "@/lib/services/auth.service";
 import { getInitials } from "@/lib/utils/get-initials";
 import { ROUTES } from "@/lib/routes";
+import { cn } from "@/lib/utils";
 
 interface ProfileMenuProps {
 
@@ -51,6 +52,7 @@ function ProfileMenu({ menuAlign = "down" }: ProfileMenuProps) {
         className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left transition-colors hover:bg-secondary"
       >
         <Avatar initials={initials} />
+      
         <div className="hidden min-w-0 flex-1 lg:block">
           <p className="truncate text-sm font-semibold text-foreground">
             {fullName}
@@ -63,11 +65,12 @@ function ProfileMenu({ menuAlign = "down" }: ProfileMenuProps) {
 
       {open && (
         <div
-          className={`absolute z-50 w-64 rounded-xl border border-border bg-card p-2 shadow-lg ${
+          className={cn(
+            "absolute z-50 w-64 rounded-xl border border-border bg-card p-2 shadow-lg",
             menuAlign === "up"
               ? "bottom-full left-0 mb-2"
-              : "right-0 top-full mt-2"
-          }`}
+              : "right-0 top-full mt-2",
+          )}
         >
           <div className="border-b border-border px-3 py-2">
             <p className="truncate text-sm text-muted-foreground">
@@ -85,14 +88,17 @@ function ProfileMenu({ menuAlign = "down" }: ProfileMenuProps) {
               aria-checked={isDark}
               aria-label="Toggle dark mode"
               onClick={() => setTheme(isDark ? "light" : "dark")}
-              className={`relative h-6 w-11 shrink-0 rounded-full transition-colors ${
-                isDark ? "bg-primary" : "bg-muted"
-              }`}
+              className={cn(
+                "relative h-6 w-11 shrink-0 rounded-full transition-colors",
+                isDark ? "bg-primary" : "bg-muted",
+              )}
             >
               <span
-                className={`absolute top-0.5 h-5 w-5 rounded-full bg-white transition-transform ${
-                  isDark ? "translate-x-5" : "translate-x-0.5"
-                }`}
+                className={cn(
+                  "absolute top-0.5 h-5 w-5 rounded-full transition-transform",
+                  "bg-primary-foreground",
+                  isDark ? "translate-x-5" : "translate-x-0.5",
+                )}
               />
             </button>
           </div>
