@@ -64,42 +64,48 @@ function ExpensesToolbar({
         />
       </div>
 
-      {/* Controls + total */}
-      <div className="flex items-center justify-between gap-2 sm:flex-1">
-        <div className="flex items-center gap-2">
-          <button
-            type="button"
-            onClick={onFiltersToggle}
-            aria-expanded={filtersOpen}
-            className={cn(
-              "flex h-10 items-center gap-2 rounded-lg border px-3 text-sm font-medium transition-colors",
-              hasActiveFilters
-                ? "border-primary bg-primary/10 text-primary"
-                : "border-border bg-card text-foreground hover:bg-secondary",
-            )}
-          >
-            <SlidersHorizontal size={16} />
-            <span className="hidden sm:inline">Filter</span>
-          </button>
+      {/* Controls + total.
+          Mobile: controls row (Filter + Sort on left, ViewToggle on
+          right), then total on its own row below, right-aligned.
+          Desktop: everything on one line — the controls group takes
+          sm:flex-1 so the total is pushed to the far right. */}
+      <div className="flex flex-col gap-3 sm:flex-1 sm:flex-row sm:items-center sm:gap-3">
+        <div className="flex items-center justify-between gap-2 sm:flex-1">
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={onFiltersToggle}
+              aria-expanded={filtersOpen}
+              className={cn(
+                "flex h-10 items-center gap-2 rounded-lg border px-3 text-sm font-medium transition-colors",
+                hasActiveFilters
+                  ? "border-primary bg-primary/10 text-primary"
+                  : "border-border bg-card text-foreground hover:bg-secondary",
+              )}
+            >
+              <SlidersHorizontal size={16} />
+              <span className="hidden sm:inline">Filter</span>
+            </button>
 
-          <SortDropdown
-            options={SORT_OPTIONS}
-            value={sort}
-            onChange={(value) => onSortChange(value as ExpenseSort)}
-          />
+            <SortDropdown
+              options={SORT_OPTIONS}
+              value={sort}
+              onChange={(value) => onSortChange(value as ExpenseSort)}
+            />
+          </div>
+
+          <ViewToggle value={viewMode} onChange={onViewModeChange} />
         </div>
 
-        <div className="flex items-center gap-3">
-          <ViewToggle value={viewMode} onChange={onViewModeChange} />
-          <div className="text-right">
-            <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-              {isFiltered ? "Total (Filtered)" : "Total"}
-            </p>
-            <p className="text-xl font-bold text-foreground">
-              {currencySymbol}
-              {formatAmountToString(total)}
-            </p>
-          </div>
+        {/* Total — its own row on mobile, right-aligned; inline at sm+. */}
+        <div className="text-right">
+          <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+            {isFiltered ? "Total (Filtered)" : "Total"}
+          </p>
+          <p className="text-xl font-bold text-foreground">
+            {currencySymbol}
+            {formatAmountToString(total)}
+          </p>
         </div>
       </div>
     </div>
