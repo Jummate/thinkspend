@@ -60,19 +60,14 @@ function ExpenseListRow({
         <p className="truncate text-sm font-semibold text-foreground">
           {label}
         </p>
-        <div className="mt-1 flex items-center gap-2">
-          <span
-            className={cn(
-              "inline-flex shrink-0 items-center rounded-md px-2 py-0.5 text-xs font-medium",
-              category.badgeClass,
-            )}
-          >
-            {category.label}
-          </span>
-          <span className="text-xs text-muted-foreground">
-            {formatExpenseDate(expense.date)}
-          </span>
-        </div>
+        <div className="mt-1 flex flex-col items-start gap-1 sm:flex-row sm:items-center sm:gap-2">
+  <span className={cn("inline-flex shrink-0 items-center rounded-md px-2 py-0.5 text-xs font-medium", category.badgeClass)}>
+    {category.label}
+  </span>
+  <span className="text-xs text-muted-foreground">
+    {formatExpenseDate(expense.date)}
+  </span>
+</div>
       </div>
 
       {/* Amount */}
