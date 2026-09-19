@@ -54,3 +54,26 @@ export function formatExpenseDate(dateStr: string): string {
     year: "numeric",
   });
 }
+
+
+/**
+ * Formats a timestamptz for display: "Aug 27, 2026 · 4:12 PM".
+ *
+ * Renders in the viewer's local timezone. Because that differs between
+ * server and client, this is consumed only by a Client Component — see
+ * AddedTimestamp.tsx. Calling it directly from a Server Component would
+ * produce a hydration mismatch.
+ */
+export function formatExpenseTimestamp(iso: string): string {
+  const date = new Date(iso);
+  const datePart = date.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
+  const timePart = date.toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+  });
+  return `${datePart} · ${timePart}`;
+}

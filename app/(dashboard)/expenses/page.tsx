@@ -106,12 +106,18 @@ export default function ExpensesPage() {
         isFiltered={isFiltered}
       />
 
-  {filtersOpen && (
-  <ExpensesFilterPanel
-    appliedFilters={appliedFilters}
-    onApply={setAppliedFilters}
-    currencySymbol={currencySymbol}
-  />
+      {filtersOpen && (
+        <ExpensesFilterPanel
+          appliedFilters={appliedFilters}
+          onApply={setAppliedFilters}
+          currencySymbol={currencySymbol}
+        />
+      )}
+
+      {!isLoading && !error && expenses.length > 0 && (
+  <p className="text-xs text-muted-foreground">
+    Showing {expenses.length} of {totalCount} expenses
+  </p>
 )}
       {/* Results */}
       {isLoading ? (
@@ -131,14 +137,15 @@ export default function ExpensesPage() {
           </p>
         </div>
       ) : viewMode === "list" ? (
-        <div className="flex flex-col gap-1">
-          {expenses.map((expense) => (
+        <div className="overflow-hidden rounded-2xl border border-border bg-card">
+          {expenses.map((expense, index) => (
             <ExpenseListRow
               key={expense.id}
               expense={expense}
               currencySymbol={currencySymbol}
               onEdit={handleEdit}
               onDelete={handleDelete}
+              isLast={index === expenses.length - 1}
             />
           ))}
         </div>
@@ -156,19 +163,17 @@ export default function ExpensesPage() {
         </div>
       )}
 
-      {/* Showing count + pagination */}
-      {!isLoading && !error && expenses.length > 0 && (
-        <div className="flex flex-col items-center gap-4">
-          <p className="text-xs text-muted-foreground">
-            Showing {expenses.length} of {totalCount} expenses
-          </p>
-          <Pagination
+      {!isLoading && !error && expenses.length > 0 && totalPages > 1 && (
+  <div className="flex justify-center">
+           <Pagination
             page={page}
             totalPages={totalPages}
             onPageChange={setPage}
           />
-        </div>
-      )}
+  </div>
+)}
+
+
     </div>
   );
 }

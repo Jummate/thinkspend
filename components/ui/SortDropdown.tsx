@@ -26,16 +26,16 @@ function SortDropdown({ options, value, onChange }: SortDropdownProps) {
 
   return (
     <div className="relative" ref={containerRef}>
-      <button
-        type="button"
-        aria-haspopup="listbox"
-        aria-expanded={isOpen}
-        onClick={() => setIsOpen((prev) => !prev)}
-        className="flex items-center gap-2 rounded-lg border border-border bg-card px-4 py-2.5 text-sm font-bold text-foreground transition-colors hover:bg-secondary"
-      >
-        <ArrowUpDown size={16} />
-        {selectedLabel}
-      </button>
+ <button
+  type="button"
+  aria-haspopup="listbox"
+  aria-expanded={isOpen}
+  onClick={() => setIsOpen((prev) => !prev)}
+  className="flex items-center gap-2 rounded-lg border border-border bg-card px-4 py-2.5 text-sm font-bold text-foreground transition-colors hover:bg-secondary"
+>
+  <ArrowUpDown size={16} />
+  <span className="hidden sm:inline">{selectedLabel}</span>
+</button>
 
       {isOpen && (
         <div
