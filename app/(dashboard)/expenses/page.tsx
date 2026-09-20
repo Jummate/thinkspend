@@ -20,12 +20,16 @@ import {
   type AppliedFilters,
 } from "./_lib/filters";
 import ExpensesFilterPanel from "./_components/ExpensesFilterPanel";
+import BottomSheet from "@/components/ui/BottomSheet";
+import { useMediaQuery } from "@/lib/hooks/useMediaQuery";
 
 const DEBOUNCE_MS = 300;
 
 export default function ExpensesPage() {
   const { user, profile } = useUser();
   const currencySymbol = profile ? currencyMapping[profile.currency] : "";
+
+  const isMobile = useMediaQuery("(max-width: 639px)");
 
   // --- Search (live, debounced) ---
   const [searchInput, setSearchInput] = useState("");
@@ -106,19 +110,40 @@ export default function ExpensesPage() {
         isFiltered={isFiltered}
       />
 
-      {filtersOpen && (
-        <ExpensesFilterPanel
-          appliedFilters={appliedFilters}
-          onApply={setAppliedFilters}
-          currencySymbol={currencySymbol}
-        />
-      )}
+{/* Desktop: inline panel below the toolbar */}
+{filtersOpen && !isMobile && (
+  <ExpensesFilterPanel
+    appliedFilters={appliedFilters}
+    onApply={setAppliedFilters}
+    currencySymbol={currencySymbol}
+  />
+)}
+
+{/* Mobile: bottom sheet. Closes on apply (and on clear-all, which
+    also calls onApply), matching the commit-and-dismiss convention. */}
+{filtersOpen && isMobile && (
+  <BottomSheet
+    isOpen={filtersOpen}
+    onClose={() => setFiltersOpen(false)}
+    title="Filter expenses"
+  >
+    <ExpensesFilterPanel
+      appliedFilters={appliedFilters}
+      onApply={(filters) => {
+        setAppliedFilters(filters);
+        setFiltersOpen(false);
+      }}
+      currencySymbol={currencySymbol}
+      bare
+    />
+  </BottomSheet>
+)}
 
       {!isLoading && !error && expenses.length > 0 && (
-  <p className="text-xs text-muted-foreground">
-    Showing {expenses.length} of {totalCount} expenses
-  </p>
-)}
+        <p className="text-xs text-muted-foreground">
+          Showing {expenses.length} of {totalCount} expenses
+        </p>
+      )}
       {/* Results */}
       {isLoading ? (
         <p className="py-12 text-center text-sm text-muted-foreground">
@@ -164,16 +189,14 @@ export default function ExpensesPage() {
       )}
 
       {!isLoading && !error && expenses.length > 0 && totalPages > 1 && (
-  <div className="flex justify-center">
-           <Pagination
+        <div className="flex justify-center">
+          <Pagination
             page={page}
             totalPages={totalPages}
             onPageChange={setPage}
           />
-  </div>
-)}
-
-
+        </div>
+      )}
     </div>
   );
 }

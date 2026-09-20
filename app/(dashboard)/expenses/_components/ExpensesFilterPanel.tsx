@@ -1,24 +1,29 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { cn } from "@/lib/utils";
 import CategoryFilterChips from "./CategoryFilterChips";
 import DateRangeInput from "@/components/ui/DateRangeInput";
 import AmountRangeInput from "@/components/ui/AmountRangeInput";
-import {
-  EMPTY_FILTERS,
-  type AppliedFilters,
-} from "../_lib/filters";
+import { EMPTY_FILTERS, type AppliedFilters } from "../_lib/filters";
 
 interface ExpensesFilterPanelProps {
   appliedFilters: AppliedFilters;
   onApply: (filters: AppliedFilters) => void;
   currencySymbol: string;
+  /**
+   * When true, omits the outer card border and padding — used when the
+   * panel is rendered inside a container that provides its own chrome
+   * (e.g. the mobile BottomSheet).
+   */
+  bare?: boolean;
 }
 
 function ExpensesFilterPanel({
   appliedFilters,
   onApply,
   currencySymbol,
+  bare = false,
 }: ExpensesFilterPanelProps) {
   // Local staged copy — the user edits this, and it's only pushed up
   // via onApply when the Apply button is clicked. Kept in sync with
@@ -40,9 +45,13 @@ function ExpensesFilterPanel({
   };
 
   return (
-    <div className="flex flex-col gap-6 rounded-2xl border border-border bg-card p-6">
-      {/* Categories — full width; six chips need more room than a
-          third-column layout would give them. */}
+    <div
+      className={cn(
+        "flex flex-col gap-6",
+        !bare && "rounded-2xl border border-border bg-card p-6",
+      )}
+    >
+      {/* Categories */}
       <div>
         <p className="mb-3 text-xs font-bold uppercase tracking-wide text-muted-foreground">
           Categories
@@ -60,7 +69,7 @@ function ExpensesFilterPanel({
         />
       </div>
 
-      {/* Date + amount share a row — both are compact. */}
+      {/* Date + amount */}
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         <div>
           <p className="mb-3 text-xs font-bold uppercase tracking-wide text-muted-foreground">
