@@ -74,7 +74,7 @@ export default async function ExpenseDetailPage({
 
         {/* Actions */}
         <div className="mt-4">
-          <ExpenseDetailActions expenseId={expense.id} />
+          <ExpenseDetailActions expense={expense} />
         </div>
       </div>
     </div>

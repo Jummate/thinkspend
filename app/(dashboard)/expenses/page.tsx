@@ -22,6 +22,7 @@ import {
 import ExpensesFilterPanel from "./_components/ExpensesFilterPanel";
 import BottomSheet from "@/components/ui/BottomSheet";
 import { useMediaQuery } from "@/lib/hooks/useMediaQuery";
+import ExpenseDeleteModal from "./_components/ExpenseDeleteModal";
 
 const DEBOUNCE_MS = 300;
 
@@ -30,6 +31,8 @@ export default function ExpensesPage() {
   const currencySymbol = profile ? currencyMapping[profile.currency] : "";
 
   const isMobile = useMediaQuery("(max-width: 639px)");
+
+  const [deleteTarget, setDeleteTarget] = useState<Expense | null>(null);
 
   // --- Search (live, debounced) ---
   const [searchInput, setSearchInput] = useState("");
@@ -81,8 +84,8 @@ export default function ExpensesPage() {
     // TODO: open edit modal
   };
 
-  const handleDelete = (_expense: Expense) => {
-    // TODO: open delete confirmation modal
+  const handleDelete = (expense: Expense) => {
+    setDeleteTarget(expense);
   };
 
   return (
@@ -110,34 +113,34 @@ export default function ExpensesPage() {
         isFiltered={isFiltered}
       />
 
-{/* Desktop: inline panel below the toolbar */}
-{filtersOpen && !isMobile && (
-  <ExpensesFilterPanel
-    appliedFilters={appliedFilters}
-    onApply={setAppliedFilters}
-    currencySymbol={currencySymbol}
-  />
-)}
+      {/* Desktop: inline panel below the toolbar */}
+      {filtersOpen && !isMobile && (
+        <ExpensesFilterPanel
+          appliedFilters={appliedFilters}
+          onApply={setAppliedFilters}
+          currencySymbol={currencySymbol}
+        />
+      )}
 
-{/* Mobile: bottom sheet. Closes on apply (and on clear-all, which
+      {/* Mobile: bottom sheet. Closes on apply (and on clear-all, which
     also calls onApply), matching the commit-and-dismiss convention. */}
-{filtersOpen && isMobile && (
-  <BottomSheet
-    isOpen={filtersOpen}
-    onClose={() => setFiltersOpen(false)}
-    title="Filter expenses"
-  >
-    <ExpensesFilterPanel
-      appliedFilters={appliedFilters}
-      onApply={(filters) => {
-        setAppliedFilters(filters);
-        setFiltersOpen(false);
-      }}
-      currencySymbol={currencySymbol}
-      bare
-    />
-  </BottomSheet>
-)}
+      {filtersOpen && isMobile && (
+        <BottomSheet
+          isOpen={filtersOpen}
+          onClose={() => setFiltersOpen(false)}
+          title="Filter expenses"
+        >
+          <ExpensesFilterPanel
+            appliedFilters={appliedFilters}
+            onApply={(filters) => {
+              setAppliedFilters(filters);
+              setFiltersOpen(false);
+            }}
+            currencySymbol={currencySymbol}
+            bare
+          />
+        </BottomSheet>
+      )}
 
       {!isLoading && !error && expenses.length > 0 && (
         <p className="text-xs text-muted-foreground">
@@ -187,6 +190,11 @@ export default function ExpensesPage() {
           ))}
         </div>
       )}
+
+      <ExpenseDeleteModal
+        expense={deleteTarget}
+        onClose={() => setDeleteTarget(null)}
+      />
 
       {!isLoading && !error && expenses.length > 0 && totalPages > 1 && (
         <div className="flex justify-center">
