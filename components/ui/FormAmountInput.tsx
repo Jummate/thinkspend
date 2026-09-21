@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import { Control, Controller, FieldValues, Path } from "react-hook-form";
 import { cn } from "@/lib/utils";
 import AmountInput from "./AmountInput";
+import FieldLabel from "./FieldLabel";
 
 interface FormAmountInputProps<T extends FieldValues> {
   control: Control<T>;
@@ -40,10 +41,9 @@ function FormAmountInput<T extends FieldValues>({
 
   return (
     <div className={cn("flex w-full flex-col gap-1.5", containerClassName)}>
-      <label htmlFor={inputId} className="text-sm font-medium text-muted-foreground">
+      <FieldLabel htmlFor={inputId} required={required}>
         {label}
-        {required && <span className="text-danger ml-1">*</span>}
-      </label>
+      </FieldLabel>
 
       <Controller
         control={control}

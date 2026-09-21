@@ -9,14 +9,10 @@ import {
   useRef,
   useState,
 } from "react";
-import {
-  Calendar,
-  ChevronDown,
-  ChevronLeft,
-  ChevronRight,
-} from "lucide-react";
+import { Calendar, ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useClickOutside } from "@/lib/hooks/useClickOutside";
+import FieldLabel from "./FieldLabel";
 
 const DAYS = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
 const MONTHS = [
@@ -49,8 +45,10 @@ const MONTHS_SHORT = [
 ];
 const YEARS_PER_PAGE = 12;
 
-interface Props
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "size" | "type"> {
+interface Props extends Omit<
+  React.InputHTMLAttributes<HTMLInputElement>,
+  "size" | "type"
+> {
   label?: string;
   "aria-label"?: string;
   error?: string;
@@ -186,16 +184,16 @@ const DatePicker = forwardRef<HTMLInputElement, Props>(
       }
     }, [open]);
 
-   useClickOutside(
-  containerRef,
-  () => {
-    setOpen(false);
-    onBlur?.({
-      target: hiddenInputRef.current,
-    } as React.FocusEvent<HTMLInputElement>);
-  },
-  open,
-);
+    useClickOutside(
+      containerRef,
+      () => {
+        setOpen(false);
+        onBlur?.({
+          target: hiddenInputRef.current,
+        } as React.FocusEvent<HTMLInputElement>);
+      },
+      open,
+    );
 
     useEffect(() => {
       if (isControlled && hiddenInputRef.current) {
@@ -405,13 +403,12 @@ const DatePicker = forwardRef<HTMLInputElement, Props>(
         className={cn("relative flex flex-col gap-1", className)}
       >
         {label && (
-          <label
+          <FieldLabel
             htmlFor={inputId}
-            className="text-sm font-medium text-foreground"
+            required={required}
           >
             {label}
-            {required && <span className="text-danger ml-1">*</span>}
-          </label>
+          </FieldLabel>
         )}
 
         <input
@@ -460,7 +457,10 @@ const DatePicker = forwardRef<HTMLInputElement, Props>(
           )}
         >
           <div className="flex items-center gap-2">
-            <Calendar size={15} className="text-muted-foreground" />
+            <Calendar
+              size={15}
+              className="text-muted-foreground"
+            />
             <span
               className={cn(
                 selectedValue && !disabled
@@ -601,7 +601,8 @@ const DatePicker = forwardRef<HTMLInputElement, Props>(
                 {MONTHS_SHORT.map((monthName, monthIndex) => {
                   const disabledMonth = isMonthDisabled(year, monthIndex);
                   const isSelectedMonth =
-                    monthIndex === month && selectedDate?.getFullYear() === year;
+                    monthIndex === month &&
+                    selectedDate?.getFullYear() === year;
                   const isCurrentMonth =
                     monthIndex === today.getMonth() &&
                     year === today.getFullYear();

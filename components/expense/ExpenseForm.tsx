@@ -2,7 +2,7 @@
 
 import { Check } from "lucide-react";
 import { useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Select from "../ui/Select";
 import Textarea from "../ui/TextArea";
@@ -14,6 +14,8 @@ import {
 import { CATEGORIES } from "@/lib/config/categories";
 import { currencyMapping, type CurrencyCode } from "@/lib/types/profile";
 import { cn } from "@/lib/utils";
+import DatePicker from "../ui/DatePicker";
+import FieldLabel from "../ui/FieldLabel";
 
 interface ExpenseFormProps {
   onSubmit: (data: ExpenseFormData) => Promise<void>;
@@ -43,7 +45,13 @@ const ExpenseForm = ({
     resolver: zodResolver(expenseDataSchema),
     mode: "onTouched",
     reValidateMode: "onChange",
-    defaultValues: { currency },
+    defaultValues: {
+      amount: "",
+      currency,
+      category: "",
+      description: "",
+      date: "",
+    },
   });
 
   useEffect(() => {
@@ -53,7 +61,10 @@ const ExpenseForm = ({
   }, [initialValues, currency, reset]);
 
   return (
-    <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
+    <form
+      className="flex flex-col gap-4"
+      onSubmit={handleSubmit(onSubmit)}
+    >
       {/* Amount + Category */}
       <div className="flex flex-col gap-4 sm:flex-row">
         <div className="flex-1">
@@ -70,13 +81,12 @@ const ExpenseForm = ({
         </div>
 
         <div className="flex flex-1 flex-col gap-2">
-          <label
+          <FieldLabel
             htmlFor="category"
-            className="text-sm font-medium text-muted-foreground"
+            required
           >
             Category
-            <span className="ml-1 text-danger">*</span>
-          </label>
+          </FieldLabel>
 
           <Select
             {...register("category")}
@@ -92,42 +102,24 @@ const ExpenseForm = ({
           )}
         </div>
       </div>
-
-      {/* Date — fixed height, sits above the growing textarea */}
-      <div className="flex flex-col gap-2">
-        <label
-          htmlFor="date"
-          className="text-sm font-medium text-muted-foreground"
-        >
-          Date
-          <span className="ml-1 text-danger">*</span>
-        </label>
-
-        <input
-          type="date"
-          id="date"
-          className={cn(
-            "h-10 w-full rounded-lg border px-3 text-sm outline-none transition-shadow",
-            errors.date
-              ? "border-danger bg-card text-foreground focus:border-transparent focus:ring-2 focus:ring-danger"
-              : "border-muted-foreground/30 bg-card text-foreground focus:border-transparent focus:ring-2 focus:ring-primary",
-          )}
-          {...register("date")}
-        />
-
-        {errors.date && (
-          <p className="text-xs text-danger">{errors.date.message}</p>
+      <Controller
+        control={control}
+        name="date"
+        render={({ field, fieldState }) => (
+          <DatePicker
+            label="Date"
+            id="date"
+            required
+            error={fieldState.error?.message}
+            value={field.value ?? ""}
+            onValueChange={field.onChange}
+            onBlur={field.onBlur}
+          />
         )}
-      </div>
+      />
 
-      {/* Description — growing textarea, deliberately last */}
       <div className="flex flex-col gap-2">
-        <label
-          htmlFor="description"
-          className="text-sm font-medium text-muted-foreground"
-        >
-          Description
-        </label>
+        <FieldLabel htmlFor="description">Description</FieldLabel>
 
         <Textarea
           {...register("description")}
