@@ -10,9 +10,11 @@ import PasswordSection from "./_components/PasswordSection";
 import CurrencySection from "./_components/CurrencySection";
 import BudgetSection from "./_components/BudgetSection";
 import DangerZoneSection from "./_components/DangerZoneSection";
+import { useCurrency } from "@/lib/hooks/useCurrency";
 
 export default function SettingsPage() {
   const { user, profile, loading } = useUser();
+  const currency = useCurrency();
   const [budget, setBudget] = useState<Budget | null>(null);
   const [expenseCount, setExpenseCount] = useState<number | null>(null);
   const [dataLoaded, setDataLoaded] = useState(false);
@@ -64,12 +66,12 @@ export default function SettingsPage() {
         />
         <CurrencySection
           userId={user.id}
-          currentCurrency={profile.currency}
+          currentCurrency={currency}
           locked={currencyLocked}
         />
         <BudgetSection
           userId={user.id}
-          currency={profile.currency}
+          currency={currency}
           initialBudget={budget}
         />
         <PasswordSection />

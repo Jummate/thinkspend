@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useUser } from "@/lib/hooks/useUser";
 import { useExpenses } from "@/lib/hooks/useExpenses";
 import { useDebounce } from "@/lib/hooks/useDebounce";
-import { CurrencyCode, currencyMapping } from "@/lib/config/currencies";
+import { currencyMapping } from "@/lib/config/currencies";
 import type { Expense } from "@/lib/types/expense";
 import type { ExpenseSort } from "@/lib/services/expense.service";
 import type { ViewMode } from "@/components/ui/ViewToggle";
@@ -24,12 +24,14 @@ import BottomSheet from "@/components/ui/BottomSheet";
 import { useMediaQuery } from "@/lib/hooks/useMediaQuery";
 import ExpenseDeleteModal from "./_components/ExpenseDeleteModal";
 import ExpenseEditModal from "./_components/ExpenseEditModal";
+import { useCurrency } from "@/lib/hooks/useCurrency";
 
 const DEBOUNCE_MS = 300;
 
 export default function ExpensesPage() {
-  const { user, profile } = useUser();
-  const currencySymbol = profile ? currencyMapping[profile.currency] : "";
+const { user } = useUser();
+const currency = useCurrency();
+const currencySymbol = currencyMapping[currency];
 
   const isMobile = useMediaQuery("(max-width: 639px)");
 
@@ -200,7 +202,7 @@ export default function ExpensesPage() {
       <ExpenseEditModal
         expense={editTarget}
         onClose={() => setEditTarget(null)}
-        currency={(profile?.currency ?? "NGN") as CurrencyCode}
+        currency={currency}
       />
 
       {!isLoading && !error && expenses.length > 0 && totalPages > 1 && (

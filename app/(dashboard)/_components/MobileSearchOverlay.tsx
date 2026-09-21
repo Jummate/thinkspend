@@ -1,21 +1,21 @@
 "use client";
 
 import { ArrowLeft, Search } from "lucide-react";
-import { useUser } from "@/lib/hooks/useUser";
 import { currencyMapping } from "@/lib/config/currencies";
 import { useSearch } from "../_lib/useSearch";
 import SearchResultsList from "./SearchResultsList";
+import { useCurrency } from "@/lib/hooks/useCurrency";
 
 interface MobileSearchOverlayProps {
   onClose: () => void;
 }
 
 function MobileSearchOverlay({ onClose }: MobileSearchOverlayProps) {
-  const { profile } = useUser();
+  const currency = useCurrency();
   const { query, setQuery, status, expenseResults, shortcutResults, clear } =
     useSearch();
 
-  const currencySymbol = profile ? currencyMapping[profile.currency] : "";
+  const currencySymbol = currencyMapping[currency]
 
   const handleSelect = () => {
     clear();

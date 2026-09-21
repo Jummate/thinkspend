@@ -8,7 +8,7 @@ import {
 } from "@/lib/services/dashboard.service";
 import { getBudgetForMonth } from "@/lib/services/budget.service";
 import { CATEGORIES } from "@/lib/config/categories";
-import { currencyMapping } from "@/lib/config/currencies";
+import { currencyMapping, DEFAULT_CURRENCY } from "@/lib/config/currencies";
 import { getCurrentMonth } from "@/lib/utils/date";
 import { ROUTES } from "@/lib/routes";
 import TotalSpendingCard from "../_components/TotalSpendingCard";
@@ -45,7 +45,7 @@ export default async function DashboardPage() {
       getBudgetForMonth(supabase, user.id, currentMonth, currentYear),
     ]);
 
-  const currencySymbol = profile ? currencyMapping[profile.currency] : "";
+  const currencySymbol = currencyMapping[profile?.currency ?? DEFAULT_CURRENCY];
 
   // Merge real spending into the full category list so the chart always
   // shows every category, including ones with zero spending this month.

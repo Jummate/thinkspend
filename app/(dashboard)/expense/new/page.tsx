@@ -6,7 +6,6 @@ import { useUser } from "@/lib/hooks/useUser";
 import { supabase } from "@/lib/supabase/client";
 import { ParsedExpense } from "@/lib/types/expense";
 import { mapAICategoryToValue } from "@/lib/utils/category-mapper";
-import { formatAmountToString } from "@/lib/utils/format-amount";
 import { ExpenseFormData, ExpenseInputData } from "@/lib/validations/expense";
 import { CheckCircle2 } from "lucide-react";
 import { useRef, useState } from "react";
@@ -15,10 +14,11 @@ import { parseExpense } from "@/lib/services/expense-parse.client";
 import { saveExpense } from "@/lib/services/expense.service";
 import { showError, showSuccess } from "@/lib/ui/toast";
 import { AppError } from "@/lib/errors/app-error";
- import type { CurrencyCode } from "@/lib/config/currencies";
+import { useCurrency } from "@/lib/hooks/useCurrency";
 
 const AddNewExpensePage = () => {
-  const { user, profile, loading } = useUser();
+  const { user, loading } = useUser();
+  const currency = useCurrency();
   const [serverError, setServerError] = useState<string | null>(null);
   const [parsedData, setParsedData] = useState<ParsedExpense | null>(null);
   const [isParsed, setIsParsed] = useState<boolean>(false);
@@ -158,7 +158,7 @@ const AddNewExpensePage = () => {
 
         <ExpenseForm
           onSubmit={handleExpense}
-          currency={(profile?.currency ?? "NGN") as CurrencyCode}
+          currency={currency}
           initialValues={initialValues}
         />
       </section>

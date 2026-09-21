@@ -2,20 +2,20 @@
 
 import { useRef, useState } from "react";
 import { Search } from "lucide-react";
-import { useUser } from "@/lib/hooks/useUser";
 import { currencyMapping } from "@/lib/config/currencies";
 import { useClickOutside } from "@/lib/hooks/useClickOutside";
 import { useSearch } from "../_lib/useSearch";
 import SearchResultsList from "./SearchResultsList";
+import { useCurrency } from "@/lib/hooks/useCurrency";
 
 function DesktopSearch() {
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
-  const { profile } = useUser();
+  const currency = useCurrency();
   const { query, setQuery, status, expenseResults, shortcutResults, clear } =
     useSearch();
 
-  const currencySymbol = profile ? currencyMapping[profile.currency] : "";
+  const currencySymbol = currencyMapping[currency];
 
   useClickOutside(containerRef, () => setIsOpen(false), isOpen);
 

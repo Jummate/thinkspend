@@ -3,11 +3,11 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Pencil, Trash2 } from "lucide-react";
-import { useUser } from "@/lib/hooks/useUser";
 import { ROUTES } from "@/lib/routes";
 import type { Expense } from "@/lib/types/expense";
 import ExpenseEditModal from "./ExpenseEditModal";
 import ExpenseDeleteModal from "./ExpenseDeleteModal";
+import { useCurrency } from "@/lib/hooks/useCurrency";
 
 interface ExpenseDetailActionsProps {
   expense: Expense;
@@ -15,12 +15,11 @@ interface ExpenseDetailActionsProps {
 
 function ExpenseDetailActions({ expense }: ExpenseDetailActionsProps) {
   const router = useRouter();
-  const { profile } = useUser();
+  const currency = useCurrency();
 
   const [deleteTarget, setDeleteTarget] = useState<Expense | null>(null);
   const [editTarget, setEditTarget] = useState<Expense | null>(null);
 
-  const currency = profile?.currency ?? "NGN";
 
   return (
     <>

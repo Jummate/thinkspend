@@ -1,4 +1,6 @@
 
+export const DEFAULT_CURRENCY: CurrencyCode = "NGN";
+
 export const CURRENCIES = [
   { code: "NGN", symbol: "₦", label: "Nigerian Naira (NGN)" },
   { code: "USD", symbol: "$", label: "US Dollar (USD)" },
