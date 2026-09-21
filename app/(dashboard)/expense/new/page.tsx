@@ -69,7 +69,7 @@ const AddNewExpensePage = () => {
   // user's profile currency (single-currency policy).
   const initialValues = parsedData
     ? {
-        amount: formatAmountToString(parsedData.amount),
+        amount: String(parsedData.amount),
         category: mapAICategoryToValue(parsedData.category),
         description: parsedData.description || "",
         date: parsedData.date,
@@ -120,6 +120,17 @@ const AddNewExpensePage = () => {
             error={serverError}
             onSubmit={handleInputParse}
           />
+
+             <p className="text-xs italic text-muted-foreground">
+          Try &quot;Lunch ₦1000&quot;, &quot;Uber ₦12000&quot;, &quot;Bought
+          groceries ₦15500&quot;
+        </p>
+
+
+
+
+
+
         </div>
       </section>
 

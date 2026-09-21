@@ -18,7 +18,7 @@ function Modal({ isOpen, onClose, children }: ModalProps) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       <ModalBackdrop onClose={onClose} />
-      <div className="relative z-10 w-full max-w-md rounded-2xl bg-card p-8 shadow-2xl">
+      <div className="relative z-10 max-h-[80vh] w-full max-w-md overflow-y-auto rounded-2xl bg-card p-8 shadow-2xl">
         {children}
       </div>
     </div>

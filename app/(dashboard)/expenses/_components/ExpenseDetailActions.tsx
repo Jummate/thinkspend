@@ -3,8 +3,10 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Pencil, Trash2 } from "lucide-react";
+import { useUser } from "@/lib/hooks/useUser";
 import { ROUTES } from "@/lib/routes";
 import type { Expense } from "@/lib/types/expense";
+import ExpenseEditModal from "./ExpenseEditModal";
 import ExpenseDeleteModal from "./ExpenseDeleteModal";
 
 interface ExpenseDetailActionsProps {
@@ -13,19 +15,19 @@ interface ExpenseDetailActionsProps {
 
 function ExpenseDetailActions({ expense }: ExpenseDetailActionsProps) {
   const router = useRouter();
-  const [deleteTarget, setDeleteTarget] = useState<Expense | null>(null);
+  const { profile } = useUser();
 
-  // TODO: wire to the edit modal once it exists.
-  const handleEdit = () => {
-    void expense;
-  };
+  const [deleteTarget, setDeleteTarget] = useState<Expense | null>(null);
+  const [editTarget, setEditTarget] = useState<Expense | null>(null);
+
+  const currency = profile?.currency ?? "NGN";
 
   return (
     <>
       <div className="flex gap-3">
         <button
           type="button"
-          onClick={handleEdit}
+          onClick={() => setEditTarget(expense)}
           className="flex flex-1 items-center justify-center gap-2 rounded-lg border border-border bg-card py-3 text-sm font-medium text-foreground transition-colors hover:bg-secondary"
         >
           <Pencil size={16} />
@@ -40,6 +42,13 @@ function ExpenseDetailActions({ expense }: ExpenseDetailActionsProps) {
           Delete
         </button>
       </div>
+
+      <ExpenseEditModal
+        expense={editTarget}
+        onClose={() => setEditTarget(null)}
+        currency={currency}
+        onUpdated={() => router.refresh()}
+      />
 
       <ExpenseDeleteModal
         expense={deleteTarget}

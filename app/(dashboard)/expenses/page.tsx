@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useUser } from "@/lib/hooks/useUser";
 import { useExpenses } from "@/lib/hooks/useExpenses";
 import { useDebounce } from "@/lib/hooks/useDebounce";
-import { currencyMapping } from "@/lib/types/profile";
+import { CurrencyCode, currencyMapping } from "@/lib/types/profile";
 import type { Expense } from "@/lib/types/expense";
 import type { ExpenseSort } from "@/lib/services/expense.service";
 import type { ViewMode } from "@/components/ui/ViewToggle";
@@ -23,6 +23,7 @@ import ExpensesFilterPanel from "./_components/ExpensesFilterPanel";
 import BottomSheet from "@/components/ui/BottomSheet";
 import { useMediaQuery } from "@/lib/hooks/useMediaQuery";
 import ExpenseDeleteModal from "./_components/ExpenseDeleteModal";
+import ExpenseEditModal from "./_components/ExpenseEditModal";
 
 const DEBOUNCE_MS = 300;
 
@@ -33,6 +34,7 @@ export default function ExpensesPage() {
   const isMobile = useMediaQuery("(max-width: 639px)");
 
   const [deleteTarget, setDeleteTarget] = useState<Expense | null>(null);
+  const [editTarget, setEditTarget] = useState<Expense | null>(null);
 
   // --- Search (live, debounced) ---
   const [searchInput, setSearchInput] = useState("");
@@ -79,9 +81,8 @@ export default function ExpensesPage() {
     setPage(1);
   }, [debouncedSearch, sort, appliedFilters]);
 
-  // --- Placeholder handlers (modals come later) ---
-  const handleEdit = (_expense: Expense) => {
-    // TODO: open edit modal
+  const handleEdit = (expense: Expense) => {
+    setEditTarget(expense);
   };
 
   const handleDelete = (expense: Expense) => {
@@ -194,6 +195,12 @@ export default function ExpensesPage() {
       <ExpenseDeleteModal
         expense={deleteTarget}
         onClose={() => setDeleteTarget(null)}
+      />
+
+      <ExpenseEditModal
+        expense={editTarget}
+        onClose={() => setEditTarget(null)}
+        currency={(profile?.currency ?? "NGN") as CurrencyCode}
       />
 
       {!isLoading && !error && expenses.length > 0 && totalPages > 1 && (
