@@ -12,7 +12,7 @@ import {
   type ExpenseFormData,
 } from "@/lib/validations/expense";
 import { CATEGORIES } from "@/lib/config/categories";
-import { currencyMapping, type CurrencyCode } from "@/lib/types/profile";
+import { currencyMapping, type CurrencyCode } from "@/lib/config/currencies";
 import { cn } from "@/lib/utils";
 import DatePicker from "../ui/DatePicker";
 import FieldLabel from "../ui/FieldLabel";

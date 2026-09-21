@@ -196,3 +196,22 @@ export async function saveExpense(
 
   return { ...created, amount: Number(created.amount) };
 }
+
+
+/**
+ * Returns the number of expenses a user has. Used by Settings to
+ * decide whether the currency field can be changed — the single-
+ * currency policy locks it once any financial data exists.
+ */
+export async function getExpenseCount(
+  supabase: SupabaseClient,
+  userId: string,
+): Promise<number> {
+  const { count, error } = await supabase
+    .from("expenses")
+    .select("*", { count: "exact", head: true })
+    .eq("user_id", userId);
+
+  if (error) throw error;
+  return count ?? 0;
+}

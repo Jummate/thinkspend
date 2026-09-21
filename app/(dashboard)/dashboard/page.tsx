@@ -8,7 +8,7 @@ import {
 } from "@/lib/services/dashboard.service";
 import { getBudgetForMonth } from "@/lib/services/budget.service";
 import { CATEGORIES } from "@/lib/config/categories";
-import { currencyMapping } from "@/lib/types/profile";
+import { currencyMapping } from "@/lib/config/currencies";
 import { getCurrentMonth } from "@/lib/utils/date";
 import { ROUTES } from "@/lib/routes";
 import TotalSpendingCard from "../_components/TotalSpendingCard";

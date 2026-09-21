@@ -2,13 +2,16 @@ import Link from "next/link";
 import { ArrowRight, Pause } from "lucide-react";
 import AuthCard from "@/components/auth/AuthCard";
 import AuthCardHeader from "@/components/auth/AuthCardHeader";
-import { currencyMapping } from "@/lib/types/profile";
+import {
+  currencyMapping,
+  type CurrencyCode,
+} from "@/lib/config/currencies";
 import StatusIcon from "../ui/StatusIcon";
 
 type Snapshot = {
   expensesLogged: number;
   monthlyBudget: number;
-  currency: keyof typeof currencyMapping;
+  currency: CurrencyCode;
 };
 
 type PausedAccountCardProps = {

@@ -4,10 +4,9 @@ import Modal from "@/components/ui/Modal";
 import ExpenseForm from "@/components/expense/ExpenseForm";
 import { useUpdateExpense } from "@/lib/hooks/useUpdateExpense";
 import { mapAICategoryToValue } from "@/lib/utils/category-mapper";
-import { formatAmountToString } from "@/lib/utils/format-amount";
 import { showError, showSuccess } from "@/lib/ui/toast";
 import type { Expense } from "@/lib/types/expense";
-import type { CurrencyCode } from "@/lib/types/profile";
+import type { CurrencyCode } from "@/lib/config/currencies";
 import type { ExpenseFormData } from "@/lib/validations/expense";
 
 interface ExpenseEditModalProps {

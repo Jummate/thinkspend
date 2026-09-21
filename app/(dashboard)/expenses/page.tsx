@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useUser } from "@/lib/hooks/useUser";
 import { useExpenses } from "@/lib/hooks/useExpenses";
 import { useDebounce } from "@/lib/hooks/useDebounce";
-import { CurrencyCode, currencyMapping } from "@/lib/types/profile";
+import { CurrencyCode, currencyMapping } from "@/lib/config/currencies";
 import type { Expense } from "@/lib/types/expense";
 import type { ExpenseSort } from "@/lib/services/expense.service";
 import type { ViewMode } from "@/components/ui/ViewToggle";

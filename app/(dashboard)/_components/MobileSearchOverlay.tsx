@@ -2,7 +2,7 @@
 
 import { ArrowLeft, Search } from "lucide-react";
 import { useUser } from "@/lib/hooks/useUser";
-import { currencyMapping } from "@/lib/types/profile";
+import { currencyMapping } from "@/lib/config/currencies";
 import { useSearch } from "../_lib/useSearch";
 import SearchResultsList from "./SearchResultsList";
 

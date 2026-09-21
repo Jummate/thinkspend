@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { formatAmountToNumber } from "../utils/format-amount";
 import { passwordSchema } from "./password";
+import { CURRENCIES } from "@/lib/config/currencies";
 
 export const profileSchema = z.object({
   firstName: z.string().min(1, "First name is required").trim(),
@@ -8,9 +9,7 @@ export const profileSchema = z.object({
 });
 
 export const currencyBudgetSchema = z.object({
-  currency: z.enum(["NGN", "USD", "EUR", "GBP"], {
-    error: "Please select a valid currency",
-  }),
+  currency: z.enum(["NGN", "USD", "EUR", "GBP"], { error: "Please select a valid currency" }),
   budgetAmount: z
     .string()
     .min(1, "Budget amount is required")
@@ -19,7 +18,7 @@ export const currencyBudgetSchema = z.object({
         const num = formatAmountToNumber(val);
         return !Number.isNaN(num) && num > 0 && num < 1_000_000_000;
       },
-      { message: "Enter a valid amount between 0 and 1,000,000,000" }
+      { message: "Enter a valid amount between 0 and 1,000,000,000" },
     ),
 });
 

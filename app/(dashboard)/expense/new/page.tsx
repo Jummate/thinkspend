@@ -15,7 +15,7 @@ import { parseExpense } from "@/lib/services/expense-parse.client";
 import { saveExpense } from "@/lib/services/expense.service";
 import { showError, showSuccess } from "@/lib/ui/toast";
 import { AppError } from "@/lib/errors/app-error";
-import type { CurrencyCode } from "@/lib/types/profile";
+ import type { CurrencyCode } from "@/lib/config/currencies";
 
 const AddNewExpensePage = () => {
   const { user, profile, loading } = useUser();

@@ -6,7 +6,7 @@ import { getExpense } from "@/lib/services/expense.service";
 import { getCategoryConfig } from "@/lib/config/categories";
 import { formatAmountToString } from "@/lib/utils/format-amount";
 import { formatExpenseDate } from "@/lib/utils/date";
-import { currencyMapping, type CurrencyCode } from "@/lib/types/profile";
+import { currencyMapping, type CurrencyCode } from "@/lib/config/currencies";
 import { ROUTES } from "@/lib/routes";
 import AddedTimestamp from "../_components/AddedTimestamp";
 import ExpenseDetailActions from "../_components/ExpenseDetailActions";
