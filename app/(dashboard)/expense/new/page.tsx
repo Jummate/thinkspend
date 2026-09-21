@@ -9,7 +9,6 @@ import { mapAICategoryToValue } from "@/lib/utils/category-mapper";
 import { formatAmountToString } from "@/lib/utils/format-amount";
 import { ExpenseFormData, ExpenseInputData } from "@/lib/validations/expense";
 import { CheckCircle2 } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import { NaturalLangInputFormHandle } from "@/components/expense/ExpenseInputForm";
 import { parseExpense } from "@/lib/services/expense-parse.client";
@@ -23,7 +22,6 @@ const AddNewExpensePage = () => {
   const [serverError, setServerError] = useState<string | null>(null);
   const [parsedData, setParsedData] = useState<ParsedExpense | null>(null);
   const [isParsed, setIsParsed] = useState<boolean>(false);
-  const router = useRouter();
   const parseFormRef = useRef<NaturalLangInputFormHandle>(null);
 
   const handleInputParse = async (data: ExpenseInputData) => {
@@ -60,11 +58,8 @@ const AddNewExpensePage = () => {
 
       await saveExpense(supabase, user.id, data);
       showSuccess("Expense saved successfully");
-
-      // router.push("/dashboard");
     } catch (err) {
       console.log("Save error:", err);
-
       showError("Failed to save expense. Please try again");
     }
   };
@@ -94,43 +89,60 @@ const AddNewExpensePage = () => {
   }
 
   return (
-    <div className="mx-auto max-w-2xl px-6 py-5">
-      <header className="leading-relaxed">
-        <h1 className="font-bold text-foreground">Describe Your Expense</h1>
-        <p className="text-sm text-muted-foreground">
-          Simply type what you spent and let AI do the work.
+    <div className="max-w-2xl px-6 py-8">
+      {/* Page header */}
+      <header>
+        <h1 className="text-2xl font-bold text-foreground">Add an Expense</h1>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Describe it once — ThinkSpend fills in the rest.
         </p>
       </header>
 
-      <div className="my-6">
-        {serverError && (
-          <div className="mb-4 rounded-md border border-danger/30 bg-danger/10 p-3">
-            <p className="text-sm text-danger">{serverError}</p>
-          </div>
-        )}
-      </div>
+      {/* Error banner — sits between the header and the AI card */}
+      {serverError && (
+        <div className="mt-6 rounded-lg border border-danger/30 bg-danger/10 p-3">
+          <p className="text-sm text-danger">{serverError}</p>
+        </div>
+      )}
 
-      <section className="mt-10 rounded-lg bg-card p-5 shadow-xs">
-        <NaturalLangInputForm
-          ref={parseFormRef}
-          error={serverError}
-          onSubmit={handleInputParse}
-        />
-
-        <p className="text-xs italic text-muted-foreground">
-          Try &quot;Lunch ₦1000&quot;, &quot;Uber ₦12000&quot;, &quot;Bought
-          groceries ₦15500&quot;
+      {/* AI parse card */}
+      <section className="mt-8 rounded-2xl border border-border bg-card p-6">
+        <h2 className="text-base font-semibold text-foreground">
+          Describe your expense
+        </h2>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Type what you spent, in plain words.
         </p>
+
+        <div className="mt-5">
+          <NaturalLangInputForm
+            ref={parseFormRef}
+            error={serverError}
+            onSubmit={handleInputParse}
+          />
+        </div>
       </section>
 
-      <section className="mt-10">
-        <div className="mb-4 flex items-center gap-2">
-          <span className="text-sm font-bold">Expense Details</span>
-          {isParsed ? (
-            <small className="flex items-center gap-1 rounded-lg bg-category-groceries/20 p-1 text-xs font-bold text-category-groceries">
+      {/* Divider */}
+      <div className="my-8 flex items-center gap-4">
+        <div className="h-px flex-1 bg-border" />
+        <span className="text-xs font-bold uppercase tracking-wide text-muted-foreground">
+          Fills in below
+        </span>
+        <div className="h-px flex-1 bg-border" />
+      </div>
+
+      {/* Form card */}
+      <section className="rounded-2xl border border-border bg-card p-6">
+        <div className="mb-5 flex items-center gap-2">
+          <h2 className="text-base font-semibold text-foreground">
+            Expense Details
+          </h2>
+          {isParsed && (
+            <small className="flex items-center gap-1 rounded-lg bg-category-groceries/20 px-2 py-0.5 text-xs font-bold text-category-groceries">
               <CheckCircle2 size={10} /> PARSED
             </small>
-          ) : null}
+          )}
         </div>
 
         <ExpenseForm

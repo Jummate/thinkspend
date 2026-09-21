@@ -1,7 +1,7 @@
 "use client";
 
 import { Check } from "lucide-react";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Select from "../ui/Select";
@@ -28,13 +28,15 @@ const categoryOptions = CATEGORIES.map((category) => ({
   label: `${category.emoji} ${category.label}`,
 }));
 
+
 const ExpenseForm = ({
   onSubmit,
   currency,
   initialValues,
 }: ExpenseFormProps) => {
   const currencySymbol = currencyMapping[currency];
-
+  
+  const today = useMemo(() => new Date().toISOString().slice(0, 10), []);
   const {
     register,
     handleSubmit,
@@ -114,6 +116,7 @@ const ExpenseForm = ({
             value={field.value ?? ""}
             onValueChange={field.onChange}
             onBlur={field.onBlur}
+            max={today}
           />
         )}
       />

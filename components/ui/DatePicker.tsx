@@ -451,8 +451,8 @@ const DatePicker = forwardRef<HTMLInputElement, Props>(
             disabled
               ? "cursor-not-allowed border border-border bg-secondary text-muted-foreground opacity-50 shadow-none"
               : error
-                ? "border border-danger focus:ring-2 focus:ring-danger"
-                : "border border-border focus:ring-2 focus:ring-primary",
+                ? "border border-danger bg-card focus:ring-2 focus:ring-danger"
+                : "border border-border bg-card focus:ring-2 focus:ring-primary",
             triggerClassName,
           )}
         >
