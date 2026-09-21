@@ -65,7 +65,7 @@ function BudgetSection({
     <SettingsSection
       icon={Wallet}
       title="Monthly Budget"
-      description="Your spending target for the month. Resets each month."
+      description="Your spending target for this month. Set a new one each month."
     >
       <form onSubmit={handleSubmit(onSave)} className="flex flex-col gap-4">
         <FormAmountInput
