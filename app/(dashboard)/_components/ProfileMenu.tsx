@@ -13,7 +13,6 @@ import { ROUTES } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 
 interface ProfileMenuProps {
-
   menuAlign?: "up" | "down";
 }
 
@@ -43,7 +42,10 @@ function ProfileMenu({ menuAlign = "down" }: ProfileMenuProps) {
   };
 
   return (
-    <div className="relative" ref={containerRef}>
+    <div
+      className="relative"
+      ref={containerRef}
+    >
       <button
         type="button"
         onClick={() => setOpen((prev) => !prev)}
@@ -52,7 +54,7 @@ function ProfileMenu({ menuAlign = "down" }: ProfileMenuProps) {
         className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left transition-colors hover:bg-secondary"
       >
         <Avatar initials={initials} />
-      
+
         <div className="hidden min-w-0 flex-1 lg:block">
           <p className="truncate text-sm font-semibold text-foreground">
             {fullName}
@@ -95,9 +97,8 @@ function ProfileMenu({ menuAlign = "down" }: ProfileMenuProps) {
             >
               <span
                 className={cn(
-                  "absolute top-0.5 h-5 w-5 rounded-full transition-transform",
-                  "bg-primary-foreground",
-                  isDark ? "translate-x-5" : "translate-x-0.5",
+                  "absolute top-0.5 h-5 w-5 rounded-full bg-primary-foreground transition-all",
+                  isDark ? "left-5.5" : "left-0.5",
                 )}
               />
             </button>
