@@ -5,8 +5,14 @@ import NaturalLangInputForm from "@/components/expense/ExpenseInputForm";
 import { useUser } from "@/lib/hooks/useUser";
 import { supabase } from "@/lib/supabase/client";
 import { ParsedExpense } from "@/lib/types/expense";
-import { mapValueToAICategory } from "@/lib/utils/category-mapper";
-import { formatAmountToNumber } from "@/lib/utils/format-amount";
+import {
+  mapAICategoryToValue,
+  mapValueToAICategory,
+} from "@/lib/utils/category-mapper";
+import {
+  formatAmountToNumber,
+  formatAmountToString,
+} from "@/lib/utils/format-amount";
 import { ExpenseFormData, ExpenseInputData } from "@/lib/validations/expense";
 import { ArrowLeft, CheckCircle2, Sparkles } from "lucide-react";
 import Link from "next/link";
@@ -18,9 +24,10 @@ import { parseExpense } from "@/lib/services/expense-parse.client";
 import { saveExpense } from "@/lib/services/expense.service";
 import { showError, showSuccess } from "@/lib/ui/toast";
 import { AppError } from "@/lib/errors/app-error";
+import { currencyMapping, type CurrencyCode } from "@/lib/types/profile";
 
 const AddNewExpensePage = () => {
-  const { user, loading } = useUser();
+  const { user, profile, loading } = useUser();
   const [serverError, setServerError] = useState<string | null>(null);
   const [parsedData, setParsedData] = useState<ParsedExpense | null>(null);
   const [isParsed, setIsParsed] = useState<boolean>(false);
@@ -82,6 +89,15 @@ const AddNewExpensePage = () => {
     return null;
   }
 
+  const initialValues = parsedData
+    ? {
+        amount: formatAmountToString(parsedData.amount),
+        category: mapAICategoryToValue(parsedData.category),
+        description: parsedData.description || "",
+        date: parsedData.date,
+      }
+    : undefined;
+
   return (
     <div className="flex-1 max-w-2xl mx-auto py-5 px-6">
       <Link
@@ -131,7 +147,8 @@ const AddNewExpensePage = () => {
 
         <ExpenseForm
           onSubmit={handleExpense}
-          expenseData={parsedData as ParsedExpense}
+          currency={(profile?.currency ?? "NGN") as CurrencyCode}
+          initialValues={initialValues}
         />
       </section>
     </div>
