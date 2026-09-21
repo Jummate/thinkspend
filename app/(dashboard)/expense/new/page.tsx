@@ -5,26 +5,18 @@ import NaturalLangInputForm from "@/components/expense/ExpenseInputForm";
 import { useUser } from "@/lib/hooks/useUser";
 import { supabase } from "@/lib/supabase/client";
 import { ParsedExpense } from "@/lib/types/expense";
-import {
-  mapAICategoryToValue,
-  mapValueToAICategory,
-} from "@/lib/utils/category-mapper";
-import {
-  formatAmountToNumber,
-  formatAmountToString,
-} from "@/lib/utils/format-amount";
+import { mapAICategoryToValue } from "@/lib/utils/category-mapper";
+import { formatAmountToString } from "@/lib/utils/format-amount";
 import { ExpenseFormData, ExpenseInputData } from "@/lib/validations/expense";
-import { ArrowLeft, CheckCircle2, Sparkles } from "lucide-react";
-import Link from "next/link";
+import { CheckCircle2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
-import { toast } from "sonner";
 import { NaturalLangInputFormHandle } from "@/components/expense/ExpenseInputForm";
 import { parseExpense } from "@/lib/services/expense-parse.client";
 import { saveExpense } from "@/lib/services/expense.service";
 import { showError, showSuccess } from "@/lib/ui/toast";
 import { AppError } from "@/lib/errors/app-error";
-import { currencyMapping, type CurrencyCode } from "@/lib/types/profile";
+import type { CurrencyCode } from "@/lib/types/profile";
 
 const AddNewExpensePage = () => {
   const { user, profile, loading } = useUser();
@@ -77,18 +69,9 @@ const AddNewExpensePage = () => {
     }
   };
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <p className="text-muted-foreground">Loading...</p>
-      </div>
-    );
-  }
-
-  if (!user) {
-    return null;
-  }
-
+  // Convert the AI parse result into the form's own input shape. The
+  // currency is deliberately not mapped — every expense inherits the
+  // user's profile currency (single-currency policy).
   const initialValues = parsedData
     ? {
         amount: formatAmountToString(parsedData.amount),
@@ -98,48 +81,53 @@ const AddNewExpensePage = () => {
       }
     : undefined;
 
-  return (
-    <div className="flex-1 max-w-2xl mx-auto py-5 px-6">
-      <Link
-        href={"/dashboard"}
-        className="flex gap-2 text-muted-foreground"
-      >
-        <ArrowLeft />
-        <span>Back to Dashboard</span>
-      </Link>
+  if (loading) {
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <p className="text-muted-foreground">Loading...</p>
+      </div>
+    );
+  }
 
-      <header className="leading-relaxed mt-5">
+  if (!user) {
+    return null;
+  }
+
+  return (
+    <div className="mx-auto max-w-2xl px-6 py-5">
+      <header className="leading-relaxed">
         <h1 className="font-bold text-foreground">Describe Your Expense</h1>
-        <p className="text-muted-foreground text-sm">
+        <p className="text-sm text-muted-foreground">
           Simply type what you spent and let AI do the work.
         </p>
       </header>
 
       <div className="my-6">
         {serverError && (
-          <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-md">
-            <p className="text-sm text-red-600">{serverError}</p>
+          <div className="mb-4 rounded-md border border-danger/30 bg-danger/10 p-3">
+            <p className="text-sm text-danger">{serverError}</p>
           </div>
         )}
       </div>
 
-      <section className="bg-white p-5 mt-10 rounded-lg shadow-xs">
+      <section className="mt-10 rounded-lg bg-card p-5 shadow-xs">
         <NaturalLangInputForm
           ref={parseFormRef}
           error={serverError}
           onSubmit={handleInputParse}
         />
 
-        <p className="italic text-muted-foreground text-xs">
-          Try "Lunch ₦1000", "Uber ₦12000", "Bought groceries ₦15500"
+        <p className="text-xs italic text-muted-foreground">
+          Try &quot;Lunch ₦1000&quot;, &quot;Uber ₦12000&quot;, &quot;Bought
+          groceries ₦15500&quot;
         </p>
       </section>
 
       <section className="mt-10">
-        <div className="flex mb-4 gap-2 items-center">
-          <span className="font-bold text-sm">Expense Details</span>
+        <div className="mb-4 flex items-center gap-2">
+          <span className="text-sm font-bold">Expense Details</span>
           {isParsed ? (
-            <small className="flex items-center text-category-groceries bg-category-groceries/20 font-bold text-xs p-1 rounded-lg gap-1">
+            <small className="flex items-center gap-1 rounded-lg bg-category-groceries/20 p-1 text-xs font-bold text-category-groceries">
               <CheckCircle2 size={10} /> PARSED
             </small>
           ) : null}
