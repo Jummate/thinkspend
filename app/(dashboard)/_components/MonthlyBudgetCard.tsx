@@ -22,7 +22,7 @@ function MonthlyBudgetCard({
     <StatCard
       label="Monthly Budget"
       icon={TrendingUp}
-      iconClass="bg-category-bills/15 text-category-bills"
+      iconClass="bg-primary/15 text-primary"
     >
       {budgetAmount > 0 ? (
         <>
@@ -37,7 +37,7 @@ function MonthlyBudgetCard({
                   ? "bg-danger"
                   : budgetUsedPercent >= 70
                     ? "bg-warning"
-                    : "bg-category-bills"
+                    : "bg-primary"
               }`}
               style={{ width: `${budgetUsedPercent}%` }}
             />

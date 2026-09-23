@@ -21,7 +21,7 @@ function TotalSpendingCard({
     <StatCard
       label={`Total Spending (${monthLabel})`}
       icon={CreditCard}
-      iconClass="bg-category-other/15 text-category-other"
+      iconClass="bg-primary/15 text-primary"
     >
       <h2 className="mb-1 text-4xl font-bold text-foreground">
         {currencySymbol}

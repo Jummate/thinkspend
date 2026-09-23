@@ -36,8 +36,8 @@ function DocPage({
           </div>
         </div>
 
-        <div className="mb-9 flex gap-3 rounded-xl border border-category-food/30 bg-category-food/10 p-4">
-          <AlertTriangle className="mt-0.5 h-[19px] w-[19px] shrink-0 text-category-food" />
+        <div className="mb-9 flex gap-3 rounded-xl border border-warning/30 bg-warning-dim p-4">
+          <AlertTriangle className="mt-0.5 h-[19px] w-[19px] shrink-0 text-warning" />
           <div className="text-[13.5px] leading-relaxed text-foreground">
             {disclaimer}
           </div>

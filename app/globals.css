@@ -67,6 +67,10 @@ pre {
   --color-category-shopping: var(--category-shopping);
   --color-category-other: var(--category-other);
   --color-category-health: var(--category-health);
+
+    /* Brand gradient (avatar, decorative) */
+  --color-brand-gradient-from: var(--brand-gradient-from);
+  --color-brand-gradient-to: var(--brand-gradient-to);
 }
 
 /* ========================
@@ -107,6 +111,10 @@ pre {
   --category-shopping: #FF6B81;
   --category-other: #8A93A6;
   --category-health: #F472B6;
+
+    /* Brand gradient — SAME in both themes */
+  --brand-gradient-from: #7C5CFF;
+  --brand-gradient-to: #00E6A8;
 }
 
 /* ========================
@@ -147,4 +155,8 @@ pre {
   --category-shopping: #FF6B81;
   --category-other: #8A93A6;
   --category-health: #F472B6;
+
+    /* Brand gradient — SAME in both themes */
+  --brand-gradient-from: #7C5CFF;
+  --brand-gradient-to: #00E6A8;
 }

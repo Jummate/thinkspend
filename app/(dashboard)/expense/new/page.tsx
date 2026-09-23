@@ -150,7 +150,7 @@ const AddNewExpensePage = () => {
             Expense Details
           </h2>
           {isParsed && (
-            <small className="flex items-center gap-1 rounded-lg bg-category-groceries/20 px-2 py-0.5 text-xs font-bold text-category-groceries">
+            <small className="flex items-center gap-1 rounded-lg bg-success-dim px-2 py-0.5 text-xs font-bold text-success">
               <CheckCircle2 size={10} /> PARSED
             </small>
           )}
