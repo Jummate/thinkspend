@@ -67,9 +67,7 @@ function RecentExpensesList({
                 <div className="text-right">
                   <p className="font-bold text-foreground">
                     {currencySymbol}
-                    {formatAmountToString(
-                      parseFloat(expense.amount.toFixed(2)),
-                    )}
+                  {formatAmountToString(expense.amount)}
                   </p>
                 </div>
               </div>
@@ -80,10 +78,10 @@ function RecentExpensesList({
 
       <Link
         href={ROUTES.EXPENSES_NEW}
-        className="mt-6 flex w-full items-center justify-center gap-2 rounded-lg border border-border bg-card py-3 transition-all hover:bg-secondary"
+        className="mt-6 flex w-full items-center justify-center gap-2 rounded-lg border border-dashed border-border py-3 text-muted-foreground transition-colors hover:border-primary hover:bg-primary/5 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
       >
         <Plus size={18} />
-        <span className="font-semibold text-foreground text-sm">Add New Expense</span>
+        <span className="text-sm font-semibold">Add New Expense</span>
       </Link>
     </div>
   );
