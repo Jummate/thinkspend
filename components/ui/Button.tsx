@@ -24,7 +24,7 @@ const Button = ({
         "w-full rounded-lg p-2 transition-colors",
         disabled
           ? "bg-secondary text-muted-foreground cursor-not-allowed"
-          : "bg-primary/90 text-white cursor-pointer hover:bg-primary",
+          : "bg-primary/90 text-primary-foreground cursor-pointer hover:bg-primary-dark",
         styles,
       )}
       onClick={onClick}
