@@ -159,6 +159,9 @@ export async function updateExpense(
   if (data.date !== undefined) {
     payload.date = data.date;
   }
+  if (data.notes !== undefined) {
+    payload.notes = data.notes || null;
+  }
 
   const { data: updated, error } = await supabase
     .from("expenses")
@@ -183,6 +186,7 @@ export async function saveExpense(
     currency: data.currency,
     category: mapValueToAICategory(data.category),
     description: data.description || null,
+    notes: data.notes || null,
     date: data.date,
   };
 

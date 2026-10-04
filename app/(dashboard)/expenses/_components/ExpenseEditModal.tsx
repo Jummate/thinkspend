@@ -41,6 +41,7 @@ function ExpenseEditModal({
         category: mapAICategoryToValue(expense.category),
         description: expense.description ?? "",
         date: expense.date,
+        notes: expense.notes ?? "",
       }
     : undefined;
 

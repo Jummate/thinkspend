@@ -36,7 +36,8 @@ export interface Expense {
   currency: string;
   category: string;
   description: string | null;
-  date: string;        // "2026-08-27"
-  created_at: string;  // "2026-08-27T16:12:00.000Z"
-  updated_at: string;  // same
+  notes: string | null;
+  date: string;
+  created_at: string;
+  updated_at: string;
 }

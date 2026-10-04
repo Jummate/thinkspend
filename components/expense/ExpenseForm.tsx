@@ -28,14 +28,13 @@ const categoryOptions = CATEGORIES.map((category) => ({
   label: `${category.emoji} ${category.label}`,
 }));
 
-
 const ExpenseForm = ({
   onSubmit,
   currency,
   initialValues,
 }: ExpenseFormProps) => {
   const currencySymbol = currencyMapping[currency];
-  
+
   const today = useMemo(() => new Date().toISOString().slice(0, 10), []);
   const {
     register,
@@ -53,6 +52,7 @@ const ExpenseForm = ({
       category: "",
       description: "",
       date: "",
+      notes: ""
     },
   });
 
@@ -121,6 +121,7 @@ const ExpenseForm = ({
         )}
       />
 
+      {/* Description — growing textarea */}
       <div className="flex flex-col gap-2">
         <FieldLabel htmlFor="description">Description</FieldLabel>
 
@@ -135,6 +136,24 @@ const ExpenseForm = ({
 
         {errors.description && (
           <p className="text-xs text-danger">{errors.description.message}</p>
+        )}
+      </div>
+
+      {/* Notes — free-form context, kept short */}
+      <div className="flex flex-col gap-2">
+        <FieldLabel htmlFor="notes">Notes</FieldLabel>
+
+        <Textarea
+          {...register("notes")}
+          id="notes"
+          placeholder="Optional — paid in cash, split with roommate…"
+          error={!!errors.notes}
+          rows={2}
+          styles="border border-muted-foreground/30 rounded-lg p-3 bg-card px-3 outline-none focus:shadow-sm focus:ring-1 focus:ring-primary text-sm"
+        />
+
+        {errors.notes && (
+          <p className="text-xs text-danger">{errors.notes.message}</p>
         )}
       </div>
 

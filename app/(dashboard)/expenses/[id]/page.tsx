@@ -57,6 +57,12 @@ export default async function ExpenseDetailPage({
             <p className="text-sm text-muted-foreground">
               {expense.description || expense.category}
             </p>
+
+            {expense.notes && (
+              <p className="max-w-md text-center text-sm text-muted-foreground">
+                {expense.notes}
+              </p>
+            )}
           </div>
 
           {/* Meta rows */}
