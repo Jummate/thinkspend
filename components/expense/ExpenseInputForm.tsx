@@ -11,6 +11,7 @@ import { FaBoltLightning } from "react-icons/fa6";
 import Input from "../ui/Input";
 import clsx from "clsx";
 import { Sparkles } from "lucide-react";
+import Button from "../ui/Button";
 
 interface ExpenseInputFormProps {
   onSubmit: (data: ExpenseInputData) => Promise<void>;
@@ -47,7 +48,7 @@ const ExpenseInputForm = forwardRef<
           className={clsx(
             "flex items-center bg-muted rounded-lg border overflow-hidden transition-all",
             errors.expenseInput
-              ? "border-red-500 focus-within:ring-1 focus-within:ring-red-500"
+              ? "border-danger focus-within:ring-1 focus-within:ring-danger"
               : "border-muted-foreground/30 focus-within:ring-1 focus-within:ring-primary focus-within:shadow-sm",
           )}
         >
@@ -58,37 +59,32 @@ const ExpenseInputForm = forwardRef<
             type="text"
             id="expenseInput"
             styles="px-2 py-3 font-bold rounded-none rounded-r-lg border-none outline-none text-sm focus:outline-none focus:ring-0"
-            containerStyles="bg-white"
             error={!!errors.expenseInput}
             {...register("expenseInput")}
           />
         </div>
 
         {errors.expenseInput && (
-          <span className="text-red-600 text-sm">
+          <span className="text-danger text-sm">
             {errors.expenseInput.message}
           </span>
         )}
 
-        <button
+        <Button
           type="submit"
           disabled={isSubmitting}
-          className={clsx(
-            "flex items-center justify-center gap-1 cursor-pointer self-end bg-primary hover:bg-primary-dark rounded-lg px-8 py-1.5 mt-3 text-white",
-            {
-              "opacity-50 pointer-events-none cursor-not-allowed": isSubmitting,
-            },
-          )}
+          fullWidth={false}
+          styles="self-end flex items-center justify-center gap-1 px-8 py-1.5 mt-3"
         >
           {isSubmitting ? (
             "Parsing..."
           ) : (
-            <span className="font-bold flex justify-center items-center gap-1">
+            <>
               Parse
               <FaBoltLightning size={15} />
-            </span>
+            </>
           )}
-        </button>
+        </Button>
       </div>
     </form>
   );

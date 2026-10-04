@@ -37,7 +37,6 @@ const LoginForm = ({ onSubmit }: LoginFormProps) => {
           type="email"
           placeholder="name@gmail.com"
           error={errors.email?.message}
-          containerStyles="bg-white"
           {...register("email")}
         />
 
@@ -48,7 +47,6 @@ const LoginForm = ({ onSubmit }: LoginFormProps) => {
           type="password"
           placeholder="Enter your password"
           error={errors.password?.message}
-          containerStyles="bg-white"
           {...register("password")}
         />
 
