@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import AppLogo from "@/components/AppLogo";
@@ -14,15 +14,13 @@ import { useUser } from "@/lib/hooks/useUser";
 import ExpiredLinkCard from "@/components/auth/ExpiredLinkCard";
 import ResetPasswordForm from "@/components/auth/ResetPasswordForm";
 
-function ResetPasswordPage() {
+function ResetPasswordPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { user, loading } = useUser();
   const hasError = searchParams.get("error") === "link_expired";
 
   useEffect(() => {
-    // A single-use code (or the error flag) has no reason to linger in
-    // the address bar or browser history once we've read it.
     if (searchParams.toString()) {
       router.replace(ROUTES.RESET_PASSWORD);
     }
@@ -57,10 +55,7 @@ function ResetPasswordPage() {
     return (
       <main className="flex h-full items-center justify-center p-6">
         <AuthCard>
-          <AuthCardHeader
-            icon={<AppLogo />}
-            title="Loading..."
-          />
+          <AuthCardHeader icon={<AppLogo />} title="Loading..." />
         </AuthCard>
       </main>
     );
@@ -77,10 +72,7 @@ function ResetPasswordPage() {
   return (
     <main className="flex h-full items-center justify-center p-6">
       <AuthCard>
-        <AuthCardHeader
-          icon={<AppLogo />}
-          title="Set a new password"
-        />
+        <AuthCardHeader icon={<AppLogo />} title="Set a new password" />
 
         <div className="flex flex-col items-center justify-center gap-6 px-8 pb-9">
           <ResetPasswordForm
@@ -102,4 +94,10 @@ function ResetPasswordPage() {
   );
 }
 
-export default ResetPasswordPage;
+export default function ResetPasswordPage() {
+  return (
+    <Suspense fallback={null}>
+      <ResetPasswordPageContent />
+    </Suspense>
+  );
+}

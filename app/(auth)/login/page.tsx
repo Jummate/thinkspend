@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import AppLogo from "@/components/AppLogo";
 import AuthCard from "@/components/auth/AuthCard";
 import AuthCardHeader from "@/components/auth/AuthCardHeader";
@@ -18,7 +18,7 @@ type PausedState = {
   pausedAt: string;
 };
 
-function LoginPage() {
+function LoginPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const redirectTo = searchParams.get("redirectTo") || ROUTES.DASHBOARD;
@@ -40,12 +40,10 @@ function LoginPage() {
         return;
       }
 
-      // Success! Redirect to dashboard
       router.push(redirectTo);
       router.refresh();
     } catch (err) {
       console.error("Login error:", err);
-
       showError("An unexpected error occurred. Please try again.");
     }
   };
@@ -79,8 +77,6 @@ function LoginPage() {
           pausedAt={paused.pausedAt}
           onReactivate={handleReactivate}
           reactivating={reactivating}
-          // TODO: point this at the real account-deletion route once the
-          // Settings deletion flow exists.
           deleteHref="/settings/account"
         />
       </main>
@@ -113,4 +109,10 @@ function LoginPage() {
   );
 }
 
-export default LoginPage;
+export default function LoginPage() {
+  return (
+    <Suspense fallback={null}>
+      <LoginPageContent />
+    </Suspense>
+  );
+}
