@@ -7,6 +7,9 @@ import { pauseAccount, logout } from "@/lib/services/auth.service";
 import { showError } from "@/lib/ui/toast";
 import { ROUTES } from "@/lib/routes";
 import ConfirmationModal from "@/components/ui/ConfirmationModal";
+import clsx from "clsx";
+import Button from "@/components/ui/Button";
+import Input from "@/components/ui/Input";
 
 const DELETE_CONFIRM_TEXT = "DELETE";
 
@@ -18,13 +21,13 @@ function DangerZoneRow({
   title,
   description,
   buttonLabel,
-  buttonClassName,
+  variant,
   onClick,
 }: {
   title: string;
   description: string;
   buttonLabel: string;
-  buttonClassName?:string;
+  variant: "danger" | "danger-outline";
   onClick: () => void;
 }) {
   return (
@@ -33,13 +36,15 @@ function DangerZoneRow({
         <p className="font-semibold text-foreground">{title}</p>
         <p className="text-sm text-muted-foreground">{description}</p>
       </div>
-      <button
+      <Button
         type="button"
         onClick={onClick}
-        className={`shrink-0 rounded-lg border border-danger px-4 py-2 text-sm font-bold text-danger transition-colors ${buttonClassName}`}
+        variant={variant}
+        fullWidth={false}
+        styles="shrink-0 px-4 py-2 text-sm font-bold"
       >
         {buttonLabel}
-      </button>
+      </Button>
     </div>
   );
 }
@@ -106,23 +111,22 @@ function DangerZoneSection({ userId }: DangerZoneSectionProps) {
           <AlertTriangle className="h-5 w-5 text-danger" />
           <h2 className="text-lg font-semibold text-danger">Danger Zone</h2>
         </div>
- <div className="divide-y divide-danger/10">
+        <div className="divide-y divide-danger/10">
           <DangerZoneRow
             title="Pause account"
             description="Disables login and stops your account from being processed — a reversible middle step before deleting. Your data isn't touched; log back in anytime to pick up where you left off."
             buttonLabel="Pause account"
-            buttonClassName="hover:bg-danger/10"
+            variant="danger-outline"
             onClick={() => setIsPauseModalOpen(true)}
           />
           <DangerZoneRow
             title="Delete account permanently"
             description="Permanently deletes your account and all expense data. This can't be undone."
             buttonLabel="Delete Account"
-            buttonClassName="bg-danger text-white hover:bg-danger/80"
+            variant="danger"
             onClick={() => setIsDeleteModalOpen(true)}
           />
         </div>
-       
       </div>
 
       <ConfirmationModal
@@ -171,16 +175,17 @@ function DangerZoneSection({ userId }: DangerZoneSectionProps) {
             htmlFor="deleteConfirmText"
             className="mb-1.5 block text-sm text-muted-foreground"
           >
-            Type <strong className="text-danger">{DELETE_CONFIRM_TEXT}</strong> to
-            confirm
+            Type <strong className="text-danger">{DELETE_CONFIRM_TEXT}</strong>{" "}
+            to confirm
           </label>
-          <input
+          <Input
             id="deleteConfirmText"
             type="text"
+            variant="danger"
             value={deleteConfirmText}
             onChange={(e) => setDeleteConfirmText(e.target.value)}
             placeholder={DELETE_CONFIRM_TEXT}
-            className="w-full rounded-lg border border-muted-foreground/30 bg-secondary px-3 py-2.5 text-sm outline-none focus:border-danger focus:ring-1 focus:ring-danger"
+            styles="bg-secondary px-3 py-2.5 text-sm"
           />
         </div>
       </ConfirmationModal>

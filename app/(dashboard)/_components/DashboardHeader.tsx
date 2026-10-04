@@ -22,7 +22,7 @@ const DashboardHeader = () => {
             <Bell className="cursor-pointer text-foreground" size={18} />
           </button>
           <Link href={ROUTES.EXPENSES_NEW}>
-            <Button styles="p-2 px-6 text-sm font-bold">+ Add Expense</Button>
+            <Button fullWidth={false} styles="p-2 px-6 text-sm font-bold">+ Add Expense</Button>
           </Link>
         </div>
       </div>

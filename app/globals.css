@@ -56,6 +56,8 @@ pre {
   --color-success: var(--success);
   --color-success-dim: var(--success-dim);
   --color-danger: var(--danger);
+  --color-danger-foreground: var(--danger-foreground);
+  --color-danger-dark: var(--danger-dark);
   --color-warning: var(--warning);
   --color-warning-dim: var(--warning-dim);
 
@@ -102,6 +104,8 @@ pre {
   --danger: #e5484d;
   --warning: #e8823c;
   --warning-dim: rgba(232, 130, 60, 0.12);
+  --danger-foreground: #ffffff;
+  --danger-dark: #c93a3f;
 
   /* Categories — SAME in both themes (identity colors) */
   --category-food: #7C5CFF;
@@ -146,6 +150,8 @@ pre {
   --danger: #FF6B81;
   --warning: #FF9A62;
   --warning-dim: rgba(255, 154, 98, 0.14);
+  --danger-foreground: #2A0910;
+  --danger-dark: #E55A70;
 
   /* Categories — SAME in both themes (identity colors) */
   --category-food: #7C5CFF;

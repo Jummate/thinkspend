@@ -2,18 +2,17 @@ import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 interface FieldLabelProps {
-  htmlFor: string;
+  /**
+   * The id of the input this label is for. When omitted, the label
+   * renders without an association — used by wrappers like Settings'
+   * `Field`, which can't know the child input's id.
+   */
+  htmlFor?: string;
   children: ReactNode;
   required?: boolean;
   className?: string;
 }
 
-/**
- * Standard form label. Owns the app's label styling so every labeled
- * field renders identically, whether the label comes from a
- * self-labeling component (FormAmountInput, DatePicker) or is written
- * inline in a form.
- */
 function FieldLabel({
   htmlFor,
   children,

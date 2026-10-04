@@ -13,7 +13,7 @@ interface SignUpFormProps {
   error?: string | null;
 }
 
-const   SignUpForm = ({ onSubmit }: SignUpFormProps) => {
+const SignUpForm = ({ onSubmit }: SignUpFormProps) => {
   const {
     register,
     handleSubmit,

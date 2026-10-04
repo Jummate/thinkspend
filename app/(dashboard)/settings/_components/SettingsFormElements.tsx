@@ -1,6 +1,7 @@
 import type { ElementType, ReactNode } from "react";
-import clsx from "clsx";
 import { CheckCircle2 } from "lucide-react";
+import Button from "@/components/ui/Button";
+import FieldLabel from "@/components/ui/FieldLabel";
 
 export function SettingsSection({
   icon: Icon,
@@ -38,9 +39,7 @@ export function Field({
 }) {
   return (
     <div className="flex flex-col gap-1.5">
-      <label className="text-sm font-medium text-muted-foreground">
-        {label}
-      </label>
+      <FieldLabel>{label}</FieldLabel>
       {children}
       {error && <p className="text-xs text-danger">{error}</p>}
     </div>
@@ -49,16 +48,14 @@ export function Field({
 
 export function SaveButton({ isSubmitting }: { isSubmitting: boolean }) {
   return (
-    <button
+    <Button
       type="submit"
       disabled={isSubmitting}
-      className={clsx(
-        "self-start flex items-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold text-sm px-5 py-2 rounded-lg transition-all",
-        { "opacity-50 pointer-events-none": isSubmitting },
-      )}
+      fullWidth={false}
+      styles="self-start flex items-center gap-2 font-semibold text-sm px-5 py-2"
     >
       <CheckCircle2 size={15} />
       {isSubmitting ? "Saving..." : "Save Changes"}
-    </button>
+    </Button>
   );
 }
