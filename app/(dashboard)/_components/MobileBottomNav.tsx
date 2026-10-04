@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { Plus } from "lucide-react";
 import { navItems, type NavItem } from "../_lib/nav-items";
 import { ROUTES } from "@/lib/routes";
+import clsx from "clsx";
 
 // Ceiling on how many destinations can show as direct tabs before we'd
 // need a "More" overflow tab. Not built yet — there's no fifth
@@ -38,6 +39,7 @@ function NavTab({ item, active }: { item: NavItem; active: boolean }) {
 function MobileBottomNav() {
   const pathname = usePathname();
   const isActive = (href: string) => pathname === href;
+  const isOnCreatePage = pathname === ROUTES.EXPENSES_NEW;
 
   const midpoint = Math.ceil(navItems.length / 2);
   const leftItems = navItems.slice(0, midpoint);
@@ -47,7 +49,12 @@ function MobileBottomNav() {
     // TODO: md is a placeholder pending confirmed breakpoint values —
     // this bar should only render below wherever Sidebar takes over.
     <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-card md:hidden">
-      <div className="relative grid grid-cols-5 items-center px-2">
+      <div
+        className={clsx(
+          "relative grid items-center px-2",
+          isOnCreatePage ? "grid-cols-4" : "grid-cols-5",
+        )}
+      >
         {leftItems.map((item) => (
           <NavTab
             key={item.href}
@@ -58,7 +65,8 @@ function MobileBottomNav() {
 
         {/* Center spacer — reserves the FAB's horizontal slot in the grid
             flow; the FAB itself is absolutely positioned above it. */}
-        <div />
+
+        {!isOnCreatePage && <div />}
 
         {rightItems.map((item) => (
           <NavTab
@@ -68,13 +76,15 @@ function MobileBottomNav() {
           />
         ))}
 
-        <Link
-          href={ROUTES.EXPENSES_NEW}
-          aria-label="Add expense"
-          className="absolute left-1/2 top-0 flex h-14 w-14 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition-opacity hover:opacity-90"
-        >
-          <Plus className="h-6 w-6" />
-        </Link>
+        {!isOnCreatePage && (
+          <Link
+            href={ROUTES.EXPENSES_NEW}
+            aria-label="Add expense"
+            className="absolute left-1/2 top-0 flex h-14 w-14 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition-opacity hover:opacity-90"
+          >
+            <Plus className="h-6 w-6" />
+          </Link>
+        )}
       </div>
     </nav>
   );

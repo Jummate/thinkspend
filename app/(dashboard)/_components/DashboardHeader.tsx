@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
 import DesktopSearch from "./DesktopSearch";
 import MobileSearchOverlay from "./MobileSearchOverlay";
@@ -11,25 +12,32 @@ import { ROUTES } from "@/lib/routes";
 
 const DashboardHeader = () => {
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
+  const pathname = usePathname();
+
+  // The button navigates to /expense/new — showing it there is a no-op.
+  const isOnCreatePage = pathname === ROUTES.EXPENSES_NEW;
+
   return (
     <>
       {/* Tablet & desktop header */}
       <div className="sticky top-0 z-30 hidden w-full items-center justify-between border-b border-border bg-card p-4 md:flex">
-          <DesktopSearch />
+        <DesktopSearch />
 
         <div className="flex items-center justify-center gap-4">
           <button type="button" aria-label="Notifications">
             <Bell className="cursor-pointer text-foreground" size={18} />
           </button>
-          <Link href={ROUTES.EXPENSES_NEW}>
-            <Button fullWidth={false} styles="p-2 px-6 text-sm font-bold">+ Add Expense</Button>
-          </Link>
+          {!isOnCreatePage && (
+            <Link href={ROUTES.EXPENSES_NEW}>
+              <Button fullWidth={false} styles="p-2 px-6 text-sm font-bold">
+                + Add Expense
+              </Button>
+            </Link>
+          )}
         </div>
       </div>
 
-      {/* Mobile header — no Add Expense here, the bottom-nav FAB covers
-          it; ProfileMenu appears here since Sidebar (which normally
-          hosts it) doesn't render on mobile at all. */}
+    
       {isMobileSearchOpen ? (
         <MobileSearchOverlay onClose={() => setIsMobileSearchOpen(false)} />
       ) : (
