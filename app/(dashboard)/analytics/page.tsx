@@ -1,4 +1,3 @@
-// app/(dashboard)/analytics/page.tsx
 import { BarChart3 } from "lucide-react";
 
 export default function AnalyticsPage() {
@@ -7,7 +6,7 @@ export default function AnalyticsPage() {
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-foreground">Analytics</h1>
         <p className="text-muted-foreground">
-          Deeper trends unlock once you&apos;ve logged more expenses.
+          Coming soon — trend analysis and spending insights.
         </p>
       </div>
 
@@ -17,10 +16,11 @@ export default function AnalyticsPage() {
         </div>
         <div className="text-center">
           <h2 className="text-lg font-semibold text-foreground">
-            Not enough data yet
+            Analytics coming soon
           </h2>
           <p className="mt-1 text-sm text-muted-foreground">
-            Log expenses across a few weeks to see trend lines here.
+            We&apos;re building trend lines, category comparisons, and
+            month-over-month insights. Check back soon.
           </p>
         </div>
       </div>
