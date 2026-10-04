@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Mail } from "lucide-react";
 import AuthCard from "@/components/auth/AuthCard";
@@ -17,10 +17,6 @@ import StatusIcon from "@/components/ui/StatusIcon";
 function getInitialCooldownSeconds(sentAtParam: string | null): number {
   const sentAt = sentAtParam ? Number(sentAtParam) : NaN;
 
-  // Missing or malformed sentAt (direct navigation, edited URL, etc.):
-  // fail safe to the full cooldown rather than optimistically enabling
-  // the button — better to make someone wait unnecessarily than repeat
-  // the "enabled button immediately throws a Supabase error" bug.
   if (!sentAt || Number.isNaN(sentAt)) {
     return RESEND_COOLDOWN_SECONDS;
   }
@@ -32,7 +28,7 @@ function getInitialCooldownSeconds(sentAtParam: string | null): number {
   );
 }
 
-function CheckEmailPage() {
+function CheckEmailPageContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const email = searchParams.get("email");
@@ -56,10 +52,6 @@ function CheckEmailPage() {
       showError(result.message || "Failed to resend reset link.");
 
       if (result.retryAfterSeconds) {
-        // Blocked by Supabase's real rate limit — hand the actual
-        // remaining wait back so the form can resync its countdown,
-        // rather than throwing (which would leave the cooldown at 0
-        // and invite the same mistake again).
         return { retryAfterSeconds: result.retryAfterSeconds };
       }
 
@@ -73,7 +65,7 @@ function CheckEmailPage() {
     <main className="flex h-full items-center justify-center p-6">
       <AuthCard>
         <AuthCardHeader
-             icon={<StatusIcon icon={Mail} variant="warning" />}
+          icon={<StatusIcon icon={Mail} variant="warning" />}
           title="Check your email"
         />
 
@@ -89,4 +81,10 @@ function CheckEmailPage() {
   );
 }
 
-export default CheckEmailPage;
+export default function CheckEmailPage() {
+  return (
+    <Suspense fallback={null}>
+      <CheckEmailPageContent />
+    </Suspense>
+  );
+}
