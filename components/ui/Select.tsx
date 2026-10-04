@@ -23,14 +23,15 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
         <select
           ref={ref}
           id={id}
-          className={clsx(
-            "border rounded-lg p-2 px-3 w-full outline-none transition-colors appearance-none cursor-pointer",
-            "focus:shadow-sm focus:ring-1",
-            error
-              ? "border-red-500 bg-red-50 focus:border-red-500 focus:ring-red-500"
-              : "border-muted-foreground/30 focus:ring-primary",
-            styles
-          )}
+       className={clsx(
+  "border rounded-lg p-2 px-3 w-full min-w-0 outline-none transition-colors appearance-none cursor-pointer",
+  "focus:shadow-sm focus:ring-1",
+  error
+    ? "border-danger bg-danger/10 focus:border-danger focus:ring-danger"
+    : "border-muted-foreground/30 focus:ring-primary",
+  "disabled:cursor-not-allowed disabled:bg-secondary disabled:text-muted-foreground disabled:opacity-60 disabled:focus:ring-0",
+  styles,
+)}
           {...rest}
         >
           {placeholder && (

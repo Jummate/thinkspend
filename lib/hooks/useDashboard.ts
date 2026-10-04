@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
+import { supabase } from "@/lib/supabase/client";
 import {
   getDashboardStats,
   getCategorySpending,
@@ -47,13 +48,13 @@ export function useDashboard(userId: string | undefined): UseDashboardReturn {
     const currentYear = now.getFullYear();
 
     try {
-      const [fetchedStats, fetchedCategorySpending, fetchedRecent, fetchedBudget] =
-        await Promise.all([
-          getDashboardStats(userId),
-          getCategorySpending(userId),
-          getRecentExpenses(userId),
-          getBudgetForMonth(userId, currentMonth, currentYear),
-        ]);
+    const [fetchedStats, fetchedCategorySpending, fetchedRecent, fetchedBudget] =
+  await Promise.all([
+    getDashboardStats(supabase, userId),
+    getCategorySpending(supabase, userId),
+    getRecentExpenses(supabase, userId),
+    getBudgetForMonth(supabase, userId, currentMonth, currentYear),
+  ]);
 
       setStats(fetchedStats);
 

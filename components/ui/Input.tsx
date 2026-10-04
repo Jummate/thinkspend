@@ -10,42 +10,57 @@ type InputProps = {
   id?: string;
   placeholder?: string;
   error?: boolean;
+  /**
+   * "default" gives a primary focus ring; "danger" gives a danger focus
+   * ring without the error treatment (no red border, no tinted
+   * background). Used by the delete-account "type DELETE" input, where
+   * the danger color is intentional, not a validation state.
+   */
+  variant?: "default" | "danger";
   containerStyles?: string;
 } & React.InputHTMLAttributes<HTMLInputElement>;
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
   (
-    { styles, containerStyles, type = "text", id, placeholder, error, ...rest },
+    {
+      styles,
+      containerStyles,
+      type = "text",
+      id,
+      placeholder,
+      error,
+      variant = "default",
+      ...rest
+    },
     ref,
   ) => {
     const [showPassword, setShowPassword] = useState(false);
 
+    const borderAndRing = error
+      ? "border-danger bg-danger/10 focus:outline-none focus:ring-1 focus:ring-danger"
+      : variant === "danger"
+        ? "border-muted-foreground/30 focus:outline-none focus:ring-1 focus:ring-danger"
+        : "border-muted-foreground/30 focus:outline-none focus:ring-1 focus:ring-primary";
+
     if (type !== "password") {
       return (
         <div
-          className={clsx("flex relative items-center w-full", containerStyles)}
+          className={clsx(
+            "flex relative items-center w-full min-w-0",
+            containerStyles,
+          )}
         >
           <input
             ref={ref}
             type={type}
             id={id}
             placeholder={placeholder}
-            // className={clsx(
-            //   "border p-2 rounded-lg flex-1 placeholder:text-muted-foreground transition-colors",
-            //   error
-            //     ? "border-red-500 bg-red-50 focus:border-red-500 focus:ring-red-500"
-            //     : "border-muted-foreground/30",
-            //   styles
-            // )}
-
             className={clsx(
-              "border p-2 flex-1 placeholder:text-muted-foreground transition-colors",
-              error
-                ? "border-red-500 bg-red-50 focus:outline-none focus:ring-1 focus:ring-red-500"
-                : "border-muted-foreground/30 focus:outline-none focus:ring-1 focus:ring-primary",
+              "border rounded-lg p-2 flex-1 min-w-0 placeholder:text-muted-foreground transition-colors",
+              borderAndRing,
               styles,
             )}
-            {...rest} // Spread the rest of the props (including register props)
+            {...rest}
           />
         </div>
       );
@@ -53,47 +68,40 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
 
     return (
       <div
-        className={clsx("flex relative items-center w-full", containerStyles)}
+        className={clsx(
+          "flex relative items-center w-full min-w-0",
+          containerStyles,
+        )}
       >
         <input
           ref={ref}
           type={showPassword ? "text" : "password"}
           id={id}
           placeholder={placeholder}
-          // className={clsx(
-          //   "border p-2 rounded-lg flex-1 placeholder:text-muted-foreground transition-colors",
-          //   error
-          //     ? "border-red-500 bg-red-50 focus:border-red-500 focus:ring-red-500"
-          //     : "border-muted-foreground/30",
-          //   styles,
-          // )}
-
           className={clsx(
-            "border p-2 flex-1 placeholder:text-muted-foreground transition-colors",
-            error
-              ? "border-red-500 bg-red-50 focus:outline-none focus:ring-1 focus:ring-red-500"
-              : "border-muted-foreground/30 focus:outline-none focus:ring-1 focus:ring-primary",
+            "border rounded-lg p-2 pr-9 flex-1 min-w-0 placeholder:text-muted-foreground transition-colors",
+            borderAndRing,
             styles,
           )}
-          {...rest} // Spread the rest of the props
+          {...rest}
         />
         {showPassword ? (
           <button
             type="button"
-            className="absolute right-0"
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground"
             title="Hide Password"
             onClick={() => setShowPassword(false)}
           >
-            <EyeOff className="pr-2" />
+            <EyeOff className="h-4 w-4" />
           </button>
         ) : (
           <button
             type="button"
-            className="absolute right-0"
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground"
             title="Show Password"
             onClick={() => setShowPassword(true)}
           >
-            <Eye className="pr-2" />
+            <Eye className="h-4 w-4" />
           </button>
         )}
       </div>

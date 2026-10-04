@@ -1,7 +1,7 @@
 "use client";
 
-import Input from "../ui/Input";
 import Button from "../ui/Button";
+import FormInput from "../ui/FormInput";
 import Link from "next/link";
 import { LogIn } from "lucide-react";
 import { useForm } from "react-hook-form";
@@ -26,60 +26,33 @@ const LoginForm = ({ onSubmit }: LoginFormProps) => {
 
   return (
     <div className="w-full">
-      {/* {error && (
-        <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-md">
-          <p className="text-sm text-red-600">{error}</p>
-        </div>
-      )} */}
       <form
         className="flex flex-col items-center justify-center w-full gap-4"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <div className="flex flex-1 flex-col gap-2 w-full">
-          <label
-            htmlFor="email"
-            className="self-start"
-          >
-            Email <sup className="text-red-600">*</sup>
-          </label>
-          <Input
-            type="email"
-            id="email"
-            placeholder="name@gmail.com"
-            styles="rounded-lg"
-            containerStyles="bg-white"
-            error={!!errors.email}
-            {...register("email")}
-          />
-          {errors.email && (
-            <span className="text-red-600 text-sm">{errors.email.message}</span>
-          )}
-        </div>
-        <div className="flex flex-1 flex-col gap-2 w-full">
-          <label
-            htmlFor="password"
-            className="self-start"
-          >
-            Password <sup className="text-red-600">*</sup>
-          </label>
-          <Input
-            type="password"
-            id="password"
-            styles="rounded-lg"
-            containerStyles="bg-white"
-            placeholder="Enter your password"
-            error={!!errors.password}
-            {...register("password")}
-          />
-          {errors.password && (
-            <span className="text-red-600 text-sm">
-              {errors.password.message}
-            </span>
-          )}
-        </div>
+        <FormInput
+          id="email"
+          label="Email"
+          required
+          type="email"
+          placeholder="name@gmail.com"
+          error={errors.email?.message}
+          {...register("email")}
+        />
+
+        <FormInput
+          id="password"
+          label="Password"
+          required
+          type="password"
+          placeholder="Enter your password"
+          error={errors.password?.message}
+          {...register("password")}
+        />
+
         <Link
           href={ROUTES.FORGOT_PASSWORD}
-          className="self-end -mt-3 text-sm text-primary cursor-pointer hover:underline"
+          className="self-end -mt-3 text-xs text-primary cursor-pointer hover:underline"
         >
           Forgot Password?
         </Link>

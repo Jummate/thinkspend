@@ -1,127 +1,94 @@
 "use client";
 
 import { Check } from "lucide-react";
-import React, { useEffect } from "react";
-import Input from "../ui/Input";
-import { useForm } from "react-hook-form";
+import { useEffect, useMemo } from "react";
+import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { expenseDataSchema, ExpenseFormData } from "@/lib/validations/expense";
 import Select from "../ui/Select";
 import Textarea from "../ui/TextArea";
-import { ParsedExpense } from "@/lib/types/expense";
-import { mapAICategoryToValue } from "@/lib/utils/category-mapper";
-import clsx from "clsx";
-import { formatAmountToString } from "@/lib/utils/format-amount";
+import FormAmountInput from "../ui/FormAmountInput";
+import {
+  expenseDataSchema,
+  type ExpenseFormData,
+} from "@/lib/validations/expense";
+import { CATEGORIES } from "@/lib/config/categories";
+import { currencyMapping, type CurrencyCode } from "@/lib/config/currencies";
+import { cn } from "@/lib/utils";
+import DatePicker from "../ui/DatePicker";
+import FieldLabel from "../ui/FieldLabel";
 
 interface ExpenseFormProps {
   onSubmit: (data: ExpenseFormData) => Promise<void>;
-  expenseData?: ParsedExpense;
+  currency: CurrencyCode;
+  initialValues?: Omit<Partial<ExpenseFormData>, "currency">;
 }
 
-const categoryOptions = [
-  { value: "food", label: "🍔 Food & Drinks" },
-  { value: "transport", label: "🚗 Transport" },
-  { value: "groceries", label: "🛒 Groceries" },
-  { value: "bills", label: "⚡ Bills" },
-  { value: "other", label: "📦 Other" },
-];
-const currencyOptions = [
-  { value: "NGN", label: "₦" },
-  { value: "USD", label: "$" },
-  { value: "EUR", label: "€" },
-  { value: "GBP", label: "£" },
-];
+const categoryOptions = CATEGORIES.map((category) => ({
+  value: category.value,
+  label: `${category.emoji} ${category.label}`,
+}));
 
-// const COMMON_CURRENCIES = [
-//   { code: 'NGN', symbol: '₦', name: 'Nigerian Naira' },
-//   { code: 'USD', symbol: '$', name: 'US Dollar' },
-//   { code: 'EUR', symbol: '€', name: 'Euro' },
-//   { code: 'GBP', symbol: '£', name: 'British Pound' },
-// ];
+const ExpenseForm = ({
+  onSubmit,
+  currency,
+  initialValues,
+}: ExpenseFormProps) => {
+  const currencySymbol = currencyMapping[currency];
 
-// const formatCurrency = (amount: number, currency: string) => {
-//   const symbols = { NGN: '₦', USD: '$', EUR: '€', GBP: '£' };
-//   return `${symbols[currency] || currency} ${amount.toLocaleString()}`;
-// };
-
-const ExpenseForm = ({ onSubmit, expenseData }: ExpenseFormProps) => {
+  const today = useMemo(() => new Date().toISOString().slice(0, 10), []);
   const {
     register,
     handleSubmit,
     reset,
+    control,
     formState: { errors, isSubmitting },
   } = useForm<ExpenseFormData>({
     resolver: zodResolver(expenseDataSchema),
     mode: "onTouched",
     reValidateMode: "onChange",
+    defaultValues: {
+      amount: "",
+      currency,
+      category: "",
+      description: "",
+      date: "",
+      notes: ""
+    },
   });
 
   useEffect(() => {
-    if (expenseData) {
-      reset({
-        amount: formatAmountToString(expenseData.amount),
-        currency: expenseData.currency,
-        category: mapAICategoryToValue(expenseData.category),
-        description: expenseData.description || "",
-        date: expenseData.date,
-      });
+    if (initialValues) {
+      reset({ ...initialValues, currency });
     }
-  }, [expenseData, reset]);
+  }, [initialValues, currency, reset]);
 
   return (
     <form
-      className="flex flex-col gap-3"
+      className="flex flex-col gap-4"
       onSubmit={handleSubmit(onSubmit)}
     >
-      <div className="flex flex-col sm:flex-row gap-4">
-        <div className="flex flex-col flex-1">
-          <label
-            htmlFor="amount"
-            className="mb-2 text-muted-foreground text-sm"
-          >
-            Amount
-          </label>
-
-          <div
-            className={clsx(
-              "flex items-center bg-muted rounded-lg border overflow-hidden transition-all",
-              errors.amount
-                ? "border-red-500 focus-within:ring-1 focus-within:ring-red-500"
-                : "border-muted-foreground/30 focus-within:ring-1 focus-within:ring-primary focus-within:shadow-sm",
-            )}
-          >
-            <div className="w-18">
-              {" "}
-              <Select
-                {...register("currency")}
-                id="currency"
-                options={currencyOptions}
-                placeholder="Select a currency"
-                styles="bg-muted border-none outline-none rounded-none font-bold"
-                defaultValue="NGN"
-              />
-            </div>
-            <Input
-              type="text"
-              id="amount"
-              styles="rounded-none rounded-r-lg p-2 bg-white px-2 py-2 outline-none border-none"
-              error={!!errors.amount}
-              {...register("amount")}
-            />
-          </div>
-          {errors.amount && (
-            <span className="text-red-600 text-sm">
-              {errors.amount.message}
-            </span>
-          )}
+      {/* Amount + Category */}
+      <div className="flex flex-col gap-4 sm:flex-row">
+        <div className="flex-1">
+          <FormAmountInput
+            control={control}
+            name="amount"
+            label="Amount"
+            id="amount"
+            required
+            error={errors.amount?.message}
+            prefix={currencySymbol}
+            placeholder="0.00"
+          />
         </div>
-        <div className="flex flex-col flex-1">
-          <label
+
+        <div className="flex flex-1 flex-col gap-2">
+          <FieldLabel
             htmlFor="category"
-            className="mb-2 text-muted-foreground text-sm"
+            required
           >
             Category
-          </label>
+          </FieldLabel>
 
           <Select
             {...register("category")}
@@ -129,23 +96,34 @@ const ExpenseForm = ({ onSubmit, expenseData }: ExpenseFormProps) => {
             options={categoryOptions}
             placeholder="Select a category"
             error={!!errors.category}
-            styles="bg-white"
+            styles="bg-card"
           />
 
           {errors.category && (
-            <p className="mt-1 text-xs text-red-500">
-              {errors.category.message}
-            </p>
+            <p className="text-xs text-danger">{errors.category.message}</p>
           )}
         </div>
       </div>
-      <div className="flex flex-col">
-        <label
-          htmlFor="description"
-          className="mb-2 text-muted-foreground text-sm"
-        >
-          Description
-        </label>
+      <Controller
+        control={control}
+        name="date"
+        render={({ field, fieldState }) => (
+          <DatePicker
+            label="Date"
+            id="date"
+            required
+            error={fieldState.error?.message}
+            value={field.value ?? ""}
+            onValueChange={field.onChange}
+            onBlur={field.onBlur}
+            max={today}
+          />
+        )}
+      />
+
+      {/* Description — growing textarea */}
+      <div className="flex flex-col gap-2">
+        <FieldLabel htmlFor="description">Description</FieldLabel>
 
         <Textarea
           {...register("description")}
@@ -153,51 +131,47 @@ const ExpenseForm = ({ onSubmit, expenseData }: ExpenseFormProps) => {
           placeholder="Coffee at Starbucks"
           error={!!errors.description}
           rows={3}
-          styles="border border-muted-foreground/30 rounded-lg p-2 bg-white px-3 font-bold outline-none focus:shadow-sm focus:ring-1 focus:ring-primary text-sm"
+          styles="border border-muted-foreground/30 rounded-lg p-3 bg-card px-3 outline-none focus:shadow-sm focus:ring-1 focus:ring-primary text-sm"
         />
 
         {errors.description && (
-          <span className="text-red-600 text-sm">
-            {errors.description.message}
-          </span>
+          <p className="text-xs text-danger">{errors.description.message}</p>
         )}
       </div>
-      <div className="flex flex-col">
-        <label
-          htmlFor="date"
-          className="mb-2 text-muted-foreground text-sm"
-        >
-          Date
-        </label>
 
-        <Input
-          type="date"
-          id="date"
-          styles="border border-muted-foreground/30 rounded-lg p-2 py-3 bg-white px-3 font-bold outline-none focus:shadow-sm focus:ring-1 focus:ring-primary text-sm"
-          error={!!errors.date}
-          {...register("date")}
+      {/* Notes — free-form context, kept short */}
+      <div className="flex flex-col gap-2">
+        <FieldLabel htmlFor="notes">Notes</FieldLabel>
+
+        <Textarea
+          {...register("notes")}
+          id="notes"
+          placeholder="Optional — paid in cash, split with roommate…"
+          error={!!errors.notes}
+          rows={2}
+          styles="border border-muted-foreground/30 rounded-lg p-3 bg-card px-3 outline-none focus:shadow-sm focus:ring-1 focus:ring-primary text-sm"
         />
-        {errors.date && (
-          <span className="text-red-600 text-sm">{errors.date.message}</span>
+
+        {errors.notes && (
+          <p className="text-xs text-danger">{errors.notes.message}</p>
         )}
       </div>
 
       <button
         type="submit"
         disabled={isSubmitting}
-        className={clsx(
-          "flex items-center justify-center gap-1 cursor-pointer self-start bg-primary hover:bg-primary-dark rounded-lg px-6 py-2 text-white mt-4",
-          { "opacity-50 pointer-events-none cursor-not-allowed": isSubmitting },
+        className={cn(
+          "mt-4 flex items-center justify-center gap-1 self-start rounded-lg bg-primary px-6 py-2 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary-dark",
+          isSubmitting && "pointer-events-none cursor-not-allowed opacity-50",
         )}
       >
-        <span className="font-bold"></span>
-
         {isSubmitting ? (
-          "Saving expense info..."
+          "Saving..."
         ) : (
-          <span className="font-bold flex justify-center items-center gap-1">
-            Save Expense <Check size={15} />
-          </span>
+          <>
+            Save Expense
+            <Check size={15} />
+          </>
         )}
       </button>
     </form>

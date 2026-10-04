@@ -1,24 +1,17 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat+Alternates:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Noto+Serif:ital,wght@0,100..900;1,100..900&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap");
 
 @import "tailwindcss";
 
 :root {
-  --font-sans: "Inter", system-ui, sans-serif;
-  /* --font-sans: "Montserrat Alternates", system-ui, sans-serif; */
+  --font-sans: "Manrope", system-ui, sans-serif;
   --font-serif: "Noto Serif", serif;
-  --font-mono: "Source Code Pro", monospace;
+  --font-mono: "IBM Plex Mono", monospace;
 }
 
 /* Apply fonts */
 body {
   font-family: var(--font-sans);
 }
-
-/* h1,
-h2,
-h3 {
-   font-family: var(--font-serif);
-} */
 
 code,
 pre {
@@ -41,23 +34,45 @@ pre {
 }
 
 @theme inline {
+  /* Surfaces */
   --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-primary-dark: var(--primary-dark);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
   --color-border: var(--border);
+
+  /* Text */
+  --color-foreground: var(--foreground);
+
+  /* Brand */
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-dark: var(--primary-dark);
+
+  /* Status */
+  --color-success: var(--success);
+  --color-success-dim: var(--success-dim);
+  --color-danger: var(--danger);
+  --color-danger-foreground: var(--danger-foreground);
+  --color-danger-dark: var(--danger-dark);
+  --color-warning: var(--warning);
+  --color-warning-dim: var(--warning-dim);
+
+  /* Categories — identity colors, same in both themes */
   --color-category-food: var(--category-food);
   --color-category-transport: var(--category-transport);
   --color-category-groceries: var(--category-groceries);
   --color-category-bills: var(--category-bills);
+  --color-category-shopping: var(--category-shopping);
   --color-category-other: var(--category-other);
+  --color-category-health: var(--category-health);
+
+    /* Brand gradient (avatar, decorative) */
+  --color-brand-gradient-from: var(--brand-gradient-from);
+  --color-brand-gradient-to: var(--brand-gradient-to);
 }
 
 /* ========================
@@ -65,48 +80,89 @@ pre {
 ======================== */
 
 :root {
-  --primary: #2860fb;
-  --primary-foreground: #ffffff;
-  --primary-dark: #0e4dfa;
+  /* Surfaces — flip between themes */
   --background: #f7f8fa;
-  --foreground: #0f1419;
+  --card: #ffffff;
+  --card-foreground: #0f1419;
   --secondary: #f3f4f6;
   --secondary-foreground: #4b5563;
   --muted: #f3f4f6;
   --muted-foreground: #6b7280;
-  --card: #ffffff;
-  --card-foreground: #0f1419;
   --border: #e5e7eb;
 
-  /* Category Colors */
-  --category-food: #f59e0b;
-  --category-transport: #ec4899;
-  --category-groceries: #10b981;
-  --category-bills: #8b5cf6;
-  --category-other: #3b82f6;
+  /* Text — flips */
+  --foreground: #0f1419;
+
+  /* Brand — flips (different shades per the design) */
+  --primary: #00A67D;
+  --primary-foreground: #ffffff;
+  --primary-dark: #008A68;
+
+  /* Status — flips (light shades for light, bright for dark) */
+  --success: #00A67D;
+  --success-dim: rgba(0, 166, 125, 0.12);
+  --danger: #e5484d;
+  --warning: #e8823c;
+  --warning-dim: rgba(232, 130, 60, 0.12);
+  --danger-foreground: #ffffff;
+  --danger-dark: #c93a3f;
+
+  /* Categories — SAME in both themes (identity colors) */
+  --category-food: #7C5CFF;
+  --category-transport: #FF9A62;
+  --category-groceries: #00E6A8;
+  --category-bills: #5CA8FF;
+  --category-shopping: #FF6B81;
+  --category-other: #8A93A6;
+  --category-health: #F472B6;
+
+    /* Brand gradient — SAME in both themes */
+  --brand-gradient-from: #7C5CFF;
+  --brand-gradient-to: #00E6A8;
 }
 
 /* ========================
    Dark Theme
 ======================== */
-.dark {
-  --primary: #2860fb;
-  --primary-foreground: #ffffff;
-  --primary-dark: #0e4dfa;
-  --background: #0f1419;
-  --foreground: #ffffff;
-  --secondary: #1c2333;
-  --secondary-foreground: #f9fafb;
-  --muted: #374151;
-  --muted-foreground: #8b92a8;
-  --card: #1a1f2e;
-  --card-foreground: #f9fafb;
-  --border: #2d3748;
 
-  /* Category Colors (same in both themes) */
-  --category-food: #f59e0b;
-  --category-transport: #ec4899;
-  --category-groceries: #10b981;
-  --category-bills: #8b5cf6;
-  --category-other: #3b82f6;
+.dark {
+  /* Surfaces — flips */
+  --background: #0F1219;
+  --card: #171B24;
+  --card-foreground: #EDEFF3;
+  --secondary: #1E2430;
+  --secondary-foreground: #EDEFF3;
+  --muted: #242B38;
+  --muted-foreground: #8A93A6;
+  --border: #2A313F;
+
+  /* Text — flips */
+  --foreground: #EDEFF3;
+
+  /* Brand — flips */
+  --primary: #00E6A8;
+  --primary-foreground: #04241B;
+  --primary-dark: #00B383;
+
+  /* Status — flips */
+  --success: #00E6A8;
+  --success-dim: rgba(0, 230, 168, 0.14);
+  --danger: #FF6B81;
+  --warning: #FF9A62;
+  --warning-dim: rgba(255, 154, 98, 0.14);
+  --danger-foreground: #2A0910;
+  --danger-dark: #E55A70;
+
+  /* Categories — SAME in both themes (identity colors) */
+  --category-food: #7C5CFF;
+  --category-transport: #FF9A62;
+  --category-groceries: #00E6A8;
+  --category-bills: #5CA8FF;
+  --category-shopping: #FF6B81;
+  --category-other: #8A93A6;
+  --category-health: #F472B6;
+
+    /* Brand gradient — SAME in both themes */
+  --brand-gradient-from: #7C5CFF;
+  --brand-gradient-to: #00E6A8;
 }

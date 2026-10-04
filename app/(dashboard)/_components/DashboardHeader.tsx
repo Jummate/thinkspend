@@ -1,76 +1,64 @@
 "use client";
 
-import Button from "@/components/ui/Button";
-import { ROUTES } from "@/lib/routes";
-import { logout } from "@/lib/services/authService";
-import { Bell, Moon, Search } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useState } from "react";
+import DesktopSearch from "./DesktopSearch";
+import MobileSearchOverlay from "./MobileSearchOverlay";
+import { Bell, Search } from "lucide-react";
+import Button from "@/components/ui/Button";
+import ProfileMenu from "./ProfileMenu";
+import { ROUTES } from "@/lib/routes";
 
 const DashboardHeader = () => {
-  const handleLogout = async () => {
-    const { success, message } = await logout();
-    if (!success) {
-      console.log(message);
-    }
-  };
+  const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
+  const pathname = usePathname();
+
+  // The button navigates to /expense/new — showing it there is a no-op.
+  const isOnCreatePage = pathname === ROUTES.EXPENSES_NEW;
+
   return (
     <>
-      {/* Desktop Header */}
-      <div className="sticky top-0 right-0 hidden md:flex bg-white w-full p-4 border-b border-b-gray-200 items-center justify-between">
-        <div className="w-xs flex items-center rounded-full bg-gray-100 px-3 focus-within:ring-2 focus-within:ring-primary focus-within:bg-white transition-all">
-          <Search
-            size={16}
-            className="text-gray-400"
-          />
-          <input
-            type="text"
-            placeholder="Search transactions, insights"
-            className="text-sm border-none outline-none bg-transparent focus:outline-none focus:ring-0 flex-1 px-2 py-2"
-          />
-        </div>
+      {/* Tablet & desktop header */}
+      <div className="sticky top-0 z-30 hidden w-full items-center justify-between border-b border-border bg-card p-4 md:flex">
+        <DesktopSearch />
 
         <div className="flex items-center justify-center gap-4">
-          <Moon className="cursor-pointer" />
-          <Bell className="cursor-pointer" />
-          <Link href={ROUTES.EXPENSES_NEW}>
-            <Button styles="py-1.5">+ Add Expense</Button>
-          </Link>
-            {/* <Button styles="py-1.5 px-4" onClick={handleLogout}>Log out</Button> */}
+          <button type="button" aria-label="Notifications">
+            <Bell className="cursor-pointer text-foreground" size={18} />
+          </button>
+          {!isOnCreatePage && (
+            <Link href={ROUTES.EXPENSES_NEW}>
+              <Button fullWidth={false} styles="p-2 px-6 text-sm font-bold">
+                + Add Expense
+              </Button>
+            </Link>
+          )}
         </div>
       </div>
 
-      {/* Mobile Header */}
-      <div className="md:hidden bg-white w-full p-4 border-b border-b-gray-200">
-        {/* Top Row: Icons + Button */}
-        <div className="flex items-center justify-between mb-3">
+    
+      {isMobileSearchOpen ? (
+        <MobileSearchOverlay onClose={() => setIsMobileSearchOpen(false)} />
+      ) : (
+        <div className="flex w-full items-center justify-between border-b border-border bg-card p-4 md:hidden">
+          <button
+            type="button"
+            aria-label="Search"
+            onClick={() => setIsMobileSearchOpen(true)}
+            className="flex h-10 w-10 items-center justify-center rounded-full bg-secondary text-muted-foreground"
+          >
+            <Search size={18} />
+          </button>
+
           <div className="flex items-center gap-3">
-            <Moon
-              className="cursor-pointer"
-              size={20}
-            />
-            <Bell
-              className="cursor-pointer"
-              size={20}
-            />
+            <button type="button" aria-label="Notifications">
+              <Bell size={20} className="cursor-pointer text-foreground" />
+            </button>
+            <ProfileMenu menuAlign="down" />
           </div>
-          <Link href={ROUTES.EXPENSES_NEW}>
-            <Button styles="py-1.5 px-4">+ Add Expense</Button>
-          </Link>
         </div>
-
-        {/* Bottom Row: Search */}
-        <div className="flex items-center rounded-full bg-gray-100 px-3 focus-within:ring-2 focus-within:ring-primary focus-within:bg-white transition-all">
-          <Search
-            size={16}
-            className="text-gray-400"
-          />
-          <input
-            type="text"
-            placeholder="Search..."
-            className="text-sm border-none outline-none bg-transparent focus:outline-none focus:ring-0 flex-1 px-2 py-2"
-          />
-        </div>
-      </div>
+      )}
     </>
   );
 };

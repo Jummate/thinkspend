@@ -1,4 +1,5 @@
-import { supabase } from "@/lib/supabase/client";
+import type { SupabaseClient } from "@supabase/supabase-js";
+import { sumAmounts } from "@/lib/utils/format-amount";
 
 export interface CategorySpending {
   category: string;
@@ -30,7 +31,8 @@ function getMonthDateRange(month: number, year: number) {
 }
 
 export async function getDashboardStats(
-  userId: string
+  supabase: SupabaseClient,
+  userId: string,
 ): Promise<DashboardStats> {
   const now = new Date();
   const currentMonth = now.getMonth() + 1;
@@ -61,13 +63,11 @@ export async function getDashboardStats(
   if (currentResult.error) throw currentResult.error;
   if (lastResult.error) throw lastResult.error;
 
-  const totalThisMonth = (currentResult.data ?? []).reduce(
-    (sum, e) => sum + Number(e.amount),
-    0
+  const totalThisMonth = sumAmounts(
+    (currentResult.data ?? []).map((e) => Number(e.amount)),
   );
-  const totalLastMonth = (lastResult.data ?? []).reduce(
-    (sum, e) => sum + Number(e.amount),
-    0
+  const totalLastMonth = sumAmounts(
+    (lastResult.data ?? []).map((e) => Number(e.amount)),
   );
 
   let spendingChangePercent = 0;
@@ -84,7 +84,8 @@ export async function getDashboardStats(
 }
 
 export async function getCategorySpending(
-  userId: string
+  supabase: SupabaseClient,
+  userId: string,
 ): Promise<CategorySpending[]> {
   const now = new Date();
   const currentMonth = now.getMonth() + 1;
@@ -101,20 +102,22 @@ export async function getCategorySpending(
   if (error) throw error;
 
   // Group and sum by category client-side
-  const grouped: Record<string, number> = {};
+  const grouped: Record<string, number[]> = {};
   for (const expense of data ?? []) {
     const cat = expense.category as string;
-    grouped[cat] = (grouped[cat] ?? 0) + Number(expense.amount);
+    if (!grouped[cat]) grouped[cat] = [];
+    grouped[cat].push(Number(expense.amount));
   }
 
-  return Object.entries(grouped).map(([category, amount]) => ({
+  return Object.entries(grouped).map(([category, amounts]) => ({
     category,
-    amount: parseFloat(amount.toFixed(2)),
+    amount: sumAmounts(amounts),
   }));
 }
 
 export async function getRecentExpenses(
-  userId: string
+  supabase: SupabaseClient,
+  userId: string,
 ): Promise<RecentExpense[]> {
   const { data, error } = await supabase
     .from("expenses")
@@ -131,7 +134,7 @@ export async function getRecentExpenses(
     description: e.description ?? "",
     category: e.category,
     date: e.date,
-    amount: parseFloat(Number(e.amount).toFixed(2)),
+    amount: Number(e.amount),
     currency: e.currency,
   }));
 }

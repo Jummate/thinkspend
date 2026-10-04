@@ -18,9 +18,7 @@ export const expenseDataSchema = z.object({
         const num = formatAmountToNumber(val);
         return !Number.isNaN(num) && num > 0 && num < 1000000000;
       },
-      {
-        message: "Enter a valid amount between 0 and 1,000,000,000",
-      }
+      { message: "Enter a valid amount between 0 and 1,000,000,000" },
     ),
   currency: z.string().min(1, "Currency is required").length(3),
   category: z.string().min(1, "Category is required"),
@@ -29,6 +27,13 @@ export const expenseDataSchema = z.object({
     .string()
     .trim()
     .max(200, "Description is too long")
+    .optional()
+    .or(z.literal("")),
+
+  notes: z
+    .string()
+    .trim()
+    .max(500, "Notes are too long")
     .optional()
     .or(z.literal("")),
 
@@ -41,9 +46,7 @@ export const expenseDataSchema = z.object({
         const now = new Date();
         return !Number.isNaN(parsedDate.getTime()) && parsedDate <= now;
       },
-      {
-        message: "Date cannot be in the future",
-      }
+      { message: "Date cannot be in the future" },
     ),
 });
 

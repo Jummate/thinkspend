@@ -6,12 +6,15 @@
 export const ROUTES = {
   // Public
   HOME: "/",
+  TERMS:"/terms-of-service",
+  PRIVACY:"/privacy",
 
   // Authentication
   LOGIN: "/login",
   SIGNUP: "/signup",
   FORGOT_PASSWORD: "/forgot-password",
   RESET_PASSWORD: "/reset-password",
+  CHECK_EMAIL: "/check-email",
 
   // Dashboard
   DASHBOARD: "/dashboard",
@@ -21,7 +24,6 @@ export const ROUTES = {
   EXPENSES: "/expenses",
   EXPENSES_NEW: "/expense/new",
   EXPENSES_DETAIL: (id: string) => `/expenses/${id}`,
-  EXPENSES_EDIT: (id: string) => `/expenses/${id}/edit`,
 
   // Settings
   SETTINGS: "/settings",
@@ -38,7 +40,6 @@ export const AUTH_ROUTES = [
   ROUTES.LOGIN,
   ROUTES.SIGNUP,
   ROUTES.FORGOT_PASSWORD,
-  ROUTES.RESET_PASSWORD,
 ] as const;
 
 export const PROTECTED_ROUTES = [

@@ -1,10 +1,12 @@
 "use client";
 
-import Input from "../ui/Input";
+import Link from "next/link";
 import Button from "../ui/Button";
+import FormInput from "../ui/FormInput";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { RegisterFormData, registerSchema } from "@/lib/validations/auth";
+import { ROUTES } from "@/lib/routes";
 
 interface SignUpFormProps {
   onSubmit: (data: RegisterFormData) => Promise<void>;
@@ -15,6 +17,7 @@ const SignUpForm = ({ onSubmit }: SignUpFormProps) => {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors, isSubmitting },
   } = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
@@ -22,127 +25,103 @@ const SignUpForm = ({ onSubmit }: SignUpFormProps) => {
     reValidateMode: "onChange",
   });
 
+  const hasConsented = watch("consent");
+
   return (
     <form
       className="flex flex-col items-center justify-center w-full gap-4"
       onSubmit={handleSubmit(onSubmit)}
     >
       <div className="flex flex-col sm:flex-row gap-2 w-full">
-        <div className="flex flex-col flex-1 gap-2">
-          <label
-            htmlFor="firstName"
-            className="self-start"
-          >
-            First Name <sup className="text-red-600">*</sup>
-          </label>
-          <Input
-            type="text"
+        <div className="flex-1 min-w-0">
+          <FormInput
             id="firstName"
-            styles="rounded-lg"
-            containerStyles="bg-white"
-            // placeholder="name@gmail.com"
-            error={!!errors.firstName}
+            label="First Name"
+            required
+            placeholder="Yakub"
+            error={errors.firstName?.message}
             {...register("firstName")}
           />
-          {errors.firstName && (
-            <span className="text-red-600 text-sm">
-              {errors.firstName.message}
-            </span>
-          )}
         </div>
 
-        <div className="flex flex-col flex-1 gap-2">
-          <label
-            htmlFor="lastName"
-            className="self-start"
-          >
-            Last Name <sup className="text-red-600">*</sup>
-          </label>
-          <Input
-            type="text"
+        <div className="flex-1 min-w-0">
+          <FormInput
             id="lastName"
-            styles="rounded-lg"
-            containerStyles="bg-white"
-            // placeholder="name@gmail.com"
-            error={!!errors.lastName}
+            label="Last Name"
+            required
+            placeholder="Jumat"
+            error={errors.lastName?.message}
             {...register("lastName")}
           />
-          {errors.lastName && (
-            <span className="text-red-600 text-sm">
-              {errors.lastName.message}
-            </span>
-          )}
         </div>
       </div>
 
-      <div className="flex flex-1 flex-col gap-2 w-full">
-        <label
-          htmlFor="email"
-          className="self-start"
-        >
-          Email <sup className="text-red-600">*</sup>
-        </label>
-        <Input
-          type="email"
-          id="email"
-          styles="rounded-lg"
-          containerStyles="bg-white"
-          placeholder="name@gmail.com"
-          error={!!errors.email}
-          {...register("email")}
+      <FormInput
+        id="email"
+        label="Email"
+        required
+        type="email"
+        placeholder="name@gmail.com"
+        error={errors.email?.message}
+        {...register("email")}
+      />
+
+      <FormInput
+        id="password"
+        label="Password"
+        required
+        type="password"
+        placeholder="Enter your password"
+        error={errors.password?.message}
+        {...register("password")}
+      />
+
+      <FormInput
+        id="confirmPassword"
+        label="Confirm Password"
+        required
+        type="password"
+        placeholder="Re-enter your password"
+        error={errors.confirmPassword?.message}
+        {...register("confirmPassword")}
+      />
+
+      <label className="flex w-full items-start gap-2.5 cursor-pointer">
+        <input
+          type="checkbox"
+          className="mt-0.5 h-4 w-4 shrink-0 cursor-pointer accent-primary"
+          {...register("consent")}
         />
-        {errors.email && (
-          <span className="text-red-600 text-sm">{errors.email.message}</span>
-        )}
-      </div>
-      <div className="flex flex-1 flex-col gap-2 w-full">
-        <label
-          htmlFor="password"
-          className="self-start"
-        >
-          Password <sup className="text-red-600">*</sup>
-        </label>
-        <Input
-          type="password"
-          id="password"
-          styles="rounded-lg"
-          containerStyles="bg-white"
-          placeholder="Enter your password"
-          error={!!errors.password}
-          {...register("password")}
-        />
-        {errors.password && (
-          <span className="text-red-600 text-sm">
-            {errors.password.message}
-          </span>
-        )}
-      </div>
-      <div className="flex flex-1 flex-col gap-2 w-full">
-        <label
-          htmlFor="confirmPassword"
-          className="self-start"
-        >
-          Confirm Password <sup className="text-red-600">*</sup>
-        </label>
-        <Input
-          type="password"
-          id="confirmPassword"
-          styles="rounded-lg"
-          containerStyles="bg-white"
-          placeholder="Re-enter your password"
-          error={!!errors.confirmPassword}
-          {...register("confirmPassword")}
-        />
-        {errors.confirmPassword && (
-          <span className="text-red-600 text-sm">
-            {errors.confirmPassword.message}
-          </span>
-        )}
-      </div>
+        <span className="text-sm leading-relaxed text-muted-foreground">
+          I&apos;ve read and agree to the{" "}
+          <Link
+            href={ROUTES.TERMS}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-bold text-primary hover:underline"
+          >
+            Terms of Service
+          </Link>{" "}
+          and{" "}
+          <Link
+            href={ROUTES.PRIVACY}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-bold text-primary hover:underline"
+          >
+            Privacy Policy
+          </Link>
+        </span>
+      </label>
+      {errors.consent && (
+        <span className="self-start text-danger text-xs">
+          {errors.consent.message}
+        </span>
+      )}
 
       <Button
         type="submit"
-        disabled={isSubmitting}
+        disabled={isSubmitting || !hasConsented}
         styles="font-bold flex items-center justify-center gap-4 shadow-xl"
       >
         {isSubmitting ? "Creating account..." : "Sign up"}
