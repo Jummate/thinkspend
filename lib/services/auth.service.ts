@@ -114,9 +114,10 @@ export async function forgotPassword(
   email: string,
 ): Promise<ForgotPasswordResult> {
   try {
-    const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/auth/confirm`,
-    });
+    // const { error } = await supabase.auth.resetPasswordForEmail(email, {
+    //   redirectTo: `${window.location.origin}/auth/confirm`,
+    // });
+    const { error } = await supabase.auth.resetPasswordForEmail(email);
 
     if (error) {
       const retryAfterSeconds = extractRetryAfterSeconds(error.message);
