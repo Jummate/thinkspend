@@ -25,6 +25,7 @@ import { useMediaQuery } from "@/lib/hooks/useMediaQuery";
 import ExpenseDeleteModal from "./_components/ExpenseDeleteModal";
 import ExpenseEditModal from "./_components/ExpenseEditModal";
 import { useCurrency } from "@/lib/hooks/useCurrency";
+import ExpensesListSkeleton from "./_components/ExpensesListSkeleton";
 
 const DEBOUNCE_MS = 300;
 
@@ -151,11 +152,14 @@ const currencySymbol = currencyMapping[currency];
         </p>
       )}
       {/* Results */}
-      {isLoading ? (
-        <p className="py-12 text-center text-sm text-muted-foreground">
-          Loading expenses...
-        </p>
-      ) : error ? (
+     {isLoading ? (
+  <>
+    <span className="sr-only" role="status">
+      Loading expenses
+    </span>
+    <ExpensesListSkeleton />
+  </>
+) : error ? (
         <p className="py-12 text-center text-sm text-danger">
           Failed to load expenses. Please refresh.
         </p>
