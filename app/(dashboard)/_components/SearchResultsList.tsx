@@ -7,6 +7,7 @@ import { ROUTES } from "@/lib/routes";
 import type { RecentExpense } from "@/lib/services/dashboard.service";
 import type { SearchShortcut } from "../_lib/search-shortcuts";
 import { SearchStatus } from "../_lib/useSearch";
+import SearchResultsSkeleton from "./SearchResultsSkeleton";
 
 interface SearchResultsListProps {
   status: SearchStatus;
@@ -127,11 +128,7 @@ function SearchResultsList({
   onSelect,
 }: SearchResultsListProps) {
   if (status === "loading") {
-    return (
-      <div className="p-6 text-center text-sm text-muted-foreground">
-        Searching…
-      </div>
-    );
+    return <SearchResultsSkeleton />;
   }
 
   if (status === "empty") {
