@@ -12,7 +12,7 @@ import {
 import { searchExpenses } from "@/lib/services/search.service";
 import { matchShortcuts, type SearchShortcut } from "./search-shortcuts";
 
-export type SearchStatus = "idle" | "loading" | "results" | "empty";
+export type SearchStatus = "idle" | "loading" | "results" | "empty" | "error";
 
 export interface UseSearchReturn {
   query: string;
@@ -64,15 +64,17 @@ export function useSearch(): UseSearchReturn {
   const expenseResults = searchQuery.data ?? [];
 
   let status: SearchStatus;
-  if (!hasQuery) {
-    status = "idle";
-  } else if (searchQuery.isLoading || isDebouncePending) {
-    status = "loading";
-  } else if (expenseResults.length === 0 && shortcutResults.length === 0) {
-    status = "empty";
-  } else {
-    status = "results";
-  }
+if (!hasQuery) {
+  status = "idle";
+} else if (searchQuery.isLoading || isDebouncePending) {
+  status = "loading";
+} else if (searchQuery.isError) {
+  status = "error";
+} else if (expenseResults.length === 0 && shortcutResults.length === 0) {
+  status = "empty";
+} else {
+  status = "results";
+}
 
   return {
     query,

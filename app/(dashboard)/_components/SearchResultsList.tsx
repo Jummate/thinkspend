@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { Search as SearchIcon } from "lucide-react";
+import { AlertCircle, Search as SearchIcon } from "lucide-react";
 import { formatAmountToString } from "@/lib/utils/format-amount";
 import { getCategoryConfig } from "@/lib/config/categories";
 import { ROUTES } from "@/lib/routes";
@@ -130,6 +130,22 @@ function SearchResultsList({
   if (status === "loading") {
     return <SearchResultsSkeleton />;
   }
+
+  if (status === "error") {
+  return (
+    <div className="flex flex-col items-center gap-2 p-8 text-center">
+      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-danger/10">
+        <AlertCircle className="h-5 w-5 text-danger" />
+      </div>
+      <p className="text-sm font-medium text-foreground">
+        Search failed
+      </p>
+      <p className="text-xs text-muted-foreground">
+        Something went wrong. Try again.
+      </p>
+    </div>
+  );
+}
 
   if (status === "empty") {
     return (
